@@ -4,7 +4,7 @@ const { promptMessage } = require("../../functions.js");
 
 module.exports = {
     name: "kick",
-    category: "moderation",
+    category: "moderations",
     description: "Kicks the member",
     usage: "<id | mention>",
     run: async (bot, message, args) => {
@@ -15,25 +15,25 @@ module.exports = {
         // No args
         if (!args[0]) {
             return message.reply("Please provide a person to kick.")
-                .then(m => m.delete(5000));
+                .thenm.delete({timeout: 5000, reason :"It had to be done."});
         }
 
         // No reason
         if (!args[1]) {
             return message.reply("Please provide a reason to kick.")
-                .then(m => m.delete(5000));
+                .then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
         }
 
         // No author permissions
         if (!message.member.hasPermission("KICK_MEMBERS")) {
             return message.reply("❌ You do not have permissions to kick members. Please contact a staff member")
-                .then(m => m.delete(5000));
+                .then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
         }
 
         // No bot permissions
         if (!message.guild.me.hasPermission("KICK_MEMBERS")) {
             return message.reply("❌ I do not have permissions to kick members. Please contact a staff member")
-                .then(m => m.delete(5000));
+                .then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
         }
 
         const toKick = message.mentions.members.first() || message.guild.members.get(args[0]);
@@ -41,19 +41,19 @@ module.exports = {
         // No member found
         if (!toKick) {
             return message.reply("Couldn't find that member, try again")
-                .then(m => m.delete(5000));
+                .thenm.delete({timeout: 5000, reason :"It had to be done."});
         }
 
         // Can't kick urself
         if (toKick.id === message.author.id) {
             return message.reply("You can't kick yourself...")
-                .then(m => m.delete(5000));
+                .thenm.delete({timeout: 5000, reason :"It had to be done."});
         }
 
         // Check if the user's kickable
         if (!toKick.kickable) {
             return message.reply("I can't kick that person due to role hierarchy, I suppose.")
-                .then(m => m.delete(5000));
+                .thenm.delete({timeout: 5000, reason :"It had to be done."});
         }
                 
         const embed = new MessageEmbed()
@@ -89,7 +89,7 @@ module.exports = {
                 msg.delete();
 
                 message.reply(`Kick canceled.`)
-                    .then(m => m.delete(10000));
+                    .then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
             }
         });
     }
