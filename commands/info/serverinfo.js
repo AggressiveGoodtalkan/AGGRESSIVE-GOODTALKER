@@ -6,7 +6,7 @@ const { getMember, formatDate } = require("../../functions.js");
 
 
 module.exports = {
-  name: "server info",
+  name: "serverinfo",
   aliases: ["info", "aboutme"],
   category:"info",
   usage: "<prefix>[command | alias]",
