@@ -8,7 +8,7 @@ module.exports = {
     description: "Kicks the member",
     usage: "<id | mention>",
     run: async (bot, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name === "logs") || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name === "kicks-and-bans") || message.channel;
 
         if (message.deletable) message.delete();
 
@@ -41,19 +41,19 @@ module.exports = {
         // No member found
         if (!toKick) {
             return message.reply("Couldn't find that member, try again")
-                .thenm.delete({timeout: 5000, reason :"It had to be done."});
+                .then(m.delete({timeout: 5000, reason :"It had to be done."}));
         }
 
         // Can't kick urself
         if (toKick.id === message.author.id) {
             return message.reply("You can't kick yourself...")
-                .thenm.delete({timeout: 5000, reason :"It had to be done."});
+                .then(m.delete({timeout: 5000, reason :"It had to be done."}));
         }
 
         // Check if the user's kickable
         if (!toKick.kickable) {
             return message.reply("I can't kick that person due to role hierarchy, I suppose.")
-                .thenm.delete({timeout: 5000, reason :"It had to be done."});
+                .then(m.delete({timeout: 5000, reason :"It had to be done."}));
         }
                 
         const embed = new MessageEmbed()
