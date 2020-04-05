@@ -7,6 +7,7 @@ module.exports = {
   name: "dog",
   aliases: ["bark", "howl"],
   category:"entertainment",
+  usage: ["<prefix>command here"],
   run: async (bot, message, args) => {
  
     let nsg = await message.channel.send("Generating...")

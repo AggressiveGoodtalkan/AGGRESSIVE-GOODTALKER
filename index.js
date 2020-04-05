@@ -10,6 +10,7 @@
 
  bot.commands = new Discord.Collection();
  bot.aliases = new Discord.Collection();
+ bot.categories = fs.readdirSync("./commands/");
 
 ["command"].forEach(handler => {
     require(`./handler/${handler}`)(bot);

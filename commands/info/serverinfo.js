@@ -9,7 +9,7 @@ module.exports = {
   name: "server info",
   aliases: ["info", "aboutme"],
   category:"info",
-  usage: [],
+  usage: "[command | alias]",
   run: async (bot, message, args) => {
     //const member = getMember(message, args.join(" "));
 

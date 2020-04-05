@@ -9,7 +9,7 @@ module.exports = {
   name: "members",
   aliases: ["mmbrs", "count"],
   category:"info",
-  usage: [],
+  usage: "[command | alias]",
   run: async (bot, message, args) => {
 
     let sEmbed = new Discord.MessageEmbed()

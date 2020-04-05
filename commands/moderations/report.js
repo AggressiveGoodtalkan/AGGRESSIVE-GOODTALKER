@@ -1,11 +1,10 @@
-  
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 const colors = require("../../colors.json");
 
 module.exports = {
     name: "report",
-    category: "moderation",
+    category: "moderations",
     description: "Reports a member",
     usage: "<mention, id>",
     run: async (bot, message, args) => {
