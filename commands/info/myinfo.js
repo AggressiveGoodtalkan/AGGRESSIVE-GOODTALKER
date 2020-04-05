@@ -7,7 +7,7 @@ module.exports = {
     name: "whois",
     aliases: ["me", "about"],
     category:"info",
-    usage: "[command | alias]",
+    usage: "<prefix>[command | alias]",
     run: async (bot, message, args) => {
         const member = getMember(message, args.join(" "));
 
