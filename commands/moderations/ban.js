@@ -61,9 +61,9 @@ module.exports = {
             .setThumbnail(toBan.user.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
-            .setDescription(stripIndents`**> baned member:** ${toBan} (${toBan.id})
-            **> baned by:** ${message.member} (${message.member.id})
-            **> Reason:** ${args.slice(1).join(" ")}`);
+            .setDescription(stripIndents`**Baned member:** ${toBan} (${toBan.id})
+            **Baned by:** ${message.member} (${message.member.id})
+            **Reason:** ${args.slice(1).join(" ")}`);
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")

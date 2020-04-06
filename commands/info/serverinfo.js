@@ -23,7 +23,7 @@ module.exports = {
     .setThumbnail(bot.user.displayAvatarURL())
     .setAuthor(`${message.guild.name}`, bot.user.displayAvatarURL())
     .addField('Server information:', stripIndents`**Display name:** ${message.guild.name}
-    **Server Ower:** ${message.guild.owner}
+    **Server Owner:** ${message.guild.owner}
     **Member Count:** ${message.guild.memberCount}
     **Admins:** ${admins} 
     **Role Count:** ${message.guild.roles.cache.size}
