@@ -36,7 +36,7 @@ module.exports = {
                 .then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
         }
 
-        const toKick = message.mentions.members.first() || message.guild.members.get(args[0]);
+        const toKick = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 
         // No member found
         if (!toKick) {
@@ -61,9 +61,9 @@ module.exports = {
             .setThumbnail(toKick.user.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
-            .setDescription(stripIndents`**Kicked member:** ${toKick} (${toKick.id})
-            **Kicked by:** ${message.member} (${message.member.id})
-            **Reason:** ${args.slice(1).join(" ")}`);
+            .setDescription(stripIndents`**> Kicked member:** >> ${toKick} (${toKick.id})
+            **> Kicked by:** >> ${message.member} (${message.member.id})
+            **> Reason:** >> ${args.slice(1).join(" ")}`);
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")
