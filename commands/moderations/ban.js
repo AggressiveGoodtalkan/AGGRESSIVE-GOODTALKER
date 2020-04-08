@@ -7,7 +7,7 @@ module.exports = {
     category: "moderations",
     description: "bans the member",
     usage: "<id | mention>",
-    run: async (client, message, args) => {
+    run: async (bot, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "kicks-and-bans") || message.channel;
 
         if (message.deletable) message.delete();
