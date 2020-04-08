@@ -3,7 +3,8 @@ module.exports = {
     aliases: ["purge", "nuke"],
     category: "moderations",
     description: "Clears the chat",
-    run: async (client, message, args) => {
+    run: async (bot, message, args) => {
+
         if (message.deletable) {
             message.delete();
         }
