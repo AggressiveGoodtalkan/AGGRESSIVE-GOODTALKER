@@ -46,6 +46,7 @@ bot.on('guildMemberAdd', member => {
         else{
             message.reply('Invalid Message! Please try again!').then(m => m.delete({timeout: 5000, reason: 'It had to be done'}))
             message.delete({timeout: 5000, reason: 'It had to be done'})
+            .catch(err => message.reply(`Something went wrong... ${err}`)).then(m => m.delete({timeout: 5000 , reason: "It had to be done"}));
         }
             
     });
