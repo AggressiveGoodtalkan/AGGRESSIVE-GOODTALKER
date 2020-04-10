@@ -31,7 +31,7 @@ bot.on('guildMemberAdd', member => {
     const channel = member.guild.channels.cache.find(ch => ch.name === 'rules')
     const logging = member.guild.channels.cache.find(ch => ch.name === 'verification-logs')
     const created = formatDate(member.user.createdAt);
-    channel.send(`Welcome ${member}! Please read the rules first! Then send the confirmation phrase written there.`).then(m => m.delete({timeout: 5000, reason: 'It had to be done'}))
+    channel.send(`Welcome ${member}! Please read the rules first! Then send the confirmation phrase written there.`).then(m => m.delete({timeout: 10000, reason: 'It had to be done'}))
 
     const filter = m => !m.author.bot;
     const collector = channel.createMessageCollector(filter)
