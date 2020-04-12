@@ -7,7 +7,7 @@
  const fs = require("fs");
  const { MessageEmbed } = require('discord.js');
  const { stripIndents } = require("common-tags");
- const { formatDate } = require("./functions.js");
+ const { getMember, formatDate } = require("./functions.js");
 
  const bot = new Discord.Client({disableEveryone: true});
  
@@ -26,57 +26,69 @@
 
 
 
+bot.on('guildMemberAdd', async member => {
 
-bot.on('guildMemberAdd', member => {
-    const channel = member.guild.channels.cache.find(ch => ch.name === 'rules')
-    const logging = member.guild.channels.cache.find(ch => ch.name === 'verification-logs')
-    const created = formatDate(member.user.createdAt);
-    channel.send(`Welcome ${member}! Please read the rules first! Then send the confirmation phrase written there.`).then(m => m.delete({timeout: 10000, reason: 'It had to be done'}))
+    member.user.send(`Welcome ${member}! Please read the rules first! Then follow the instructions.`)
+})
 
-    const filter = m => !m.author.bot;
-    const collector = channel.createMessageCollector(filter)
-    collector.on('collect', (message, col) =>{
+bot.on('message', async message => {
 
-        if(message.content === 'I have read the rules of this server and have agreed to follow it accordingly'){
-            member.roles.set(['694810450621366283'])
-            .then(channel.send(`Thank you for your cooperation ${member}, Welcome to the server!`).then(m => m.delete({timeout: 5000, reason: 'It had to be done'})))
-            message.delete({timeout: 5000, reason: 'It had to be done'})
-            collector.stop();
-        }
-        else{
-            message.reply('Invalid Message! Please try again!').then(m => m.delete({timeout: 5000, reason: 'It had to be done'}))
-            message.delete({timeout: 5000, reason: 'It had to be done'})
-            .catch(err => message.reply(`Something went wrong... ${err}`)).then(m => m.delete({timeout: 5000 , reason: "It had to be done"}));
-        }
+  if (message.content == `~start`) {
+
+    const member = bot.guilds.cache.get('694810450621366282').member(message.author)
+    const role = member.guild.roles.cache.find(role => role.name === "Member");
+
+    if(member.roles.cache.has(role.id)){
+      message.reply("You are already a member!")
+      return;
+    }
+
+    // Create a message collector
+    const filter = m => (m.content.includes('I have read the rules of this server and have agreed to follow it accordingly') && m.author.id != bot.user.id);
+    const channel = message.channel;
+    const collector = channel.createMessageCollector(filter);
+    message.reply("I'm listening...");
+    console.log("collector started");
+
+      
+      collector.on('collect', m => {
+        
+        
+        if(m.content.includes('I have read the rules of this server and have agreed to follow it accordingly')){
+              message.reply(`Thank you for your cooperation, Welcome to the server!`);
+              member.roles.add(role);
+              collector.stop();
+            }
+            console.log(`Collected ${m.content}`)
+        });
+        collector.on('end', collected => {
             
-    });
-
-    collector.on('end', collected => {
+        const logging = bot.channels.cache.get('697105399836573756')
 
         const embed = new MessageEmbed()
-        .setColor(colors.Blue)
-        .setTitle(`${member.user.username} has successfully verified!`)
-        .setFooter(member.displayName, member.user.displayAvatarURL())
-        .setThumbnail(member.user.displayAvatarURL())
-        
-        .addField('Member information:', stripIndents`**Display name:** ${member.displayName}`)
-        
-        .addField('User information:', stripIndents`**ID:** ${member.user.id}
-        **Username**: ${member.user.username}
-        **Tag**: ${member.user.tag}
-        **Created at**: ${created}`, true)
-        .setTimestamp()
-        
+            .setTitle(`${member.displayName} has successfully verified!`)
+            .setFooter(member.displayName, member.user.displayAvatarURL())
+            .setThumbnail(member.user.displayAvatarURL())
+            .setColor(colors.Green)
+
+            .addField('Member information:', stripIndents`**Display name:** ${member.displayName}`, true)
+
+            .addField('User information:', stripIndents`**ID:** ${member.user.id}
+            **Username**: ${member.username}
+            **Tag**: ${member.user.tag}`, true)
+
         logging.send(embed)
+        console.log(`Collected ${collected.size} items`)
+
+      });
+    }
+  });
+    
+    
+    
+    
+    bot.on("message", async message => {
         
-    })
-})
-    
-
-    
-
-bot.on("message", async message => {
-
     if (message.author.bot) return;
     if (!message.guild) return;
     if (!message.content.startsWith(prefix)) return;
