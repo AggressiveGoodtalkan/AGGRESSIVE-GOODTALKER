@@ -82,8 +82,30 @@ bot.on('message', async message => {
       });
     }
   });
-    
-    
+
+
+  bot.on("guildMemberUpdate", async (oldMember, newMember) => {
+
+    const channel = bot.channels.cache.get('699325313930362982')
+    const role = newMember.guild.roles.cache.find(role => role.name === "Mods");
+
+   if(!oldMember.roles.cache.has(role.id) && newMember.roles.cache.has(role.id)){
+     channel.send(`Congrats <@${newMember.user.id}> on getting the ${role} role!`)
+     channel.send({
+       files: [{
+        attachment: './images/tenor.gif',
+        name: 'tenor.gif'
+      }] 
+     })
+     .catch(err => console.error);
+   }
+   else
+   {
+     return;
+   }
+
+  });
+  
     
     
     bot.on("message", async message => {
