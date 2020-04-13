@@ -7,7 +7,7 @@
  const fs = require("fs");
  const { MessageEmbed } = require('discord.js');
  const { stripIndents } = require("common-tags");
- const { getMember, formatDate } = require("./functions.js");
+ const { formatDate } = require("./functions.js");
 
  const bot = new Discord.Client({disableEveryone: true});
  
@@ -64,18 +64,17 @@ bot.on('message', async message => {
         collector.on('end', collected => {
             
         const logging = bot.channels.cache.get('697105399836573756')
+        const created = formatDate(member.user.createdAt);
 
         const embed = new MessageEmbed()
             .setTitle(`${member.displayName} has successfully verified!`)
             .setFooter(member.displayName, member.user.displayAvatarURL())
             .setThumbnail(member.user.displayAvatarURL())
             .setColor(colors.Green)
-
-            .addField('Member information:', stripIndents`**Display name:** ${member.displayName}`, true)
-
             .addField('User information:', stripIndents`**ID:** ${member.user.id}
-            **Username**: ${member.username}
-            **Tag**: ${member.user.tag}`, true)
+            **Username:** ${member.user.username}
+            **Tag:** ${member.user.tag}
+            **Created:** ${created}`, true)
 
         logging.send(embed)
         console.log(`Collected ${collected.size} items`)
