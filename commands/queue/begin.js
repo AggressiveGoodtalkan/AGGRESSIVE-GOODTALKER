@@ -19,7 +19,7 @@ module.exports = {
         }
         else if (bot.queue.length > 0 && member.roles.cache.has(dj.id)) {
             message.channel.send(`Let's begin! For our first performer, give it up for ${bot.queue[0]}!`)
-            .then(performer.roles.add(role))
+            .then(performer.roles.add(role)).then(m => m.delete({timeout: 5000, reason:"It had to be done"}))
             message.delete({timeout: 5000, reason:"It had to be done"})
             
 
