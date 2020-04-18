@@ -10,7 +10,7 @@ module.exports = {
         const role = message.guild.roles.cache.find(role => role.name === "Performer")
         const dj = message.guild.roles.cache.find(role => role.name === "DJ")
         const member = getMember(message, args.join(" "));
-        const performer = bot.guilds.cache.get('672109397312405534').member(bot.queue[0])
+        const performer = bot.guilds.cache.get('694810450621366282').member(bot.queue[0])
 
         if (bot.queue.length === 0) {
             message.reply("The queue is paking empty! Go and add more people!")
