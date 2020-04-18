@@ -105,6 +105,9 @@ bot.on('message', async message => {
    }
 
   });
+
+
+  bot.queue = [];
   
     
     
