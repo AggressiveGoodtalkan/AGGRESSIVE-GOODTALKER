@@ -13,7 +13,8 @@ module.exports = {
         
         if (bot.queue.length === 0 && message.author !== bot.queue[0]) {
             message.reply("The queue is paking empty! Go and add more people!")
-            .then(m => m.delete({timeout: 5000, reason:"It had to be done"}));
+            .then(m => m.delete({timeout: 5000, reason:"It had to be done"}))
+            message.delete({timeout: 5000, reason:"It had to be done"});
             return;
         }
         else if (member.roles.cache.has(role.id) || member.roles.cache.has(dj.id)){
@@ -22,18 +23,22 @@ module.exports = {
             
             if (bot.queue.length === 0) {
                 message.channel.send(`Thank you for your BEAUTIFUL PAKING PERFORMANCE <@${message.author.id}>! There are no more people in the queue!`)
-                .then(member.roles.remove(role))
+                .then(member.roles.remove(role)).then(m => m.delete({timeout: 5000, reason:"It had to be done"}))
+                message.delete({timeout: 5000, reason:"It had to be done"})
                 
             }
             else{
                 message.channel.send(`Thank you for your BEAUTIFUL PAKING PERFORMANCE <@${message.author.id}>! Next up is ${bot.queue[0]}`)
-                .then(member.roles.remove(role)).then(performer.roles.add(role))         
+                .then(member.roles.remove(role)).then(performer.roles.add(role)).then(m => m.delete({timeout: 5000, reason:"It had to be done"}))
+                message.delete({timeout: 5000, reason:"It had to be done"})       
                 
             }
 
         }
         else{
             message.reply("You are currently not performing, please wait for the performer to finish or contact someone with the DJ role to fix the queue.")
+            .then(m => m.delete({timeout: 5000, reason:"It had to be done"}))
+            message.delete({timeout: 5000, reason:"It had to be done"})
         }   
         
     }
