@@ -28,7 +28,7 @@
 
 bot.on('guildMemberAdd', async member => {
 
-    member.user.send(`Welcome ${member}! Please read the rules first! Then follow the instructions.`)
+    member.user.send(`Welcome ${member}! Please read the rules first! Then follow the instructions that are written there.`);
 })
 
 bot.on('message', async message => {
@@ -37,51 +37,54 @@ bot.on('message', async message => {
 
     const member = bot.guilds.cache.get('694810450621366282').member(message.author)
     const role = member.guild.roles.cache.find(role => role.name === "Member");
-
+    
     if(member.roles.cache.has(role.id)){
       message.reply("You are already a member!")
       return;
     }
-
+    
     // Create a message collector
-    const filter = m => (m.content.includes('I have read the rules of this server and have agreed to follow it accordingly') && m.author.id != bot.user.id);
+    const filter = m => (m.content && m.author.id != bot.user.id);
     const channel = message.channel;
-    const collector = channel.createMessageCollector(filter);
+    const collector = channel.createMessageCollector(filter);    
     message.reply("I'm listening...");
-    console.log("collector started");
-
+    console.log("collector started");  
+    
+    collector.on('collect', m => {
       
-      collector.on('collect', m => {
-        
-        
-        if(m.content.includes('I have read the rules of this server and have agreed to follow it accordingly')){
-              message.reply(`Thank you for your cooperation, Welcome to the server!`);
-              member.roles.add(role);
-              collector.stop();
-            }
-            console.log(`Collected ${m.content}`)
-        });
-        collector.on('end', collected => {
-            
-        const logging = bot.channels.cache.get('697105399836573756')
-        const created = formatDate(member.user.createdAt);
-
-        const embed = new MessageEmbed()
-            .setTitle(`${member.displayName} has successfully verified!`)
-            .setFooter(member.displayName, member.user.displayAvatarURL())
-            .setThumbnail(member.user.displayAvatarURL())
-            .setColor(colors.Green)
-            .addField('User information:', stripIndents`**ID:** ${member.user.id}
-            **Username:** ${member.user.username}
-            **Tag:** ${member.user.tag}
-            **Created:** ${created}`, true)
-
-        logging.send(embed)
-        console.log(`Collected ${collected.size} items`)
+      if(m.content.includes('I have read the rules of this server and have agreed to follow them accordingly')){
+        message.reply(`Thank you for your cooperation, Welcome to the server!`);
+        member.roles.add(role);
+        console.log(`Collected ${m.content}`)
+        collector.stop();
+      }
+      else{
+        message.reply("Invalid input: Please check your spelling and try again.");
+      }
 
       });
-    }
-  });
+
+  
+    collector.on('end', collected => {
+
+      const logging = bot.channels.cache.get('697105399836573756')
+      const created = formatDate(member.user.createdAt);
+
+      const embed = new MessageEmbed()
+          .setTitle(`${member.displayName} has successfully verified!`)
+          .setFooter(member.displayName, member.user.displayAvatarURL())
+          .setThumbnail(member.user.displayAvatarURL())
+          .setColor(colors.Green)
+          .addField('User information:', stripIndents`**ID:** ${member.user.id}
+          **Username:** ${member.user.username}
+          **Tag:** ${member.user.tag}
+          **Created:** ${created}`, true)
+      logging.send(embed)
+      console.log(`Collected ${collected.size} items`)
+
+    });
+  }
+});
 
 
   bot.on("guildMemberUpdate", async (oldMember, newMember) => {
@@ -108,8 +111,6 @@ bot.on('message', async message => {
 
 
   bot.queue = [];
-  
-    
     
     bot.on("message", async message => {
         
