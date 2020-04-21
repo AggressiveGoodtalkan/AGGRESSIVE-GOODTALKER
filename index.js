@@ -1,16 +1,17 @@
- const botconfig = require("./botconfig.json");
- const colors = require("./colors.json");
- const Discord = require('discord.js');
- const {prefix,token} = require("./botconfig.json")
- const superagent = require("superagent")
- const axios = require("axios")
- const fs = require("fs");
- const { MessageEmbed } = require('discord.js');
- const { stripIndents } = require("common-tags");
- const { formatDate } = require("./functions.js");
+const botconfig = require("./botconfig.json");
+const colors = require("./colors.json");
+const Discord = require('discord.js');
+const {prefix,token} = require("./botconfig.json")
+const superagent = require("superagent")
+const axios = require("axios")
+const fs = require("fs");
+const { MessageEmbed } = require('discord.js');
+const { stripIndents } = require("common-tags");
+const { formatDate } = require("./functions.js");
 
- const bot = new Discord.Client({disableEveryone: true});
- 
+
+const bot = new Discord.Client({disableEveryone: true});
+
  bot.commands = new Discord.Collection();
  bot.aliases = new Discord.Collection();
  bot.categories = fs.readdirSync("./commands/");
@@ -28,16 +29,19 @@
 
 bot.on('guildMemberAdd', async member => {
 
-    member.user.send(`Welcome ${member}! Please read the rules first! Then follow the instructions that are written there.`);
+  const rules = bot.channels.cache.get('694810450637881348')
+  member.user.send(`Welcome ${member}! Please read the ${rules} first! Then follow the instructions that are written there.`);
+
 })
 
 bot.on('message', async message => {
 
-  if (message.content == `~start`) {
+
+  if (message.content == `${prefix}start`) {
 
     const member = bot.guilds.cache.get('694810450621366282').member(message.author)
     const role = member.guild.roles.cache.find(role => role.name === "Member");
-    
+   
     if(member.roles.cache.has(role.id)){
       message.reply("You are already a member!")
       return;
@@ -46,9 +50,9 @@ bot.on('message', async message => {
     // Create a message collector
     const filter = m => (m.content && m.author.id != bot.user.id);
     const channel = message.channel;
-    const collector = channel.createMessageCollector(filter);    
+    const collector = channel.createMessageCollector(filter, { time: 60000 });    
     message.reply("I'm listening...");
-    console.log("collector started");  
+    console.log("Collector started");  
     
     collector.on('collect', m => {
       
@@ -70,6 +74,12 @@ bot.on('message', async message => {
       const logging = bot.channels.cache.get('697105399836573756')
       const created = formatDate(member.user.createdAt);
 
+      if (!message.content.includes('I have read the rules of this server and have agreed to follow them accordingly')) {
+        message.reply("*Yaaaaaawwnnnn* I'm gonna stop listening to you for now...");
+        console.log("Collector stopped");
+        return;
+      }
+
       const embed = new MessageEmbed()
           .setTitle(`${member.displayName} has successfully verified!`)
           .setFooter(member.displayName, member.user.displayAvatarURL())
@@ -80,6 +90,7 @@ bot.on('message', async message => {
           **Tag:** ${member.user.tag}
           **Created:** ${created}`, true)
       logging.send(embed)
+      console.log("Collector stopped");
       console.log(`Collected ${collected.size} items`)
 
     });
