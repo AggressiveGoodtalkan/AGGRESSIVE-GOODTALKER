@@ -9,8 +9,6 @@ const { MessageEmbed } = require('discord.js');
 const { stripIndents } = require("common-tags");
 const { formatDate } = require("./functions.js");
 
-require('newrelic');
-
 
 const bot = new Discord.Client({disableEveryone: true});
 
