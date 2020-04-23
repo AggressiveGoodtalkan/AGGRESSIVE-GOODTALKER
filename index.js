@@ -59,7 +59,6 @@ bot.on('message', async message => {
       if(m.content.includes('I have read the rules of this server and have agreed to follow them accordingly')){
         message.reply(`Thank you for your cooperation, Welcome to the server!`);
         member.roles.add(role);
-        console.log(`Collected ${m.content}`)
         collector.stop();
       }
       else{
@@ -74,24 +73,37 @@ bot.on('message', async message => {
       const logging = bot.channels.cache.get('697105399836573756')
       const created = formatDate(member.user.createdAt);
 
-      if (!message.content.includes('I have read the rules of this server and have agreed to follow them accordingly')) {
+      if (collected.size == 0 || !collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')) {
         message.reply("*Yaaaaaawwnnnn* I'm gonna stop listening to you for now...");
         console.log("Collector stopped");
         return;
       }
+      else if (collected.size > 0 && !collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')) {
+        message.reply("*Yaaaaaawwnnnn* I'm gonna stop listening to you for now...");
+        console.log("Collector stopped");
+        return;
+      }
+      else{
 
-      const embed = new MessageEmbed()
-          .setTitle(`${member.displayName} has successfully verified!`)
-          .setFooter(member.displayName, member.user.displayAvatarURL())
-          .setThumbnail(member.user.displayAvatarURL())
-          .setColor(colors.Green)
-          .addField('User information:', stripIndents`**ID:** ${member.user.id}
-          **Username:** ${member.user.username}
-          **Tag:** ${member.user.tag}
-          **Created:** ${created}`, true)
-      logging.send(embed)
-      console.log("Collector stopped");
-      console.log(`Collected ${collected.size} items`)
+        const verify = collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly');
+        
+        const embed = new MessageEmbed()
+            .setTitle(`${member.displayName} has successfully verified!`)
+            .setFooter(member.displayName, member.user.displayAvatarURL())
+            .setThumbnail(member.user.displayAvatarURL())
+            .setColor(colors.Green)
+            .addField('User information:', stripIndents`**ID:** ${member.user.id}
+            **Username:** ${member.user.username}
+            **Tag:** ${member.user.tag}
+            **Created:** ${created}
+            **Verification Phrase:** ${verify}`, true)
+        logging.send(embed)
+        console.log("Collector stopped");
+        console.log(`Collected ${collected.size} items:`)
+        console.log(`${collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')}`)
+
+      }
+
 
     });
   }
