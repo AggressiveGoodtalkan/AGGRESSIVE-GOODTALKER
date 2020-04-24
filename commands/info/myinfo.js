@@ -18,7 +18,7 @@ module.exports = {
             .map(r => r).join(", ") || 'none';
         
         const active = member.user.presence.activities.length;
-        const activity = member.user.presence.activities;
+        const activity = member.user.presence.activities[0];
         const status = member.user.presence.status;
   
         // User variables
@@ -52,3 +52,23 @@ module.exports = {
     }
         
 }
+
+// let uEmbed = new Discord.MessageEmbed()
+//     .setColor(colors.Dark_Pastel_Blue)
+//     .setTitle("User Info")
+//     .setThumbnail(message.author.displayAvatarURL())
+//     .setAuthor(`${message.author.username}'s Info`, message.author.displayAvatarURL())
+//     .addField("**Memeber's Name:**", `${message.author.username}`, true)
+//     .addField("**Discriminator:**", `${message.author.discriminator}`,true)
+//     .addField("**ID:**", `${message.author.id}`, true)
+//     .addField("**Status**", `${message.author.presence.status}`, true)
+//     .addField("**Created At:**", `${message.author.createdAt}`, true)
+//     .setTimestamp()
+//     .setFooter(`AGGRESSIVE GOODTALKER | Footer`, bot.user.displayAvatarURL());
+//     message.channel.send(uEmbed);
+// } 
+// module.exports.config = {
+    //     name: "myinfo",
+//     aliases:["me","aboutme", "myinfo"]
+// }
+// 
