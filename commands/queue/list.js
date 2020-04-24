@@ -14,12 +14,21 @@ module.exports = {
             message.delete({timeout: 5000, reason:"It had to be done"});
         }
 
+        const role = message.guild.roles.cache.find(role => role.name === "Performer");
+        const member = bot.guilds.cache.get('672109397312405534').member(bot.queue[0]);
+        const performer = member.roles.cache.has(role.id);
+
         if (bot.queue.length > 0) {
-           
+
             let queueList;
             for (let i = 0; i < bot.queue.length; i++) {
 
-                queueList = queueList + `${i + 1}. ${bot.queue[i]}\n\n`;
+                if (i === 0 && performer) {
+                    queueList = queueList + `${i + 1}. ${bot.queue[i]} (Currently Performing)\n\n`;    
+                }
+                else {
+                    queueList = queueList + `${i + 1}. ${bot.queue[i]}\n\n`;
+                }
             }
 
             let lEmbed = new MessageEmbed()

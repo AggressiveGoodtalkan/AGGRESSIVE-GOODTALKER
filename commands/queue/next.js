@@ -19,7 +19,7 @@ module.exports = {
         }
         else if (member.roles.cache.has(role.id) || member.roles.cache.has(dj.id)){
             
-            const performer = bot.guilds.cache.get('694810450621366282').member(bot.queue[0])
+            const performer = bot.guilds.cache.get('694810450621366282').member(bot.queue[1])
             
             if (bot.queue.length === 1) {
                 message.channel.send(`Thank you for your BEAUTIFUL PAKING PERFORMANCE ${bot.queue[0]}! There are no more people in the queue!`)
