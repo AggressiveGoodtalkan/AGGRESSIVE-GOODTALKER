@@ -19,7 +19,7 @@ module.exports = {
             let queueList;
             for (let i = 0; i < bot.queue.length; i++) {
 
-                queueList = queueList + `${i + 1}. ${bot.queue[i].username}\n\n`;
+                queueList = queueList + `${i + 1}. ${bot.queue[i]}\n\n`;
             }
 
             let lEmbed = new MessageEmbed()

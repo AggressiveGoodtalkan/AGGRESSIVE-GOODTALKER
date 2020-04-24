@@ -21,16 +21,16 @@ module.exports = {
             bot.queue.shift();
             const performer = bot.guilds.cache.get('694810450621366282').member(bot.queue[0])
             
-            if (bot.queue.length === 0) {
-                message.channel.send(`Thank you for your BEAUTIFUL PAKING PERFORMANCE <@${message.author.id}>! There are no more people in the queue!`)
-                .then(member.roles.remove(role)).then(m => m.delete({timeout: 5000, reason:"It had to be done"}))
-                message.delete({timeout: 5000, reason:"It had to be done"})
+            if (bot.queue.length === 1) {
+                message.channel.send(`Thank you for your BEAUTIFUL PAKING PERFORMANCE ${bot.queue[0]}! There are no more people in the queue!`)
+                .then(member.roles.remove(role))
+                bot.queue.shift();
                 
             }
-            else{
-                message.channel.send(`Thank you for your BEAUTIFUL PAKING PERFORMANCE <@${message.author.id}>! Next up is ${bot.queue[0]}`)
-                .then(member.roles.remove(role)).then(performer.roles.add(role)).then(m => m.delete({timeout: 5000, reason:"It had to be done"}))
-                message.delete({timeout: 5000, reason:"It had to be done"})       
+            else if (bot.queue.length > 1) {
+                message.channel.send(`Thank you for your BEAUTIFUL PAKING PERFORMANCE ${bot.queue[0]}! Next up is ${bot.queue[1]}`)
+                .then(member.roles.remove(role)).then(performer.roles.add(role))         
+                bot.queue.shift();
                 
             }
 
