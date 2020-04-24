@@ -20,6 +20,7 @@ module.exports = {
         const active = member.user.presence.activities.length;
         const activity = member.user.presence.activities[0];
         const status = member.user.presence.status;
+        const custom = member.user.presence.activities[0].type === "CUSTOM_STATUS";
   
         // User variables
         const created = formatDate(member.user.createdAt);
@@ -42,9 +43,13 @@ module.exports = {
             .addField('Current Status', stripIndents`**Status:** ${status[0].toUpperCase() + status.slice(1)}`)
             .setTimestamp()
 
-        if(active){
+        if(active && !custom){
             const presence = member.user.presence.activities[0].type
             embed.addField(`Currently ${presence[0] + presence.toLowerCase().slice(1)}`, stripIndents`**${presence[0] + presence.toLowerCase().slice(1)}**: ${activity}`);
+        }
+        else if(member.user.presence.activities[0].type === 'CUSTOM_STATUS'){
+            const presence = member.user.presence.activities[0].type
+            embed.addField("Currently has a ",`**${activity}**`,true);
         }
 
         
