@@ -1,5 +1,4 @@
 const axios = require("axios")
-const botconfig = require("../../botconfig.json");
 const colors = require("../../colors.json");
 const Discord = require('discord.js');
 
@@ -21,7 +20,7 @@ module.exports = {
         .setAuthor(`HAVE SOME MEMES YOU BEAUTIFUL SLAP SOILS!!!`, message.guild.iconURL)
         .setImage(data.data.image)
         .setTimestamp()
-        .setFooter(`AGGRESSIVE GOODTALKER | Footer`, bot.user.displayAvatarURL());
+        .setFooter(`AGGRESSIVE GOODTALKER | By MahoMuri`, bot.user.displayAvatarURL());
     
     message.channel.send(mEmbed);
     nsg.delete();

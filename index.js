@@ -1,7 +1,7 @@
-const botconfig = require("./botconfig.json");
 const colors = require("./colors.json");
 const Discord = require('discord.js');
-const {prefix,token} = require("./botconfig.json")
+const { config } = require("dotenv");
+const { prefix } = require("./botconfig.json")
 const superagent = require("superagent")
 const axios = require("axios")
 const fs = require("fs");
@@ -10,7 +10,13 @@ const { stripIndents } = require("common-tags");
 const { formatDate } = require("./functions.js");
 
 
-const bot = new Discord.Client({disableEveryone: true});
+const bot = new Discord.Client({
+  disableEveryone: true
+});
+
+config({
+  path: __dirname + "/.env"
+});
 
  bot.commands = new Discord.Collection();
  bot.aliases = new Discord.Collection();
@@ -70,7 +76,7 @@ bot.on('message', async message => {
   
     collector.on('end', collected => {
 
-      const logging = bot.channels.cache.get('697105399836573756')
+      const logging = bot.channels.cache.get('697105399836573756');
       const created = formatDate(member.user.createdAt);
 
       if (collected.size == 0 || !collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')) {
@@ -86,6 +92,7 @@ bot.on('message', async message => {
       else{
 
         const verify = collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly');
+        const general = bot.channels.cache.get('694810451065962505');
         
         const embed = new MessageEmbed()
             .setTitle(`${member.displayName} has successfully verified!`)
@@ -98,6 +105,7 @@ bot.on('message', async message => {
             **Created:** ${created}
             **Verification Phrase:** ${verify}`, true)
         logging.send(embed)
+        general.send(`Welcome to da good paking server <@${member.user.id}>! Have fun!`).then(m =>m.delete({timeout: 60000, reason :"It had to be done."}));
         console.log("Collector stopped");
         console.log(`Collected ${collected.size} items:`)
         console.log(`${collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')}`)
@@ -135,30 +143,31 @@ bot.on('message', async message => {
 
   bot.queue = [];
     
-    bot.on("message", async message => {
+bot.on("message", async message => {
         
-    if (message.author.bot) return;
-    if (!message.guild) return;
-    if (!message.content.startsWith(prefix)) return;
+  if (message.author.bot) return;
+  if (!message.guild) return;
+  if (!message.content.startsWith(prefix)) return;
 
-    // If message.member is uncached, cache it.
-    if (!message.member) message.member = await message.guild.fetchMember(message);
+  // If message.member is uncached, cache it.
+  if (!message.member) message.member = await message.guild.fetchMember(message);
 
-    const args = message.content.slice(prefix.length).trim().split(/ +/g);
-    const cmd = args.shift().toLowerCase();
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
+  const cmd = args.shift().toLowerCase();
     
-    if (cmd.length === 0) return;
+  if (cmd.length === 0) return;
     
-    // Get the command
-    let command = bot.commands.get(cmd);
+  // Get the command
+  let command = bot.commands.get(cmd);
     
-    // If none is found, try to find it by alias
-    if (!command) command = bot.commands.get(bot.aliases.get(cmd));
+  // If none is found, try to find it by alias
+  if (!command) command = bot.commands.get(bot.aliases.get(cmd));
 
-    // If a command is finally found, run the command
-    if (command) 
-        command.run(bot, message, args);
+  // If a command is finally found, run the command
+  if (command) 
+    command.run(bot, message, args);
+
 });
 
 
- bot.login(token);  
+ bot.login(process.env.TOKEN);  

@@ -28,9 +28,9 @@ module.exports = {
     **Admins:** ${admins} 
     **Role Count:** ${message.guild.roles.cache.size}
     **Created At:** ${message.guild.createdAt}`, true)
-  //.setImage('https://i.imgur.com/8jpHYlr.jpg')
+    // .setImage('https://i.imgur.com/8jpHYlr.jpg')
     .setTimestamp()
-    .setFooter(`AGGRESSIVE GOODTALKER | Footer`, bot.user.displayAvatarURL());
+    .setFooter(`AGGRESSIVE GOODTALKER | By MahoMuri`, bot.user.displayAvatarURL());
     message.channel.send(sEmbed);
 
   }

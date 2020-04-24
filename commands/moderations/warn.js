@@ -25,7 +25,7 @@ module.exports = {
         if (!args[1])
             return message.channel.send("Please provide a reason for the report").then(m => m.delete({timeout: 5000, reason:"It had to be done."}));
         else    
-            return message.channel.send(`${rMember} You were warned by ${message.member} to **${args.slice(1).join(" ")}**. Please consider reading ${channel} again and try to act accordingly. Further warnings would result in disciplinary actions.`)
+            return message.channel.send(`${rMember} You were warned by ${message.member} for **${args.slice(1).join(" ")}**. Please consider reading ${channel} again and try to act accordingly. Further warnings would result in disciplinary actions.`)
             .then(m => m.delete({timeout: 15000, reason: "It had to be done"}));
 
 

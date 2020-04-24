@@ -21,7 +21,7 @@ module.exports = {
             .setAuthor(`HAVE SOME CATS YOU BEAUTIFUL SLAP SOILS!!!`, message.guild.iconURL)
             .setImage(body.file)
             .setTimestamp()
-            .setFooter(`AGGRESSIVE GOODTALKER | Footer`, bot.user.displayAvatarURL());
+            .setFooter(`AGGRESSIVE GOODTALKER | By MahoMuri`, bot.user.displayAvatarURL());
     
          message.channel.send(cEmbed);
         nsg.delete();

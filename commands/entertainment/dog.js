@@ -22,7 +22,7 @@ module.exports = {
         .setAuthor(`HAVE SOME DOGS YOU BEAUTIFUL SLAP SOILS!!!`, message.guild.iconURL)
         .setImage(body.message)
         .setTimestamp()
-        .setFooter(`AGGRESSIVE GOODTALKER | Footer`, bot.user.displayAvatarURL());
+        .setFooter(`AGGRESSIVE GOODTALKER | By MahoMuri`, bot.user.displayAvatarURL());
     
     message.channel.send(dEmbed);
     nsg.delete();
