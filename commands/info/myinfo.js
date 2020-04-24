@@ -20,8 +20,7 @@ module.exports = {
         const active = member.user.presence.activities.length;
         const activity = member.user.presence.activities[0];
         const status = member.user.presence.status;
-        const custom = member.user.presence.activities[0].type === "CUSTOM_STATUS";
-  
+          
         // User variables
         const created = formatDate(member.user.createdAt);
 
