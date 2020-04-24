@@ -18,7 +18,7 @@ module.exports = {
             return;
         }
         else if (member.roles.cache.has(role.id) || member.roles.cache.has(dj.id)){
-            bot.queue.shift();
+            
             const performer = bot.guilds.cache.get('694810450621366282').member(bot.queue[0])
             
             if (bot.queue.length === 1) {
