@@ -1,3 +1,6 @@
+const { MessageEmbed } = require('discord.js')
+const colors = require('../../colors.json')
+
 module.exports = {
     name: "list",
     aliases: ["listahan"],
@@ -13,14 +16,23 @@ module.exports = {
 
         if (bot.queue.length > 0) {
            
-           message.channel.send("The GOOD PAKING List:\n")
+            let queueList;
+            for (let i = 0; i < bot.queue.length; i++) {
 
-           for (let index = 0; index < bot.queue.length; index++) {
-               message.channel.send(`${index + 1}. ${bot.queue[index]}`);
-               
-           }
-           message.delete({timeout: 5000, reason:"It had to be done"})
-        
+                queueList = queueList + `${i + 1}. ${bot.queue[i].username}\n\n`;
+            }
+
+            let lEmbed = new MessageEmbed()
+                .setColor(colors.Green_Sheen)
+                .setTitle("**THE GOOD PAKING LIST**")
+                .setDescription(queueList.slice(9))
+                .setTimestamp()
+                .setFooter("THE GOOD PAKING LIST | By MahoMuri")
+
+            message.channel.send(lEmbed);
+
+            message.delete({timeout: 5000, reason:"It had to be done"})
+                  
         }
        
     }
