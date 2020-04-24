@@ -43,15 +43,16 @@ module.exports = {
             .addField('Current Status', stripIndents`**Status:** ${status[0].toUpperCase() + status.slice(1)}`)
             .setTimestamp()
 
-        if(active && !custom){
-            const presence = member.user.presence.activities[0].type
-            embed.addField(`Currently ${presence[0] + presence.toLowerCase().slice(1)}`, stripIndents`**${presence[0] + presence.toLowerCase().slice(1)}**: ${activity}`);
-        }
-        else if(member.user.presence.activities[0].type === 'CUSTOM_STATUS'){
-            const presence = member.user.presence.activities[0].type
-            embed.addField("Currently has a ",`**${activity}**`,true);
-        }
+        if(active) {
+            if(activity.type === "CUSTOM_STATUS"){
+                embed.addField("Currently has a ",`**${activity}**`,true);
+            }
+            else{
+                const presence = member.user.presence.activities[0].type
+                embed.addField(`Currently ${presence[0] + presence.toLowerCase().slice(1)}`, stripIndents`**${presence[0] + presence.toLowerCase().slice(1)}**: ${activity}`);
 
+            }
+        }
         
         message.channel.send(embed);
     }
