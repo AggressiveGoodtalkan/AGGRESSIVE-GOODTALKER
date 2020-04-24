@@ -15,7 +15,7 @@ module.exports = {
         }
 
         const role = message.guild.roles.cache.find(role => role.name === "Performer");
-        const member = bot.guilds.cache.get('672109397312405534').member(bot.queue[0]);
+        const member = bot.guilds.cache.get('694810450621366282').member(bot.queue[0]);
         const performer = member.roles.cache.has(role.id);
 
         if (bot.queue.length > 0) {
