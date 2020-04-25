@@ -14,6 +14,7 @@ const bot = new Discord.Client({
   disableEveryone: true
 });
 
+
 config({
   path: __dirname + "/.env"
 });
