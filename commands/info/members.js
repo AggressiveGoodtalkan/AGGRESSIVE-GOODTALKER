@@ -1,4 +1,3 @@
-const botconfig = require("../../botconfig.json");
 const colors = require("../../colors.json");
 const { stripIndents } = require("common-tags");
 const Discord = require('discord.js');
