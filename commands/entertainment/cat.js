@@ -1,5 +1,4 @@
 const superagent = require("superagent")
-const botconfig = require("../../botconfig.json");
 const colors = require("../../colors.json");
 const Discord = require('discord.js');
 

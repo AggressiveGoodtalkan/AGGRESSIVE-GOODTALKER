@@ -1,9 +1,7 @@
 const colors = require("./colors.json");
 const Discord = require('discord.js');
 const { config } = require("dotenv");
-const { prefix } = require("./botconfig.json")
-const superagent = require("superagent")
-const axios = require("axios")
+const { prefix } = require("./botprefix.json")
 const fs = require("fs");
 const { MessageEmbed } = require('discord.js');
 const { stripIndents } = require("common-tags");
