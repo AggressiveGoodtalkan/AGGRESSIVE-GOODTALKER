@@ -8,7 +8,7 @@ module.exports = {
     run: async(bot, message, args)=>{
 
         const role = message.guild.roles.cache.find(role => role.name === "Performer")
-        const dj = message.guild.roles.cache.find(role => role.name === "DJ")
+        const dj = message.guild.roles.cache.find(role => role.name === "Queue Master")
         const member = getMember(message, args.join(" "));
         
         if (bot.queue.length === 0 && message.author !== bot.queue[0]) {
@@ -36,7 +36,7 @@ module.exports = {
 
         }
         else{
-            message.reply("You are currently not performing, please wait for the performer to finish or contact someone with the DJ role to fix the queue.")
+            message.reply(`You are currently not performing, please wait for the performer to finish or contact someone with the ${dj.name} role to fix the queue.`)
             .then(m => m.delete({timeout: 5000, reason:"It had to be done"}))
             message.delete({timeout: 5000, reason:"It had to be done"})
         }   

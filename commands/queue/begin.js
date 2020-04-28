@@ -8,7 +8,7 @@ module.exports = {
     run: async(bot, message, args)=>{
 
         const role = message.guild.roles.cache.find(role => role.name === "Performer")
-        const dj = message.guild.roles.cache.find(role => role.name === "DJ")
+        const dj = message.guild.roles.cache.find(role => role.name === "Queue Master")
         const member = getMember(message, args.join(" "));
         const performer = bot.guilds.cache.get('694810450621366282').member(bot.queue[0])
 
