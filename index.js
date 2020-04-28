@@ -61,7 +61,7 @@ bot.on('message', async message => {
     
     collector.on('collect', m => {
       
-      if(m.content.includes('I have read the rules of this server and have agreed to follow them accordingly')){
+      if(m.content === 'I have read the rules of this server and have agreed to follow them accordingly'){
         message.reply(`Thank you for your cooperation, Welcome to the server!`);
         member.roles.add(role);
         collector.stop();
