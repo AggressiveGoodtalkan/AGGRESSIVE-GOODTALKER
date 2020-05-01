@@ -120,10 +120,12 @@ bot.on('message', async message => {
   bot.on("guildMemberUpdate", async (oldMember, newMember) => {
 
     const channel = bot.channels.cache.get('699325313930362982')
-    const role = newMember.guild.roles.cache.find(role => role.name === "Mods");
+    const Achannel = bot.channels.cache.get('705733221437931540')
+    const mod = newMember.guild.roles.cache.find(role => role.name === "Mods");
+    const modmin = newMember.guild.roles.cache.find(role => role.name === "Modmin");
 
-   if(!oldMember.roles.cache.has(role.id) && newMember.roles.cache.has(role.id)){
-     channel.send(`Congrats <@${newMember.user.id}> on getting the ${role} role!`)
+   if(!oldMember.roles.cache.has(mod.id) && newMember.roles.cache.has(mod.id)){
+     channel.send(`Congrats <@${newMember.user.id}> on getting the ${mod} role!`)
      channel.send({
        files: [{
         attachment: './images/tenor.gif',
@@ -132,6 +134,16 @@ bot.on('message', async message => {
      })
      .catch(err => console.error);
    }
+   else if(!oldMember.roles.cache.has(modmin.id) && newMember.roles.cache.has(modmin.id)){
+    Achannel.send(`Congrats <@${newMember.user.id}> on getting the ${modmin} role!`)
+    Achannel.send({
+      files: [{
+       attachment: './images/crown.gif',
+       name: 'crown.gif'
+     }] 
+    })
+    .catch(err => console.error);
+  }
    else
    {
      return;
