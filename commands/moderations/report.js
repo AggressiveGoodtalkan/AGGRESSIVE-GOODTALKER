@@ -38,10 +38,12 @@ module.exports = {
             .setFooter(message.guild.name, message.guild.iconURL())
             .setAuthor("Reported member", rMember.user.displayAvatarURL())
             .setThumbnail(rMember.user.displayAvatarURL())
-            .setDescription(stripIndents`**> Member:** >> ${rMember} (${rMember.user.id})
-            **> Reported by:** >> ${message.member}
-            **> Reported in:** >> ${message.channel}
-            **> Reason:** >> ${args.slice(1).join(" ")}`);
+            .setDescription(stripIndents`**> Member:** ${rMember} (${rMember.user.id})
+            **> Reported by:** ${message.member}
+            **> Reported in:** ${message.channel}
+            **> Reason:** ${args.slice(1).join(" ")}`);
+        
+        message.reply("Thank you for reporting! The Modmins or Mods will now review your report. Good Day!").then(m => m.delete({timeout: 5000, reason :"It had to be done."}))
 
         return channel.send(embed);
     }

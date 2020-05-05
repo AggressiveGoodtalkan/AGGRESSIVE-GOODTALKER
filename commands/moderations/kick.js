@@ -61,9 +61,9 @@ module.exports = {
             .setThumbnail(toKick.user.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
-            .setDescription(stripIndents`**> Kicked member:** >> ${toKick} (${toKick.id})
-            **> Kicked by:** >> ${message.member} (${message.member.id})
-            **> Reason:** >> ${args.slice(1).join(" ")}`);
+            .setDescription(stripIndents`**> Kicked member:** ${toKick} (${toKick.id})
+            **> Kicked by:** ${message.member} (${message.member.id})
+            **> Reason:** ${args.slice(1).join(" ")}`);
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")
@@ -78,6 +78,7 @@ module.exports = {
             // The verification stuffs
             if (emoji === "✅") {
                 msg.delete();
+                message.channel.send(`Successfuly Kicked ${args[0]}!`).then(m => m.delete({timeout: 15000, reason :"It had to be done."}));
 
                 toKick.kick(args.slice(1).join(" "))
                     .catch(err => {

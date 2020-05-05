@@ -61,9 +61,9 @@ module.exports = {
             .setThumbnail(toBan.user.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
-            .setDescription(stripIndents`**> Baned member:** >> ${toBan} (${toBan.id})
-            **> Baned by:** >> ${message.member} (${message.member.id})
-            **> Reason:** >> ${args.slice(1).join(" ")}`);
+            .setDescription(stripIndents`**> Baned member:** ${toBan} (${toBan.id})
+            **> Baned by:** ${message.member} (${message.member.id})
+            **> Reason:** ${args.slice(1).join(" ")}`);
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")
@@ -78,6 +78,7 @@ module.exports = {
             // Verification stuffs
             if (emoji === "✅") {
                 msg.delete();
+                message.channel.send(`Successfuly Banned ${args[0]}!`).then(m => m.delete({timeout: 15000, reason :"It had to be done."}));
 
                 toBan.ban(args.slice(1).join(" "))
                     .catch(err => {
