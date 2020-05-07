@@ -16,11 +16,11 @@ module.exports = {
         const roles = member.roles.cache
             .filter(r => r.id !== message.guild.id)
             .map(r => r).join(", ") || 'none';
-        
+
         const active = member.user.presence.activities.length;
         const activity = member.user.presence.activities[0];
         const status = member.user.presence.status;
-          
+
         // User variables
         const created = formatDate(member.user.createdAt);
 
@@ -38,22 +38,22 @@ module.exports = {
             **Username**: ${member.user.username}
             **Tag**: ${member.user.tag}
             **Created at**: ${created}`, true)
-            
+
             .addField('Current Status', stripIndents`**Status:** ${status[0].toUpperCase() + status.slice(1)}`)
-            .setTimestamp()
+            .setTimestamp();
 
         if(active) {
             if(activity.type === "CUSTOM_STATUS"){
                 embed.addField("Currently has a ",`**${activity}**`,true);
             }
             else{
-                const presence = member.user.presence.activities[0].type
+                const presence = member.user.presence.activities[0].type;
                 embed.addField(`Currently ${presence[0] + presence.toLowerCase().slice(1)}`, stripIndents`**${presence[0] + presence.toLowerCase().slice(1)}**: ${activity}`);
 
             }
         }
-        
+
         message.channel.send(embed);
     }
-        
-}
+
+};

@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const { getMember } = require("../../functions.js");
-const colors = require("../../colors.json")
+const colors = require("../../colors.json");
 
 module.exports = {
     name: "love",
@@ -36,4 +36,4 @@ module.exports = {
 
         message.channel.send(embed);
     }
-}
+};

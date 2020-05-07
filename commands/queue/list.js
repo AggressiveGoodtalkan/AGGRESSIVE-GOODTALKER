@@ -1,5 +1,5 @@
-const { MessageEmbed } = require('discord.js')
-const colors = require('../../colors.json')
+const { MessageEmbed } = require('discord.js');
+const colors = require('../../colors.json');
 
 module.exports = {
     name: "list",
@@ -7,10 +7,10 @@ module.exports = {
     category:"queue",
     usage: ["<prefix>command here"],
     run: async(bot, message, args)=>{
-       
+
         if (bot.queue.length === 0) {
             message.reply("The queue is paking empty! Go and add more people!")
-            .then(m => m.delete({timeout: 5000, reason:"It had to be done"}))
+            .then(m => m.delete({timeout: 5000, reason:"It had to be done"}));
             message.delete({timeout: 5000, reason:"It had to be done"});
         }
 
@@ -24,7 +24,7 @@ module.exports = {
             for (let i = 0; i < bot.queue.length; i++) {
 
                 if (i === 0 && performer) {
-                    queueList = queueList + `${i + 1}. ${bot.queue[i]} (Currently Performing)\n\n`;    
+                    queueList = queueList + `${i + 1}. ${bot.queue[i]} (Currently Performing)\n\n`;
                 }
                 else {
                     queueList = queueList + `${i + 1}. ${bot.queue[i]}\n\n`;
@@ -36,13 +36,13 @@ module.exports = {
                 .setTitle("**THE GOOD PAKING LIST**")
                 .setDescription(queueList.slice(9))
                 .setTimestamp()
-                .setFooter("THE GOOD PAKING LIST | By MahoMuri")
+                .setFooter("THE GOOD PAKING LIST | By MahoMuri");
 
             message.channel.send(lEmbed);
 
-            message.delete({timeout: 5000, reason:"It had to be done"})
-                  
+            message.delete({timeout: 5000, reason:"It had to be done"});
+
         }
-       
+
     }
-}
+};

@@ -8,7 +8,7 @@ module.exports = {
         if (message.deletable) {
             message.delete();
         }
-    
+
         // Member doesn't have permissions
         if (!message.member.hasPermission("MANAGE_MESSAGES")) {
             return message.reply("You can't delete messages....").then(m => m.delete({timeout: 5000 , reason: "It had to be done"}));
@@ -36,4 +36,4 @@ module.exports = {
             .then(deleted => message.channel.send(`I deleted \`${deleted.size}\` messages.`))
             .catch(err => message.reply(`Something went wrong... ${err}`)).then(m => m.delete({timeout: 5000 , reason: "It had to be done"}));
     }
-}
+};

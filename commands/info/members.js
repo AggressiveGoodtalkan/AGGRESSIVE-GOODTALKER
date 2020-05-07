@@ -16,14 +16,12 @@ module.exports = {
     .setTitle("Member Count")
     .setThumbnail(bot.user.displayAvatarURL())
     .setAuthor(`${message.guild.name}`, bot.user.displayAvatarURL())
-    .addField('Server information:', stripIndents
-    `**Member Count:** ${message.guild.memberCount}`, true)
-
-  //.setImage('https://i.imgur.com/8jpHYlr.jpg')
+    .addField('Server information:', stripIndents    `**Member Count:** ${message.guild.memberCount}`, true)
     .setTimestamp()
     .setFooter(`AGGRESSIVE GOODTALKER | Footer`, bot.user.displayAvatarURL());
     message.channel.send(sEmbed);
+    //.setImage('https://i.imgur.com/8jpHYlr.jpg')
 
   }
 
-}
+};

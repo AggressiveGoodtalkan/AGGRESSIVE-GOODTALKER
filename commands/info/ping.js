@@ -9,4 +9,4 @@ module.exports = {
         Latency is ${Math.floor(msg.createdAt - message.createdAt)}ms
         API Latency is ${Math.round(bot.ws.ping)}ms`);
     }
-}
+};

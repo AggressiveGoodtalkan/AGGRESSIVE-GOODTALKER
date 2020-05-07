@@ -23,7 +23,7 @@ module.exports = {
     .addField('Server information:', stripIndents`**Display name:** ${message.guild.name}
     **Server Owner:** ${message.guild.owner}
     **Member Count:** ${message.guild.memberCount}
-    **Admins:** ${admins} 
+    **Admins:** ${admins}
     **Role Count:** ${message.guild.roles.cache.size}
     **Created At:** ${message.guild.createdAt}`, true)
     // .setImage('https://i.imgur.com/8jpHYlr.jpg')
@@ -33,5 +33,5 @@ module.exports = {
 
   }
 
-}
+};
 
