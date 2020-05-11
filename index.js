@@ -95,6 +95,7 @@ bot.on('message', async message => {
 
         const embed = new MessageEmbed()
             .setTitle(`${member.displayName} has successfully verified!`)
+            .setTimestamp()
             .setFooter(member.displayName, member.user.displayAvatarURL())
             .setThumbnail(member.user.displayAvatarURL())
             .setColor(colors.Green)
