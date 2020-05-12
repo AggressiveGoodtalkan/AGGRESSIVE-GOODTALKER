@@ -1,11 +1,12 @@
 const colors = require("./colors.json");
 const Discord = require('discord.js');
 const { config } = require("dotenv");
-const botconfig = require("./botprefix.json");
+const { default_prefix } = require("./botprefix.json");
 const fs = require("fs");
 const { MessageEmbed } = require('discord.js');
 const { stripIndents } = require("common-tags");
 const { formatDate } = require("./functions.js");
+const { DMChannel } = require('discord.js');
 
 
 const bot = new Discord.Client({
@@ -157,12 +158,22 @@ bot.on('message', async message => {
 
 bot.on("message", async message => {
 
+    if (message.channel instanceof DMChannel) {
+        return;
+    }
+
     let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
 
     if (!prefixes[message.guild.id]) {
         prefixes[message.guild.id] = {
-            prefixes: botconfig.prefix
+            prefixes: default_prefix
         };
+
+        fs.writeFileSync("./prefixes.json", JSON.stringify(prefixes), (err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
     }
 
     let prefix = prefixes[message.guild.id].prefixes;
@@ -202,7 +213,7 @@ bot.on("message", async message => {
 
   // If a command is finally found, run the command
   if (command){
-    command.run(bot, message, args);
+    command.run(bot, message, args, prefix);
 
   }
 
