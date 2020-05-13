@@ -36,7 +36,7 @@ config({
 bot.on('guildMemberAdd', async member => {
 
   const rules = bot.channels.cache.get('694810450637881348');
-  member.user.send(`Welcome ${member}! Please read the ${rules} first! Then follow the instructions that are written there.`);
+  member.user.send(`Welcome to the AGGRESSIVE GOODTALKAN Server, ${member}! Please read the ${rules} first! Then follow the instructions that are written there.`);
 
 });
 
