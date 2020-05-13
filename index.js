@@ -3,10 +3,10 @@ const Discord = require('discord.js');
 const { config } = require("dotenv");
 const { default_prefix } = require("./botprefix.json");
 const fs = require("fs");
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, DMChannel } = require('discord.js');
 const { stripIndents } = require("common-tags");
 const { formatDate } = require("./functions.js");
-const { DMChannel } = require('discord.js');
+
 
 
 const bot = new Discord.Client({
