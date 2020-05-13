@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const { config } = require("dotenv");
 const { default_prefix } = require("./botprefix.json");
 const fs = require("fs");
-const { MessageEmbed, DMChannel } = require('discord.js');
+const { MessageEmbed, DMChannel, TextChannel } = require('discord.js');
 const { stripIndents } = require("common-tags");
 const { formatDate } = require("./functions.js");
 
@@ -44,6 +44,12 @@ bot.on('message', async message => {
 
 
   if (message.content === `-start`) {
+
+    if (message.channel instanceof TextChannel) {
+      message.reply("This command is not supported here, it only works on DM channels.").then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
+      message.delete({timeout: 6000, reason:"It had to be done"});
+      return;
+    }
 
     const member = bot.guilds.cache.get('694810450621366282').member(message.author);
     const role = member.guild.roles.cache.find(role => role.name === "Member");
