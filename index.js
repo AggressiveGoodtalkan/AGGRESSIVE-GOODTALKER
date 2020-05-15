@@ -9,8 +9,10 @@ const { formatDate } = require("./functions.js");
 
 
 
+
 const bot = new Discord.Client({
-  disableEveryone: true
+  disableEveryone: true,
+  partials: ['MESSAGE', 'CHANNEL' , 'REACTION']
 });
 
 
@@ -36,29 +38,85 @@ config({
 bot.on('guildMemberAdd', async member => {
 
   const rules = bot.channels.cache.get('694810450637881348');
-  member.user.send(`Welcome to the AGGRESSIVE GOODTALKAN Server, ${member}! Please read the ${rules} first! Then follow the instructions that are written there.`);
+  const embed = new MessageEmbed()
+    .setTitle("Welcome to the AGGRESSIVE GOODTALKAN Server!")
+    .setColor(colors.Green_Sheen)
+    .addField("**How to enter the server:**", stripIndents `**1.** Please make sure to read the ${rules} first!
+    **2.** Then, react "✅" to the ${rules} message then I will tell you how to enter the server!`, true);
+
+  member.user.send(embed);
+
+});
+
+
+bot.on('messageReactionAdd', async (reaction, user) => {
+
+    const DaRules = await bot.channels.cache.get('694810450637881348').messages.fetch('702899668903788615');
+    const logs = await bot.channels.cache.get('710795359844171797');
+
+    if (reaction.partial) {
+        try {
+            await reaction.fetch();
+        } catch (err) {
+            console.log('Something went wrong while fetching the message.', err);
+        }
+    }
+    const member = bot.guilds.cache.get('694810450621366282').member(user);
+    const role = member.guild.roles.cache.find(role => role.name === "Member");
+
+
+    if (reaction.emoji.name === '✅' && reaction.message.content === DaRules.content) {
+
+        if (member.roles.cache.has(role.id)) {
+            user.send(` You are already a member!`);
+            return;
+        }
+        else {
+
+            const embed = new MessageEmbed()
+                .setTitle("How to enter the server:")
+                .setColor(colors.Green_Sheen)
+                .addField("**Step 1:**", stripIndents `Enter \`-start\` to start, the dash is required.
+                **(Make it quick because you would only have 1 minute to complete this.)**`,true)
+                .addField("**Step 2:**", stripIndents `Please type:
+                \`I have read the rules of this server and have agreed to follow them accordingly\`
+                **(Please write it as plain text.)**`,true)
+                .addField("**Step 3:**", stripIndents `If I stop listening to you, just repeat **Steps 1 & 2**`, true);
+
+           user.send(embed);
+        }
+
+        logs.send(`${member.displayName} has reacted to the message!`);
+    }
+
+
+    //console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction!: ${reaction.emoji.name}`);
+
+
 
 });
 
 
 bot.on('message', async message => {
 
-
-  if (message.content === `-start`) {
-
-    if (message.channel instanceof TextChannel) {
-      message.reply("This command is not supported here, it only works on DM channels.").then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
-      message.delete({timeout: 6000, reason:"It had to be done"});
-      return;
-    }
-
     const member = bot.guilds.cache.get('694810450621366282').member(message.author);
     const role = member.guild.roles.cache.find(role => role.name === "Member");
+    const logs = await bot.channels.cache.get('710795359844171797');
 
-    if(member.roles.cache.has(role.id)){
-      message.reply("You are already a member!");
-      return;
-    }
+    if (message.content === `-start`) {
+
+
+        if (message.channel instanceof TextChannel) {
+            message.reply("This command is not supported here, it only works on DM channels.").then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
+            message.delete({timeout: 6000, reason:"It had to be done"});
+            return;
+        }
+
+
+        if(member.roles.cache.has(role.id)){
+            message.reply("You are already a member!");
+            return;
+        }
 
     // Create a message collector
     const filter = m => m.content && m.author.id !== bot.user.id;
@@ -66,6 +124,8 @@ bot.on('message', async message => {
     const collector = channel.createMessageCollector(filter, { time: 60000 });
     message.reply("I'm listening...");
     console.log("Collector started");
+    logs.send("Collector started");
+
 
     collector.on('collect', m => {
 
@@ -89,11 +149,13 @@ bot.on('message', async message => {
       if (collected.size === 0 || !collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')) {
         message.reply("*Yaaaaaawwnnnn* I'm gonna stop listening to you for now...");
         console.log("Collector stopped");
+        logs.send("Collector stopped");
         return;
       }
       else if (collected.size > 0 && !collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')) {
         message.reply("*Yaaaaaawwnnnn* I'm gonna stop listening to you for now...");
         console.log("Collector stopped");
+        logs.send("Collector stopped");
         return;
       }
       else{
@@ -117,6 +179,9 @@ bot.on('message', async message => {
         console.log("Collector stopped");
         console.log(`Collected ${collected.size} items:`);
         console.log(`${collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')}`);
+        logs.send("Collector stopped");
+        logs.send(`Collected ${collected.size} items:`);
+        logs.send(`${collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')}`);
 
       }
 
