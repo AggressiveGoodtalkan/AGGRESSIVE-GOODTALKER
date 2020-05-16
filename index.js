@@ -29,8 +29,13 @@ config({
 });
 
  bot.on("ready", async () =>{
-     console.log(`${bot.user.username} is online on ${bot.guilds.cache.size} server/s!`);
-     bot.user.setActivity("AGGRESSIVELY", {type: "STREAMING"});
+
+  const logs = await bot.channels.cache.get('710795359844171797');
+
+  console.log(`✅ ${bot.user.username} is online on ${bot.guilds.cache.size} server/s!`);
+  logs.send(`✅ **${bot.user.username}** is online on ${bot.guilds.cache.size} server/s!`);
+  bot.user.setActivity("AGGRESSIVELY", {type: "STREAMING"});
+
 });
 
 
@@ -53,6 +58,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 
     const DaRules = await bot.channels.cache.get('694810450637881348').messages.fetch('702899668903788615');
     const logs = await bot.channels.cache.get('710795359844171797');
+    const rules = await bot.channels.cache.get('694810450637881348');
 
     if (reaction.partial) {
         try {
@@ -86,14 +92,16 @@ bot.on('messageReactionAdd', async (reaction, user) => {
            user.send(embed);
         }
 
-        logs.send(`${member.displayName} has reacted to the message!`);
+        const lEmbed = new MessageEmbed()
+            .setTitle("New Reaction!")
+            .setColor(colors.Green)
+            .setDescription(`**${member.displayName}** has reacted ${reaction.emoji.name} to the ${rules} message!`);
+
+        logs.send(lEmbed);
     }
 
 
     //console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction!: ${reaction.emoji.name}`);
-
-
-
 });
 
 
@@ -138,7 +146,7 @@ bot.on('message', async message => {
         message.reply("Invalid input: Please check your spelling and try again.");
       }
 
-      });
+    });
 
 
     collector.on('end', collected => {
@@ -175,16 +183,23 @@ bot.on('message', async message => {
             **Created:** ${created}
             **Verification Phrase:** ${verify}`, true);
         logging.send(embed);
-        general.send(`Welcome to da good paking server <@${member.user.id}>! Have fun!`).then(m =>m.delete({timeout: 60000, reason :"It had to be done."}));
+        general.send(`Welcome to da good paking server ${member}! Have fun!`).then(m =>m.delete({timeout: 60000, reason :"It had to be done."}));
         console.log("Collector stopped");
-        console.log(`Collected ${collected.size} items:`);
-        console.log(`${collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')}`);
         logs.send("Collector stopped");
-        logs.send(`Collected ${collected.size} items:`);
-        logs.send(`${collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')}`);
+        console.log("Collected item: ");
+        console.log(`${verify}`);
+
+        const lEmbed = new MessageEmbed()
+            .setTitle("New Verification!")
+            .setThumbnail(member.user.displayAvatarURL())
+            .setTimestamp()
+            .setColor(colors.Green)
+            .addField(`**${member.user.username} has sucessfully entered the server!**`, `${member} has completed the verification method and entred this phrase:
+            \`${verify}\``);
+
+        logs.send(lEmbed);
 
       }
-
 
     });
   }
