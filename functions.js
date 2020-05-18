@@ -46,7 +46,13 @@ module.exports = {
         return message
             .awaitReactions(filter, { max: 1, time: time})
             .then(collected => collected.first() && collected.first().emoji.name);
-    }
+    },
 
+    computeAge: function(birthDate) {
+        let diff_ms = Date.now() - new Date(birthDate).getTime();
+        let age_dt = new Date(diff_ms);
+
+        return Math.abs(age_dt.getUTCFullYear() - 1970);
+    }
 };
 

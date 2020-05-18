@@ -5,7 +5,7 @@ const { default_prefix } = require("./botprefix.json");
 const fs = require("fs");
 const { MessageEmbed, DMChannel, TextChannel } = require('discord.js');
 const { stripIndents } = require("common-tags");
-const { formatDate } = require("./functions.js");
+const { formatDate, computeAge } = require("./functions.js");
 
 
 
@@ -82,13 +82,15 @@ bot.on('messageReactionAdd', async (reaction, user) => {
             const embed = new MessageEmbed()
                 .setTitle("How to enter the server:")
                 .setColor(colors.Green_Sheen)
-                .addField("**Step 1:**", stripIndents `Enter \`-start\` to start, the dash is required.
-                **(Make it quick because you would only have 1 minute to complete this.)**`,true)
-                .addField("**Step 2:**", stripIndents `Please type:
-                \`I have read the rules of this server and have agreed to follow them accordingly\`
-                **(Please write it as plain text.)**`,true)
-                .addField("**Step 3:**", stripIndents `If I stop listening to you, just repeat **Steps 1 & 2**`, true);
-
+                .addFields(
+                    { name: '__**Step 1:**__', value: stripIndents `Enter \`-start\` to start, the dash is required.
+                    **(Make it quick because you would only have 1 minute to complete this.)**`},
+                    { name: '__**Step 2:**__', value: stripIndents `**Enter your birthday first to continue.**`},
+                    { name: '__**Step 3:**__', value: stripIndents `Then type:
+                    \`I have read the rules of this server and have agreed to follow them accordingly\`
+                    **(Please write it as plain text.)**`},
+                    { name: '__**Step 4:**__', value: stripIndents `If I stop listening to you, just repeat **Steps 1 - 3**.`}
+                );
            user.send(embed);
         }
 
@@ -126,81 +128,145 @@ bot.on('message', async message => {
             return;
         }
 
-    // Create a message collector
-    const filter = m => m.content && m.author.id !== bot.user.id;
-    const channel = message.channel;
-    const collector = channel.createMessageCollector(filter, { time: 60000 });
-    message.reply("I'm listening...");
-    console.log("Collector started");
-    logs.send("Collector started");
+    const dob_filter = response => response.content;
 
 
-    collector.on('collect', m => {
+    message.reply(`Hello! Welcome to the server! Please enter your birthday in this format: \`yyyy-mm-dd\``).then(() => {
+        message.channel.awaitMessages(dob_filter, { max: 1, time: 60000 })
+        .then(collected =>{
 
-      if(m.content === 'I have read the rules of this server and have agreed to follow them accordingly'){
-        message.reply(`Thank you for your cooperation, Welcome to the server!`);
-        member.roles.add(role);
-        collector.stop();
-      }
-      else{
-        message.reply("Invalid input: Please check your spelling and try again.");
-      }
-
-    });
+            const months = ["Jan", "Feb", "Mar","Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            let birthDate = collected.first().content;
+            let regex = /(\d+)/g;
+            let parts = birthDate.match(regex);
+            let dob = new Date(birthDate);
+            let birthday = months[dob.getMonth()] + ", " + dob.getDate() + " " + dob.getFullYear();
 
 
-    collector.on('end', collected => {
+            if ( parts[1] > 13 || parts[1] < 1 ) {
+                message.reply('Invalid month! Please try again.');
+                return;
+            }
+            else if (parts[2] > 31 || parts[2] < 1) { // this is broken for all 28-30 day months
+                message.reply('Invalid day! Please try again.');
+                return;
+            }
+            else if (parts[0] > 1000 && !parts[1]){
+                message.reply('Invalid input! Please enter a valid month.');
+                return;
+            }
+            else if (parts[0] > 1000 && !parts[2]){
+                message.reply('Invalid input! Please enter a valid day.');
+                return;
+            }
+            else if (parts[0] < 1000){
+                message.reply('Invalid input! Please enter a valid year.');
+                return;
+            }
 
-      const logging = bot.channels.cache.get('697105399836573756');
-      const created = formatDate(member.user.createdAt);
+            let age = computeAge(birthDate);
 
-      if (collected.size === 0 || !collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')) {
-        message.reply("*Yaaaaaawwnnnn* I'm gonna stop listening to you for now...");
-        console.log("Collector stopped");
-        logs.send("Collector stopped");
-        return;
-      }
-      else if (collected.size > 0 && !collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')) {
-        message.reply("*Yaaaaaawwnnnn* I'm gonna stop listening to you for now...");
-        console.log("Collector stopped");
-        logs.send("Collector stopped");
-        return;
-      }
-      else{
+            //message.reply(age);
 
-        const verify = collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly');
-        const general = bot.channels.cache.get('694810451065962505');
+            if (age < 13) {
+                const watchlist = bot.channels.cache.get('695169621757788210');
+                message.reply(`I'm sorry, but according to the Discord ToS, only users with the age 13 and above are eligable to enter the server.`);
 
-        const embed = new MessageEmbed()
-            .setTitle(`${member.displayName} has successfully verified!`)
-            .setTimestamp()
-            .setFooter(member.displayName, member.user.displayAvatarURL())
-            .setThumbnail(member.user.displayAvatarURL())
-            .setColor(colors.Green)
-            .addField('User information:', stripIndents`**ID:** ${member.user.id}
-            **Username:** ${member.user.username}
-            **Tag:** ${member.user.tag}
-            **Created:** ${created}
-            **Verification Phrase:** ${verify}`, true);
-        logging.send(embed);
-        general.send(`Welcome to da good paking server ${member}! Have fun!`).then(m =>m.delete({timeout: 60000, reason :"It had to be done."}));
-        console.log("Collector stopped");
-        logs.send("Collector stopped");
-        console.log("Collected item: ");
-        console.log(`${verify}`);
+                const embed = new MessageEmbed()
+                    .setTitle(`**${member.displayName}** tried to enter the server!`)
+                    .setColor(colors.Red)
+                    .setThumbnail(member.user.displayAvatarURL())
+                    .addField(`**${member.displayName}**'s information:`, stripIndents `
+                    ${member.displayName}'s birthday: ${birthday}
+                    ${member.displayName}'s age: ${age} years old.
+                    **Please keep an eye out for him**`,true)
+                    .setTimestamp()
+                    .setFooter(`AGGRESSIVE GOODTALKER | By MahoMuri`, bot.user.displayAvatarURL());
 
-        const lEmbed = new MessageEmbed()
-            .setTitle("New Verification!")
-            .setThumbnail(member.user.displayAvatarURL())
-            .setTimestamp()
-            .setColor(colors.Green)
-            .addField(`**${member.user.username} has sucessfully entered the server!**`, `${member} has completed the verification method and entred this phrase:
-            \`${verify}\``);
+                watchlist.send(embed);
+                return;
+            }
+            else {
+                message.reply(`Great! Now please type the verification phrase.`);
+                const filter = m => m.content && m.author.id !== bot.user.id;
+                const channel = message.channel;
+                const collector = channel.createMessageCollector(filter, { time: 60000 });
+                console.log("Collector started");
+                logs.send("Collector started");
 
-        logs.send(lEmbed);
 
-      }
+                collector.on('collect', async m => {
 
+                  const verify = m.content === 'I have read the rules of this server and have agreed to follow them accordingly';
+
+                    if(verify){
+                        message.reply(`Thank you for your cooperation, Welcome ${member}!`);
+                        member.roles.add(role);
+                        collector.stop();
+
+                    }
+                    else{
+                        message.reply("Invalid input: Please check your spelling and try again.");
+                    }
+
+                });
+
+
+                collector.on('end', collected => {
+
+                  const logging = bot.channels.cache.get('697105399836573756');
+                  const created = formatDate(member.user.createdAt);
+
+                  if (collected.size === 0 || !collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')) {
+                    message.reply("*Yaaaaaawwnnnn* I'm gonna stop listening to you for now...");
+                    console.log("Collector stopped");
+                    logs.send("Collector stopped");
+                    return;
+                  }
+                  else if (collected.size > 0 && !collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly')) {
+                    message.reply("*Yaaaaaawwnnnn* I'm gonna stop listening to you for now...");
+                    console.log("Collector stopped");
+                    logs.send("Collector stopped");
+                    return;
+                  }
+                  else{
+
+                    const verify = collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly');
+                    const general = bot.channels.cache.get('694810451065962505');
+
+                    const embed = new MessageEmbed()
+                        .setTitle(`${member.displayName} has successfully verified!`)
+                        .setTimestamp()
+                        .setFooter(member.displayName, member.user.displayAvatarURL())
+                        .setThumbnail(member.user.displayAvatarURL())
+                        .setColor(colors.Green)
+                        .addField('User information:', stripIndents`**ID:** ${member.user.id}
+                        **Username:** ${member.user.username}
+                        **Tag:** ${member.user.tag}
+                        **Created:** ${created}
+                        **${member.displayName}'s:** ${age} years old`, true);
+                    logging.send(embed);
+                    general.send(`Welcome to da good paking server ${member}! Have fun!`).then(m =>m.delete({timeout: 60000, reason :"It had to be done."}));
+                    console.log("Collector stopped");
+                    logs.send("Collector stopped");
+                    console.log("Collected item: ");
+                    console.log(`${verify}`);
+
+                    const lEmbed = new MessageEmbed()
+                        .setTitle("New Verification!")
+                        .setThumbnail(member.user.displayAvatarURL())
+                        .setTimestamp()
+                        .setColor(colors.Green)
+                        .addField(`**${member.user.username} has sucessfully entered the server!**`, `${member} has completed the verification method and entred this phrase:
+                        \`${verify}\``);
+
+                    logs.send(lEmbed);
+
+                  }
+
+                });
+            }
+        });
     });
   }
 });
