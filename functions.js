@@ -51,8 +51,9 @@ module.exports = {
     computeAge: function(birthDate) {
         let diff_ms = Date.now() - new Date(birthDate).getTime();
         let age_dt = new Date(diff_ms);
+        let age = Math.abs(age_dt.getUTCFullYear() - 1970);
 
-        return Math.abs(age_dt.getUTCFullYear() - 1970);
+        return age;
     }
 };
 

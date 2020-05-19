@@ -36,7 +36,8 @@ module.exports = bot => {
                         let regex = /(\d+)/g;
                         let parts = birthDate.match(regex);
                         let dob = new Date(birthDate);
-                        let birthday = months[dob.getMonth()] + ", " + dob.getDate() + " " + dob.getFullYear();
+                        let date = new Date(Date.now());
+                        let birthday = months[dob.getMonth()] + " " + dob.getDate() + ", " + dob.getFullYear();
 
 
                         if (parts[1] > 13 || parts[1] < 1) {
@@ -51,11 +52,7 @@ module.exports = bot => {
                             message.reply('Invalid input! Please enter a valid month.');
                             return;
                         }
-                        else if (parts[0] > 1000 && !parts[2]) {
-                            message.reply('Invalid input! Please enter a valid day.');
-                            return;
-                        }
-                        else if (parts[0] < 1000) {
+                        else if (parts[0] < 1000 || parts[0] > date.getFullYear()){
                             message.reply('Invalid input! Please enter a valid year.');
                             return;
                         }
@@ -73,9 +70,9 @@ module.exports = bot => {
                                 .setColor(colors.Red)
                                 .setThumbnail(member.user.displayAvatarURL())
                                 .addField(`**${member.displayName}**'s information:`, stripIndents`
-                        ${member.displayName}'s birthday: ${birthday}
-                        ${member.displayName}'s age: ${age} years old.
-                        **Please keep an eye out for him**`, true)
+                                ${member.displayName}'s birthday: ${birthday}
+                                ${member.displayName}'s age: ${age} years old.
+                                **Please keep an eye out for him**`, true)
                                 .setTimestamp()
                                 .setFooter(`AGGRESSIVE GOODTALKER | By MahoMuri`, bot.user.displayAvatarURL());
 

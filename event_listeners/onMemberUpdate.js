@@ -2,8 +2,8 @@
  * @file guildMemberUpdate listener
  */
 
-module.exports = bot => {
-    bot.on("guildMemberUpdate", (oldMember, newMember) => {
+module.exports = async bot => {
+    bot.on("guildMemberUpdate", async (oldMember, newMember) => {
         const channel = bot.channels.cache.get('699325313930362982');
         const Achannel = bot.channels.cache.get('705733221437931540');
         const Media_Channel = bot.channels.cache.get('710487738394345512');

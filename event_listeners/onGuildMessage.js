@@ -6,8 +6,8 @@ const fs = require('fs');
 
 const { default_prefix } = require(`${__dirname}/../botprefix.json`);
 
-module.exports = bot => {
-    bot.on("message", message => {
+module.exports = async bot => {
+    bot.on("message", async message => {
         if (message.channel instanceof DMChannel) {
             return;
         }

@@ -6,7 +6,7 @@ const { MessageEmbed } = require('discord.js');
 const { stripIndents } = require("common-tags");
 const colors = require(`${__dirname}/../colors.json`);
 
-module.exports = bot => {
+module.exports = async bot => {
     bot.on('guildMemberAdd', async member => {
         const rules = bot.channels.cache.get('694810450637881348');
         const embed = new MessageEmbed()
