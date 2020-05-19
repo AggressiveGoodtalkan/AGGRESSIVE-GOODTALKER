@@ -140,7 +140,7 @@ bot.on('message', async message => {
             let regex = /(\d+)/g;
             let parts = birthDate.match(regex);
             let dob = new Date(birthDate);
-            let birthday = months[dob.getMonth()] + ", " + dob.getDate() + " " + dob.getFullYear();
+            let birthday = months[dob.getMonth()] + " " + dob.getDate() + ", " + dob.getFullYear();
 
 
             if ( parts[1] > 13 || parts[1] < 1 ) {
@@ -159,8 +159,12 @@ bot.on('message', async message => {
                 message.reply('Invalid input! Please enter a valid day.');
                 return;
             }
-            else if (parts[0] < 1000){
+            else if (parts[0] < 1000 || parts[0] > Date.now().getFullYear()){
                 message.reply('Invalid input! Please enter a valid year.');
+                return;
+            }
+            else if (birthDate === Date.now()){
+                message.reply('Invalid input! You cannnot put the date today!');
                 return;
             }
 
