@@ -1,71 +1,56 @@
-const colors = require("./colors.json");
-const Discord = require('discord.js');
+/**
+ * @file main(): basically where everything is initialized
+ */
+
+// Imports
+const ascii = require("ascii-table");
+const { Client, Collection } = require('discord.js');
 const { config } = require("dotenv");
-const { default_prefix } = require("./botprefix.json");
-const fs = require("fs");
-const { MessageEmbed, DMChannel, TextChannel } = require('discord.js');
-const { stripIndents } = require("common-tags");
-const { formatDate, computeAge } = require("./functions.js");
+const { readdirSync } = require("fs");
 
-
-
-
-const bot = new Discord.Client({
-  disableEveryone: true,
-  partials: ['MESSAGE', 'CHANNEL' , 'REACTION']
+// Setup bot
+const bot = new Client({
+    disableEveryone: true,
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 });
 
+bot.aliases = new Collection();
+bot.categories = readdirSync(`${__dirname}/commands`);
+bot.commands = new Collection();
+bot.queue = [];
 
+// Setup configuration
 config({
-  path: __dirname + "/.env"
+    path: `${__dirname}/.env`
 });
 
- bot.commands = new Discord.Collection();
- bot.aliases = new Discord.Collection();
- bot.categories = fs.readdirSync("./commands/");
-
-["command"].forEach(handler => {
-    require(`./handler/${handler}`)(bot);
+// Setup listeners
+let lstTable = new ascii('listeners');
+lstTable.setHeading('Listener', 'Status');
+let listeners = readdirSync(`${__dirname}/event_listeners`).filter(v => v.endsWith('.js'));
+listeners.forEach(v => {
+    require(`${__dirname}/event_listeners/${v}`)(bot);
+    lstTable.addRow(v, 'Loaded');
 });
+console.log(lstTable.toString());
 
- bot.on("ready", async () =>{
-
-  const logs = await bot.channels.cache.get('710795359844171797');
-
-  console.log(`✅ ${bot.user.username} is online on ${bot.guilds.cache.size} server/s!`);
-  logs.send(`✅ **${bot.user.username}** is online on ${bot.guilds.cache.size} server/s!`);
-  bot.user.setActivity("AGGRESSIVELY", {type: "STREAMING"});
-
-});
-
-
-
-bot.on('guildMemberAdd', async member => {
-
-  const rules = bot.channels.cache.get('694810450637881348');
-  const embed = new MessageEmbed()
-    .setTitle("Welcome to the AGGRESSIVE GOODTALKAN Server!")
-    .setColor(colors.Green_Sheen)
-    .addField("**How to enter the server:**", stripIndents `**1.** Please make sure to read the ${rules} first!
-    **2.** Then, react "✅" to the ${rules} message then I will tell you how to enter the server!`, true);
-
-  member.user.send(embed);
-
-});
-
-
-bot.on('messageReactionAdd', async (reaction, user) => {
-
-    const DaRules = await bot.channels.cache.get('694810450637881348').messages.fetch('702899668903788615');
-    const logs = await bot.channels.cache.get('710795359844171797');
-    const rules = await bot.channels.cache.get('694810450637881348');
-
-    if (reaction.partial) {
-        try {
-            await reaction.fetch();
-        } catch (err) {
-            console.log('Something went wrong while fetching the message.', err);
+// Setup commands
+let cmdTable = new ascii("commands");
+cmdTable.setHeading("Command", "Load status");
+bot.categories.forEach(dir => {
+    let commands = readdirSync(`${bot.categories}/${dir}`).filter(f => f.endsWith(".js"));
+    commands.forEach(file => {
+        let pull = require(`${bot.categories}/${dir}/${file}`);
+        if (pull.name) {
+            bot.commands.set(pull.name, pull);
+            cmdTable.addRow(file, 'Loaded');
+            if (pull.aliases && Array.isArray(pull.aliases)) {
+                pull.aliases.forEach(alias => bot.aliases.set(alias, pull.name));
+            }
+        } else {
+            cmdTable.addRow(file, 'Error -> No name defined');
         }
+<<<<<<< HEAD
     }
     const member = bot.guilds.cache.get('694810450621366282').member(user);
     const role = member.guild.roles.cache.find(role => role.name === "Member");
@@ -271,122 +256,11 @@ bot.on('message', async message => {
                 });
             }
         });
+=======
+>>>>>>> Lyonlancer5-modularization
     });
-  }
 });
+console.log(cmdTable.toString());
 
-
-  bot.on("guildMemberUpdate", async (oldMember, newMember) => {
-
-    const channel = bot.channels.cache.get('699325313930362982');
-    const Achannel = bot.channels.cache.get('705733221437931540');
-    const Media_Channel = bot.channels.cache.get('710487738394345512');
-    const mod = newMember.guild.roles.cache.find(role => role.name === "Mods");
-    const modmin = newMember.guild.roles.cache.find(role => role.name === "Modmin");
-    const creator = newMember.guild.roles.cache.find(role => role.name === "DaGudPakingMediaMaker");
-
-   if(!oldMember.roles.cache.has(mod.id) && newMember.roles.cache.has(mod.id)){
-     channel.send(`Congrats <@${newMember.user.id}> on getting the ${mod} role!`);
-     channel.send({
-       files: [{
-        attachment: './images/tenor.gif',
-        name: 'tenor.gif'
-      }]
-     })
-     .catch(err => console.error);
-   }
-   else if(!oldMember.roles.cache.has(modmin.id) && newMember.roles.cache.has(modmin.id)){
-    Achannel.send(`Congrats <@${newMember.user.id}> on getting the ${modmin} role!`);
-    Achannel.send({
-      files: [{
-       attachment: './images/king.gif',
-       name: 'king.gif'
-     }]
-    })
-    .catch(err => console.error);
-  }
-  else if(!oldMember.roles.cache.has(creator.id) && newMember.roles.cache.has(creator.id)){
-    Media_Channel.send(`Congrats <@${newMember.user.id}> on getting the ${creator} role!`);
-    Media_Channel.send({
-      files: [{
-       attachment: './images/painter.gif',
-       name: 'painter.gif'
-     }]
-    })
-    .catch(err => console.error);
-  }
-  else
-  {
-    return;
-  }
-
-});
-
-
-bot.queue = [];
-
-bot.on("message", async message => {
-
-    if (message.channel instanceof DMChannel) {
-        return;
-    }
-
-    let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
-
-    if (!prefixes[message.guild.id]) {
-        prefixes[message.guild.id] = {
-            prefixes: default_prefix
-        };
-
-        fs.writeFileSync("./prefixes.json", JSON.stringify(prefixes), (err) => {
-            if (err) {
-                console.error(err);
-            }
-        });
-    }
-
-    let prefix = prefixes[message.guild.id].prefixes;
-
-
-  if (message.author.bot) {
-    return;
-  }
-  if (!message.guild){
-    return;
-  }
-  if (!message.content.startsWith(prefix)){
-    return;
-  }
-
-  // If message.member is uncached, cache it.
-  if (!message.member){
-    message.member = await message.guild.fetchMember(message);
-
-  }
-
-  const args = message.content.slice(prefix.length).trim().split(/ +/g);
-  const cmd = args.shift().toLowerCase();
-
-  if (cmd.length === 0){
-    return;
-  }
-
-  // Get the command
-  let command = bot.commands.get(cmd);
-
-  // If none is found, try to find it by alias
-  if (!command){
-    command = bot.commands.get(bot.aliases.get(cmd));
-
-  }
-
-  // If a command is finally found, run the command
-  if (command){
-    command.run(bot, message, args, prefix);
-
-  }
-
-});
-
-
- bot.login(process.env.TOKEN);
+// Now login
+bot.login(process.env.TOKEN);
