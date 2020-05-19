@@ -8,11 +8,11 @@ const { formatDate, computeAge } = require(`${__dirname}/../functions.js`);
 const colors = require(`${__dirname}/../colors.json`);
 
 module.exports = bot => {
-    bot.on('message', message => {
+    bot.on('message', async message => {
 
         let member = bot.guilds.cache.get('694810450621366282').member(message.author);
         let role = member.guild.roles.cache.find(role => role.name === "Member");
-        let logs = bot.channels.cache.get('710795359844171797');
+        let logs = await bot.channels.cache.get('710795359844171797');
 
         if (message.content === `-start`) {
             if (message.channel instanceof TextChannel) {

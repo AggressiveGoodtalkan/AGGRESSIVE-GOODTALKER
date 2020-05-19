@@ -3,10 +3,10 @@
  */
 
 module.exports = bot => {
-    bot.on("guildMemberUpdate", (oldMember, newMember) => {
-        const channel = bot.channels.cache.get('699325313930362982');
-        const Achannel = bot.channels.cache.get('705733221437931540');
-        const Media_Channel = bot.channels.cache.get('710487738394345512');
+    bot.on("guildMemberUpdate", async (oldMember, newMember) => {
+        const channel = await bot.channels.cache.get('699325313930362982');
+        const Achannel = await bot.channels.cache.get('705733221437931540');
+        const Media_Channel = await bot.channels.cache.get('710487738394345512');
         const mod = newMember.guild.roles.cache.find(role => role.name === "Mods");
         const modmin = newMember.guild.roles.cache.find(role => role.name === "Modmin");
         const creator = newMember.guild.roles.cache.find(role => role.name === "DaGudPakingMediaMaker");

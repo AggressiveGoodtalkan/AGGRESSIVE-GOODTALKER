@@ -8,7 +8,7 @@ const colors = require(`${__dirname}/../colors.json`);
 
 module.exports = bot => {
     bot.on('guildMemberAdd', async member => {
-        const rules = bot.channels.cache.get('694810450637881348');
+        const rules = await bot.channels.cache.get('694810450637881348');
         const embed = new MessageEmbed()
             .setTitle("Welcome to the AGGRESSIVE GOODTALKAN Server!")
             .setColor(colors.Green_Sheen)

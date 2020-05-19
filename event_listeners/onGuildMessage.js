@@ -7,7 +7,7 @@ const fs = require('fs');
 const { default_prefix } = require(`${__dirname}/../botprefix.json`);
 
 module.exports = bot => {
-    bot.on("message", message => {
+    bot.on("message", async message => {
         if (message.channel instanceof DMChannel) {
             return;
         }
@@ -29,7 +29,7 @@ module.exports = bot => {
 
         // If message.member is uncached, cache it.
         if (!message.member) {
-            message.member = message.guild.fetchMember(message);
+            message.member = await message.guild.fetchMember(message);
         }
 
         const args = message.content.slice(prefix.length).trim().split(/ +/g);

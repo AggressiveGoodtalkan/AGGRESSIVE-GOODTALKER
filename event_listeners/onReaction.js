@@ -7,21 +7,21 @@ const { stripIndents } = require('common-tags');
 const colors = require(`${__dirname}/../colors.json`);
 
 module.exports = bot => {
-    bot.on('messageReactionAdd', (reaction, user) => {
+    bot.on('messageReactionAdd', async (reaction, user) => {
 
-        let logChannel = bot.channels.cache.get('710795359844171797');
-        let rulesChannel = bot.channels.cache.get('694810450637881348');
-        let DaRules = rulesChannel.messages.fetch('702899668903788615');
+        let logChannel = await bot.channels.cache.get('710795359844171797');
+        let rulesChannel = await bot.channels.cache.get('694810450637881348');
+        let DaRules = await rulesChannel.messages.fetch('702899668903788615');
 
         if (reaction.partial) {
             try {
-                reaction.fetch();
+                await reaction.fetch();
             } catch (err) {
                 console.log('Something went wrong while fetching the message.', err);
             }
         }
 
-        let member = bot.guilds.cache.get('694810450621366282').member(user);
+        let member = await bot.guilds.cache.get('694810450621366282').member(user);
         let role = member.guild.roles.cache.find(role => role.name === "Member");
 
         if (reaction.emoji.name === '✅' && reaction.message.content === DaRules.content) {

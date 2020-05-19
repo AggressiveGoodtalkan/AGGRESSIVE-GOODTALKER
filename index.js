@@ -37,10 +37,10 @@ console.log(lstTable.toString());
 // Setup commands
 let cmdTable = new ascii("commands");
 cmdTable.setHeading("Command", "Load status");
-bot.categories.forEach(dir => {
-    let commands = readdirSync(`${bot.categories}/${dir}`).filter(f => f.endsWith(".js"));
+readdirSync(`${__dirname}/commands`).forEach(dir => {
+    let commands = readdirSync(`${__dirname}/commands/${dir}`).filter(f => f.endsWith(".js"));
     commands.forEach(file => {
-        let pull = require(`${bot.categories}/${dir}/${file}`);
+        let pull = require(`${__dirname}/commands/${dir}`);
         if (pull.name) {
             bot.commands.set(pull.name, pull);
             cmdTable.addRow(file, 'Loaded');
