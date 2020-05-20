@@ -1,7 +1,7 @@
 module.exports = {
     name: "aboutag",
     aliases: ["agbot"],
-    category:"entertainment",
+    category:"info",
     usage: ["<prefix>command here"],
     run: async(bot, message, args)=>{
 

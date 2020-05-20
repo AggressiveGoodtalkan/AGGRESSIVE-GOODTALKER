@@ -4,15 +4,15 @@
 
 const { TextChannel, MessageEmbed } = require('discord.js');
 const { stripIndents } = require("common-tags");
-const { formatDate, computeAge } = require(`${__dirname}/../functions.js`);
+const { formatDate, computeAge, isLeapYear } = require(`${__dirname}/../functions.js`);
 const colors = require(`${__dirname}/../colors.json`);
 
 module.exports = bot => {
     bot.on('message', message => {
 
-        let member = bot.guilds.cache.get('694810450621366282').member(message.author);
-        let role = member.guild.roles.cache.find(role => role.name === "Member");
-        let logs = bot.channels.cache.get('710795359844171797');
+        const member = bot.guilds.cache.get('694810450621366282').member(message.author);
+        const role = member.guild.roles.cache.find(role => role.name === "Member");
+        const logs = bot.channels.cache.get('710795359844171797');
 
         if (message.content === `-start`) {
             if (message.channel instanceof TextChannel) {
@@ -32,19 +32,25 @@ module.exports = bot => {
                     .then(collected => {
 
                         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                        let days = ["31", "28" , "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
                         let birthDate = collected.first().content;
                         let regex = /(\d+)/g;
                         let parts = birthDate.match(regex);
                         let dob = new Date(birthDate);
                         let date = new Date(Date.now());
                         let birthday = months[dob.getMonth()] + " " + dob.getDate() + ", " + dob.getFullYear();
+                        let leapYear = isLeapYear(parts[0]);
+
+                        if (leapYear === 1) {
+                            days[1] = "29";
+                        }
 
 
                         if (parts[1] > 13 || parts[1] < 1) {
                             message.reply('Invalid month! Please try again.');
                             return;
                         }
-                        else if (parts[2] > 31 || parts[2] < 1) { // this is broken for all 28-30 day months
+                        else if (parts[2] > days[parts[1] - 1]) {
                             message.reply('Invalid day! Please try again.');
                             return;
                         }
@@ -52,7 +58,7 @@ module.exports = bot => {
                             message.reply('Invalid input! Please enter a valid month.');
                             return;
                         }
-                        else if (parts[0] < 1000 || parts[0] > date.getFullYear()){
+                        else if (parts[0] < 1000 || parts[0] >= date.getFullYear()){
                             message.reply('Invalid input! Please enter a valid year.');
                             return;
                         }

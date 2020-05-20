@@ -54,6 +54,18 @@ module.exports = {
         let age = Math.abs(age_dt.getUTCFullYear() - 1970);
 
         return age;
+    },
+    isLeapYear: function(year) {
+        let leapYear = new Date(year, 1, 29).getMonth();
+
+        if (leapYear === 1) {
+            leapYear = true;
+        }
+        else if (leapYear === 2){
+            leapYear = false;
+        }
+
+        return leapYear;
     }
 };
 
