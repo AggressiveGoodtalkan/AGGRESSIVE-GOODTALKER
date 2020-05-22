@@ -32,17 +32,18 @@ module.exports = bot => {
             } else {
                 const embed = new MessageEmbed()
                     .setTitle("How to enter the server:")
-                    .setColor(colors.Green_Sheen)
+                    .setColor(colors.Turquoise)
                     .addFields(
                         {
                             name: '__**Step 1:**__', value: stripIndents`Enter \`-start\` to start, the dash is required.
                         **(Make it quick because you would only have 1 minute to complete this.)**`},
-                        { name: '__**Step 2:**__', value: stripIndents`**Enter your birthday to continue.**` },
+                        { name: '__**Step 2:**__', value: stripIndents`Enter your birthday to continue.
+                        **Please use the format: (DD/MM/YYYY)**` },
                         {
                             name: '__**Step 3:**__', value: stripIndents`Then type:
                         \`I have read the rules of this server and have agreed to follow them accordingly\`
                         **(Please write it as plain text.)**`},
-                        { name: '__**Step 4:**__', value: stripIndents`If I stop listening to you, just repeat **Steps 1 - 3**.` }
+                        { name: '__**Step 4:**__', value: stripIndents`If I stop listening to you or an error occurs, just repeat **Steps 1 - 3**.` }
                     );
                 user.send(embed);
             }

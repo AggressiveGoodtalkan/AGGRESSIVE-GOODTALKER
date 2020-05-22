@@ -27,38 +27,43 @@ module.exports = bot => {
             }
 
             let dob_filter = response => response.content;
-            message.reply(`Hello! Welcome to the server! Please enter your birthday in this format: \`yyyy-mm-dd\``).then(() => {
+            message.reply(`Hello! Welcome to the server! Please enter your birthday in this format: \`DD/MM/YYYY\``).then(() => {
                 message.channel.awaitMessages(dob_filter, { max: 1, time: 60000 })
                     .then(collected => {
 
                         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                         let days = ["31", "28" , "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
-                        let birthDate = collected.first().content;
+                        let userInput = collected.first().content; //GETS THE RAW INPUT OF DD/MM/YYYY format
                         let regex = /(\d+)/g;
-                        let parts = birthDate.match(regex);
+                        let parts = userInput.match(regex);
+                        let birthDate = parts[2] + "/" + parts[1] + "/" + parts[0]; //rearranges the input to YYYY/MM/DD
                         let dob = new Date(birthDate);
                         let date = new Date(Date.now());
-                        let birthday = months[dob.getMonth()] + " " + dob.getDate() + ", " + dob.getFullYear();
-                        let leapYear = isLeapYear(parts[0]);
+                        let birthday = months[dob.getMonth()] + " " + dob.getDate() + ", " + dob.getFullYear(); //sets birthday to regular format DD/MM/YYYY
+                        let leapYear = isLeapYear(parts[2]);
 
                         if (leapYear === 1) {
                             days[1] = "29";
                         }
 
-
+                        /*
+                        parts[0] = days
+                        parts[1] = months
+                        parts[2] = years
+                        */
                         if (parts[1] > 13 || parts[1] < 1) {
                             message.reply('Invalid month! Please try again.');
                             return;
                         }
-                        else if (parts[2] > days[parts[1] - 1]) {
+                        else if (parts[0] > days[parts[1] - 1]) {
                             message.reply('Invalid day! Please try again.');
                             return;
                         }
-                        else if (parts[0] > 1000 && !parts[1]) {
+                        else if (parts[2] > 1000 && !parts[1]) {
                             message.reply('Invalid input! Please enter a valid month.');
                             return;
                         }
-                        else if (parts[0] < 1000 || parts[0] >= date.getFullYear()){
+                        else if (parts[2] < 1000 || parts[2] >= date.getFullYear()){
                             message.reply('Invalid input! Please enter a valid year.');
                             return;
                         }
