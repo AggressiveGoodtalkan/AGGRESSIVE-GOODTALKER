@@ -25,12 +25,16 @@ module.exports = bot => {
 
         const member = bot.guilds.cache.get('694810450621366282').member(user);
         const role = member.guild.roles.cache.find(role => role.name === "Member");
+        const silenced = member.guild.roles.cache.find(role => role.name === "Global Silencer");
 
         if (reaction.emoji.name === '✅' && reaction.message.content === DaRules.content) {
-            if (member.roles.cache.has(role.id)) {
+            if (member.roles.cache.has(silenced.id)) {
+                user.send(`You have been silenced! You cannot access the server for now.`);
+                return;
+            }else if (member.roles.cache.has(role.id)) {
                 user.send(`You are already a member!`);
                 return;
-            } else {
+            }else {
                 const embed = new MessageEmbed()
                 .setTitle("How to enter the server:")
                 .setColor(colors.Turquoise)

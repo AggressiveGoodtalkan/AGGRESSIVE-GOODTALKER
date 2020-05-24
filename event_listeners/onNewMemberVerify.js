@@ -13,11 +13,17 @@ module.exports = bot => {
         const member = bot.guilds.cache.get('694810450621366282').member(message.author);
         const role = member.guild.roles.cache.find(role => role.name === "Member");
         const logs = bot.channels.cache.get('710795359844171797');
+        const silenced = member.guild.roles.cache.find(role => role.name === "Global Silencer");
 
         if (message.content === `-start`) {
             if (message.channel instanceof TextChannel) {
                 message.reply("This command is not supported here, it only works on DM channels.").then(m => m.delete({ timeout: 5000, reason: "It had to be done." }));
                 message.delete({ timeout: 6000, reason: "It had to be done" });
+                return;
+            }
+
+            if (member.roles.cache.has(silenced.id)) {
+                message.reply(`You have been silenced! You cannot access the server for now.`);
                 return;
             }
 
@@ -30,6 +36,10 @@ module.exports = bot => {
             message.reply(`Hello! Welcome to the server! Please enter your birthday in this format: \`DD/MM/YYYY\``).then(() => {
                 message.channel.awaitMessages(dob_filter, { max: 1, time: 60000 })
                     .then(collected => {
+                        if (collected.size === 0 || collected.first().content) {
+                            message.reply("You ran out of time to respond. Please try again.");
+                            return;
+                        }
 
                         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                         let days = ["31", "28" , "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
