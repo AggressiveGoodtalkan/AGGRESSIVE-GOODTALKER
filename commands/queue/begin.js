@@ -21,8 +21,6 @@ module.exports = {
             message.channel.send(`Let's begin! For our first performer, give it up for ${bot.queue[0]}!`)
             .then(performer.roles.add(role)).then(m => m.delete({timeout: 5000, reason:"It had to be done"}));
             message.delete({timeout: 5000, reason:"It had to be done"});
-
-
         }
         else {
             message.reply(`You don't have the ${dj.name} role!`).then(m => m.delete({timeout: 5000, reason:"It had to be done"}));

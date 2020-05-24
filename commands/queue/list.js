@@ -12,6 +12,7 @@ module.exports = {
             message.reply("The queue is paking empty! Go and add more people!")
             .then(m => m.delete({timeout: 5000, reason:"It had to be done"}));
             message.delete({timeout: 5000, reason:"It had to be done"});
+            return;
         }
 
         const role = message.guild.roles.cache.find(role => role.name === "Performer");

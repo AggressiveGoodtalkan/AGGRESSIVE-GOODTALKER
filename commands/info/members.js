@@ -1,7 +1,6 @@
 const colors = require("../../colors.json");
 const { stripIndents } = require("common-tags");
 const Discord = require('discord.js');
-const { getMember, formatDate } = require("../../functions.js");
 
 
 module.exports = {

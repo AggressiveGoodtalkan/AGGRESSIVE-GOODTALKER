@@ -61,7 +61,7 @@ module.exports = {
         if (leapYear === 1) {
             leapYear = true;
         }
-        else if (leapYear === 2){
+        else {
             leapYear = false;
         }
 

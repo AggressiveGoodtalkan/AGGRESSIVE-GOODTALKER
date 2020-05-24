@@ -34,15 +34,20 @@ module.exports = bot => {
                         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                         let days = ["31", "28" , "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
                         let userInput = collected.first().content; //GETS THE RAW INPUT OF DD/MM/YYYY format
-                        let regex = /(\d+)/g;
-                        let parts = userInput.match(regex);
+                        let regex = /(\d+)/g; //regex to get all digits from the user's input.
+                        let parts = userInput.match(regex); //seprates the numbers from the user's input and puts them in an array.
+                        if (!parts[0] || !parts[1] || !parts[2]) {
+                            message.reply("Invalid birth date! Please enter a valid birth date.");
+                            return;
+                        }
                         let birthDate = parts[2] + "/" + parts[1] + "/" + parts[0]; //rearranges the input to YYYY/MM/DD
                         let dob = new Date(birthDate);
                         let date = new Date(Date.now());
                         let birthday = months[dob.getMonth()] + " " + dob.getDate() + ", " + dob.getFullYear(); //sets birthday to regular format DD/MM/YYYY
-                        let leapYear = isLeapYear(parts[2]);
+                        let leapYear = isLeapYear(parts[2]); //returns true if year is a leap year
 
-                        if (leapYear === 1) {
+                        //leap year check
+                        if (leapYear === true) {
                             days[1] = "29";
                         }
 
@@ -51,6 +56,7 @@ module.exports = bot => {
                         parts[1] = months
                         parts[2] = years
                         */
+
                         if (parts[1] > 13 || parts[1] < 1) {
                             message.reply('Invalid month! Please try again.');
                             return;
@@ -72,6 +78,7 @@ module.exports = bot => {
 
                         //message.reply(age);
 
+                        //start of the age verification
                         if (age < 13) {
                             const watchlist = bot.channels.cache.get('695169621757788210');
                             message.reply(`I'm sorry, but according to the Discord ToS, only users with the age 13 and above are eligable to enter the server.`);
@@ -89,8 +96,9 @@ module.exports = bot => {
 
                             watchlist.send(embed);
                             return;
-                        }
+                        } //end of age verification
                         else {
+                            //start of verification process
                             message.reply(`Great! Now please type the verification phrase.`);
                             const filter = m => m.content && m.author.id !== bot.user.id;
                             const channel = message.channel;
@@ -98,7 +106,7 @@ module.exports = bot => {
                             console.log("Collector started");
                             logs.send("Collector started");
 
-
+                            //collects messages from the user in DM channel
                             collector.on('collect', async m => {
 
                                 const verify = m.content === 'I have read the rules of this server and have agreed to follow them accordingly';
@@ -115,7 +123,7 @@ module.exports = bot => {
 
                             });
 
-
+                            //sends the log that the user has entered the server
                             collector.on('end', collected => {
 
                                 const logging = bot.channels.cache.get('697105399836573756');
@@ -134,7 +142,7 @@ module.exports = bot => {
                                     return;
                                 }
                                 else {
-
+                                    //another long embed...
                                     const verify = collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly');
                                     const general = bot.channels.cache.get('694810451065962505');
 
@@ -145,10 +153,11 @@ module.exports = bot => {
                                         .setThumbnail(member.user.displayAvatarURL())
                                         .setColor(colors.Green)
                                         .addField('User information:', stripIndents`**ID:** ${member.user.id}
-                            **Username:** ${member.user.username}
-                            **Tag:** ${member.user.tag}
-                            **Created:** ${created}
-                            **${member.displayName}'s:** ${age} years old`, true);
+                                        **Username:** ${member.user.username}
+                                        **Tag:** ${member.user.tag}
+                                        **Created:** ${created}
+                                        **${member.displayName}'s birthday:** ${birthday}
+                                        **${member.displayName}'s age:** ${age} years old`, true);
                                     logging.send(embed);
                                     general.send(`Welcome to da good paking server ${member}! Have fun!`).then(m => m.delete({ timeout: 60000, reason: "It had to be done." }));
                                     console.log("Collector stopped");
@@ -162,7 +171,7 @@ module.exports = bot => {
                                         .setTimestamp()
                                         .setColor(colors.Green)
                                         .addField(`**${member.user.username} has sucessfully entered the server!**`, `${member} has completed the verification method and entered this phrase:
-                            \`${verify}\``);
+                                        \`${verify}\``);
 
                                     logs.send(lEmbed);
 
@@ -170,6 +179,7 @@ module.exports = bot => {
 
                             });
                         }
+                        //end off verifications
                     });
             });
         }
