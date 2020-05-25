@@ -10,12 +10,15 @@ const colors = require(`${__dirname}/../colors.json`);
 module.exports = bot => {
     bot.on('message', message => {
 
-        const member = bot.guilds.cache.get('694810450621366282').member(message.author);
-        const role = member.guild.roles.cache.find(role => role.name === "Member");
-        const logs = bot.channels.cache.get('710795359844171797');
-        const silenced = member.guild.roles.cache.find(role => role.name === "Global Silencer");
-
         if (message.content === `-start`) {
+
+            const guild = bot.guilds.cache.get('694810450621366282');
+            const member = guild.member(message.author);
+            const logs = bot.channels.cache.get('710795359844171797');
+            const silenced = guild.roles.cache.find(role => role.name === "Global Silencer");
+            const role = guild.roles.cache.find(role => role.name === "Member");
+            const unregisteredRole = guild.roles.cache.find(role => role.id === "714464085160362046");
+
             if (message.channel instanceof TextChannel) {
                 message.reply("This command is not supported here, it only works on DM channels.").then(m => m.delete({ timeout: 5000, reason: "It had to be done." }));
                 message.delete({ timeout: 6000, reason: "It had to be done" });
@@ -36,7 +39,7 @@ module.exports = bot => {
             message.reply(`Hello! Welcome to the server! Please enter your birthday in this format: \`DD/MM/YYYY\``).then(() => {
                 message.channel.awaitMessages(dob_filter, { max: 1, time: 60000 })
                     .then(collected => {
-                        if (collected.size === 0 || collected.first().content) {
+                        if (collected.size === 0 || !collected.first().content) {
                             message.reply("You ran out of time to respond. Please try again.");
                             return;
                         }
@@ -123,6 +126,7 @@ module.exports = bot => {
 
                                 if (verify) {
                                     message.reply(`Thank you for your cooperation, welcome ${member}!`);
+                                    member.roles.remove(unregisteredRole);
                                     member.roles.add(role);
                                     collector.stop();
 
