@@ -9,12 +9,17 @@ module.exports = {
     category:"info",
     usage: "<prefix>[command | alias]",
     run: async (bot, message, args) => {
+        const guild = bot.guilds.cache.get('694810450621366282');
+        const staff = guild.roles.cache.find(role => role.id === "714389560502648953");
+        const userInfo = guild.roles.cache.find(role => role.id === "714394698298556487");
+        const LFGroles = guild.roles.cache.find(role => role.id === "714394774034972676");
+        const specialRole = guild.roles.cache.find(role => role.id === "714394842918158387");
         const member = getMember(message, args.join(" "));
 
         // Member variables
         const joined = formatDate(member.joinedAt);
         const roles = member.roles.cache
-            .filter(r => r.id !== message.guild.id)
+            .filter(r => r.id !== message.guild.id && r.id !== staff.id && r.id !== userInfo.id && r.id !== LFGroles.id && r.id !== specialRole.id)
             .map(r => r).join(", ") || 'none';
 
         const active = member.user.presence.activities.length;

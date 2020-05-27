@@ -1,3 +1,5 @@
+const { MessageEmbed } = require('discord.js');
+
 module.exports = {
     getMember: function(message, toFind = '') {
         toFind = toFind.toLowerCase();
@@ -55,6 +57,7 @@ module.exports = {
 
         return age;
     },
+
     isLeapYear: function(year) {
         let leapYear = new Date(year, 1, 29).getMonth();
 
@@ -66,6 +69,68 @@ module.exports = {
         }
 
         return leapYear;
+    },
+    paginationEmbed: async function(msg, channel, role, pages, emojiList, idleTimer = 120000){
+        if (!msg && !msg.channel) {
+            throw new Error('Channel is inaccessible.');
+        }
+        if (!pages) {
+            throw new Error('Pages are not given.');
+        }
+
+        let page = 0;
+        let end = 0;
+
+        await channel.send(`Hello ${msg.author}! Welcome to your ticket!`);
+        const curPage = await channel.send(pages[page].setFooter(`Page ${page + 1} / ${pages.length}`));
+        for (const emoji of emojiList.slice(1)) {
+            await curPage.react(emoji);
+        }
+        const reactionCollector = curPage.createReactionCollector(
+            (reaction, user) => emojiList.includes(reaction.emoji.name) && !user.bot,
+            { idle: idleTimer }
+        );
+        reactionCollector.on('collect', async reaction => {
+            reaction.users.remove(msg.author);
+            switch (reaction.emoji.name) {
+                case emojiList[0]:
+                    page = 0;
+                    curPage.reactions.removeAll().then(async () => {
+                        for (const emoji of emojiList.slice(1)) {
+                            await curPage.react(emoji);
+                        }
+                    });
+                    break;
+                    case emojiList[1]:
+                    page = 1;
+                    break;
+                case emojiList[2]:
+                    page = 2;
+                    break;
+                case emojiList[3]:
+                    page = 3;
+                    break;
+                case emojiList[4]:
+                    reactionCollector.stop();
+                    return;
+                default:
+                    break;
+            }
+            curPage.edit(pages[page].setFooter(`Page ${page + 1} / ${pages.length}`)).then(async () => {
+                if (page !== 0 ) {
+                    curPage.reactions.removeAll();
+                    await curPage.react(emojiList[0]);
+                    await curPage.react(emojiList[4]);
+                }
+            });
+        });
+
+        reactionCollector.on('end', async () => {
+            await channel.send(`Closing ticket...`);
+            await curPage.reactions.removeAll();
+            await role.delete('User has beed assisted!');
+            await channel.delete('User has beed assisted!');
+        });
     }
 };
 

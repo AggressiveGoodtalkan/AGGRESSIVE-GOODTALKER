@@ -18,6 +18,7 @@ bot.aliases = new Collection();
 bot.categories = readdirSync(`./commands/`);
 bot.commands = new Collection();
 bot.queue = [];
+bot.ctr = 0;
 
 // Setup configuration
 config({
