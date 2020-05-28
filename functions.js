@@ -70,7 +70,7 @@ module.exports = {
 
         return leapYear;
     },
-    paginationEmbed: async function(msg, channel, role, pages, emojiList, idleTimer = 120000){
+    paginationEmbed: async function(msg, channel, pages, emojiList, idleTimer = 120000){
         if (!msg && !msg.channel) {
             throw new Error('Channel is inaccessible.');
         }
@@ -79,7 +79,6 @@ module.exports = {
         }
 
         let page = 0;
-        let end = 0;
 
         await channel.send(`Hello ${msg.author}! Welcome to your ticket!`);
         const curPage = await channel.send(pages[page].setFooter(`Page ${page + 1} / ${pages.length}`));
@@ -101,7 +100,7 @@ module.exports = {
                         }
                     });
                     break;
-                    case emojiList[1]:
+                case emojiList[1]:
                     page = 1;
                     break;
                 case emojiList[2]:
@@ -111,7 +110,7 @@ module.exports = {
                     page = 3;
                     break;
                 case emojiList[4]:
-                    reactionCollector.stop();
+                    reactionCollector.stop(['User assisted!']);
                     return;
                 default:
                     break;
@@ -128,8 +127,8 @@ module.exports = {
         reactionCollector.on('end', async () => {
             await channel.send(`Closing ticket...`);
             await curPage.reactions.removeAll();
-            await role.delete('User has beed assisted!');
-            await channel.delete('User has beed assisted!');
+            await curPage.delete();
+            await channel.send(`Succesfully closed the ticket! Please type\`-closeticket\` to end this session.`);
         });
     }
 };

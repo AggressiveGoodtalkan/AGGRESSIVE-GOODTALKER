@@ -12,6 +12,12 @@ module.exports = bot => {
 
         if (message.content === `-start`) {
 
+            if (message.channel instanceof TextChannel) {
+                message.reply("This command is not supported here, it only works on DM channels.").then(m => m.delete({ timeout: 5000, reason: "It had to be done." }));
+                message.delete({ timeout: 6000, reason: "It had to be done" });
+                return;
+            }
+
             const guild = bot.guilds.cache.get('694810450621366282');
             const member = guild.member(message.author);
             const logs = bot.channels.cache.get('710795359844171797');
@@ -19,11 +25,6 @@ module.exports = bot => {
             const role = guild.roles.cache.find(role => role.name === "Member");
             const unregisteredRole = guild.roles.cache.find(role => role.id === "714464085160362046");
 
-            if (message.channel instanceof TextChannel) {
-                message.reply("This command is not supported here, it only works on DM channels.").then(m => m.delete({ timeout: 5000, reason: "It had to be done." }));
-                message.delete({ timeout: 6000, reason: "It had to be done" });
-                return;
-            }
 
             if (member.roles.cache.has(silenced.id)) {
                 message.reply(`You have been silenced! You cannot access the server for now.`);

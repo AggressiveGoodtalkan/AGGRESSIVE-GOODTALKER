@@ -29,7 +29,7 @@ module.exports = async bot => {
 
         // If message.member is uncached, cache it.
         if (!message.member) {
-            message.member = message.guild.fetchMember(message);
+            message.member = await message.guild.fetchMember(message);
         }
 
         const args = message.content.slice(prefix.length).trim().split(/ +/g);

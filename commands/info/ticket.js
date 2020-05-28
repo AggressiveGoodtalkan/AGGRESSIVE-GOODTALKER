@@ -15,7 +15,6 @@ module.exports = {
         const unregisteredRole = guild.roles.cache .find(role => role.id === '714464085160362046');
         const memberRole = guild.roles.cache .find(role => role.name === 'Member');
         const rules = guild.channels.cache.find(c => c.name === 'rules');
-        const feedbacks = guild.channels.cache.find(c => c.name === 'feedbacks');
         const assistance = guild.channels.cache.find(c => c.name === 'assistance');
         const mahomuri = guild.members.cache.find(m => m.id === '259313335076519936');
 
@@ -26,7 +25,7 @@ module.exports = {
             return;
         }
 
-        let createdChannel = message.guild.channels.cache.find(channel => channel.name === `ticket# ${message.author.id}`);
+        let createdChannel = message.guild.channels.cache.find(channel => channel.name === `ticket-${message.author.id}`);
         let ticket = message.guild.roles.cache.find(role => role.name === `ticket# ${message.author.id}`);
 
         if (!ticket) {
@@ -44,7 +43,7 @@ module.exports = {
         }
         if (!createdChannel) {
             try {
-                createdChannel = await message.guild.channels.create(`ticket# ${message.author.id}`, {
+                createdChannel = await message.guild.channels.create(`ticket-${message.author.id}`, {
                     type: 'text',
                     permissionOverwrites: [
                         {
@@ -120,42 +119,6 @@ module.exports = {
 
 
         member.roles.add(ticket);
-        await paginationEmbed(message, createdChannel, ticket, pages, [ "⬅","1️⃣","2️⃣","3️⃣","❌"],);
-
-
-        // FIND A WAY TO SEND THIS AFTER THE CHANNEL IS DELETED
-        // const promptFeedback = new MessageEmbed()
-        // .setColor(colors.Green)
-        // .setAuthor(`This message becomes invalid after 30s`)
-        // .setDescription('Thank you for using our ticket system! Would you like to provide feedback to help us improve our system?');
-
-        // await member.send(promptFeedback).then(async msg => {
-
-        //     const response = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
-
-        //     if (response === "✅") {
-
-        //         message.reply("Great! Please enter your feedback now.");
-        //         const filter = m => m.content && m.author.is !== bot.user.id;
-
-        //         msg.channel.awaitMessages(filter, { max:1 }).then(collected => {
-        //             if (collected.first().content){
-        //                 msg.reply(`Thank you for your response!`);
-
-        //                 const embed = new MessageEmbed()
-        //                     .setAuthor("New Feedback!")
-        //                     .setColor(colors.Thisle)
-        //                     .addField(`${msg.author} gave us feedback!`, stripIndents `${collected.first().content}`);
-
-        //                 feedbacks.send(embed);
-        //             }
-        //         });
-        //     }else if (response === "❌"){
-        //         msg.reply(`Thank you for your time! Have a nice day!`);
-        //         return;
-        //     }
-
-        // });
-
+        paginationEmbed(message, createdChannel, pages, [ "⬅","1️⃣","2️⃣","3️⃣","❌"],);
     }
 };
