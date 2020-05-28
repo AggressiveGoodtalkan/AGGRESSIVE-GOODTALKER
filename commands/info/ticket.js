@@ -54,6 +54,10 @@ module.exports = {
                             id: ticket.id,
                             allow: ['VIEW_CHANNEL'],
                         },
+                        {
+                            id: '694810450621366282',
+                            deny: ['VIEW_CHANNEL'],
+                        }
                     ],
                 });
             } catch (error) {
