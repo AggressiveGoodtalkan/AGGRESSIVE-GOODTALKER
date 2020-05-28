@@ -174,7 +174,7 @@ module.exports = bot => {
                                         **${member.displayName}'s birthday:** ${birthday}
                                         **${member.displayName}'s age:** ${age} years old`, true);
                                     logging.send(embed);
-                                    general.send(`Welcome to da good paking server ${member}! Have fun!`).then(m => m.delete({ timeout: 60000, reason: "It had to be done." }));
+                                    general.send(`Welcome to da good paking server ${member}! If you opened a ticket, please do close the ticket first. Thanks and have fun!`).then(m => m.delete({ timeout: 120000, reason: "It had to be done." }));
                                     console.log("Collector stopped");
                                     logs.send("Collector stopped");
                                     console.log("Collected item: ");
