@@ -17,7 +17,14 @@ module.exports = {
         let today = days[date.getDay()] + " " + months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
 
 
-        if (leapYear === true) {
+        if (!year) {
+            const embed = new MessageEmbed()
+                .setTitle("Today is")
+                .setColor(colors.Turquoise)
+                .setDescription(`**${today}**`);
+
+            message.channel.send(embed);
+        }else if (leapYear === true) {
             const embed = new MessageEmbed()
                 .setTitle("Leap Year!")
                 .setColor(colors.Green)
@@ -31,15 +38,6 @@ module.exports = {
                 .setTitle("Non-Leap Year!")
                 .setColor(colors.Red)
                 .setDescription(`${year} is a non-leap year.`);
-
-            message.channel.send(embed);
-        }
-        else if (!year) {
-
-            const embed = new MessageEmbed()
-                .setTitle("Today is")
-                .setColor(colors.Turquoise)
-                .setDescription(`${today}`);
 
             message.channel.send(embed);
         }
