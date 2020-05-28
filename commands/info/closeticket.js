@@ -14,20 +14,22 @@ module.exports = {
         const member = getMember(message, args.join(" "));
         const feedbacks = guild.channels.cache.get('715114655059542105');
         const ticket = guild.roles.cache.find(r => r.name === `ticket# ${message.author.id}`);
+        const memberRole = guild.roles.cache.find(r => r.name === 'Member');
         const ticketchannel = guild.channels.cache.find(c => c.name === `ticket-${message.author.id}`);
 
-        ticketchannel.delete();
-
-        if (!member.roles.cache.has(ticket.id)) {
-            message.reply("You cannot use this command!");
+        if (member.roles.cache.has(memberRole.id)) {
+            message.reply("You cannot use this command because you are already verified!")
+            .then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
+            message.delete({timeout:6000, reason :"It had to be done"});
             return;
         }
 
+        ticketchannel.delete();
 
         const promptFeedback = new MessageEmbed()
             .setColor(colors.Green)
-            .setTitle("Thank you for using our ticket system!")
-            .setFooter(`This message becomes invalid after 60s`)
+            .setTitle('Thank you for using our ticket system!')
+            .setFooter('This message becomes invalid after 60s')
             .setDescription('Would you like to provide feedback to help us improve our system?');
 
         await member.send(promptFeedback).then(async msg => {
@@ -41,7 +43,7 @@ module.exports = {
 
                 msg.channel.awaitMessages(filter, { max:1 }).then(collected => {
                     if (collected){
-                        msg.reply(`Thank you for your response! Have a nice paking day!`);
+                        msg.reply('Thank you for your response! Have a nice paking day!');
 
                         const embed = new MessageEmbed()
                             .setTitle("New Feedback!")

@@ -12,18 +12,23 @@ module.exports = {
 
         const guild = bot.guilds.cache.get('694810450621366282');
         const member = getMember(message, args.join(" "));
-        const unregisteredRole = guild.roles.cache .find(role => role.id === '714464085160362046');
         const memberRole = guild.roles.cache .find(role => role.name === 'Member');
         const rules = guild.channels.cache.find(c => c.name === 'rules');
         const assistance = guild.channels.cache.find(c => c.name === 'assistance');
         const mahomuri = guild.members.cache.find(m => m.id === '259313335076519936');
 
-        if (!member.roles.cache.has(unregisteredRole.id) && member.roles.cache.has(memberRole.id)) {
+        if (message.channel !== assistance) {
+            message.reply(`You cannot use this command here, please use it in the ${assistance} channel instead.`)
+            .then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
+            message.delete({timeout:6000, reason :"It had to be done"});
+            return;
+        }else if (member.roles.cache.has(memberRole.id)) {
             message.reply("You cannot use this command because you are already verified!")
             .then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
             message.delete({timeout:6000, reason :"It had to be done"});
             return;
         }
+
 
         let createdChannel = message.guild.channels.cache.find(channel => channel.name === `ticket-${message.author.id}`);
         let ticket = message.guild.roles.cache.find(role => role.name === `ticket# ${message.author.id}`);
