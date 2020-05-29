@@ -18,7 +18,7 @@ module.exports = {
         // No args
         if (!args[0]) {
             return message.reply("Please provide a person to kick.")
-                .thenm.delete({timeout: 5000, reason :"It had to be done."});
+                .then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
         }
 
         // No reason
