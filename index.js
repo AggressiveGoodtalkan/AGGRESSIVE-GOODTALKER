@@ -8,6 +8,7 @@ const { Client, Collection } = require('discord.js');
 const { config } = require("dotenv");
 const { readdirSync } = require("fs");
 
+
 // Setup bot
 const bot = new Client({
     disableEveryone: true,

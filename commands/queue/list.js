@@ -1,5 +1,11 @@
 const { MessageEmbed } = require('discord.js');
 const colors = require('../../colors.json');
+const mongoose = require("mongoose");
+mongoose.connect('mongodb://localhost/Queue_List',{
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
 
 module.exports = {
     name: "list",

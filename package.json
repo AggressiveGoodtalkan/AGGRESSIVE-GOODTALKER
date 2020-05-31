@@ -16,6 +16,8 @@
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
     "jshint": "^2.11.0",
+    "mongodb": "^3.5.8",
+    "mongoose": "^5.9.16",
     "ms": "^2.1.2",
     "nodemon": "^2.0.2",
     "superagent": "^5.2.2"

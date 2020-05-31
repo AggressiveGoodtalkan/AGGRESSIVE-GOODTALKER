@@ -8,7 +8,6 @@ module.exports = {
     usage:['<prefix>giverole <Usertag|Mention> <RoleID: Plain text>'],
     run: async (bot, message, args) => {
 
-
         if (!message.member.hasPermission("MANAGE_ROLES")) {
             message.reply("You don't have access to this command!");
             return;
@@ -27,23 +26,21 @@ module.exports = {
             return;
         }
 
-
         const member = getMember(message, args.join(" "));
         const toGive = args[1].toString();
         const role = message.guild.roles.cache.find(role => role.name === toGive);
 
-
         try {
 
             if (member.roles.cache.has(role.id)) {
-                message.channel.send(`${member} already has the ${role.name} role!`)
+                message.channel.send(`${member} already has the ${role.name} role!`);
                 return;
             }
             await member.roles.add(role);
-            message.channel.send(`${role.name} has been successfully given to ${member}!`)
+            message.channel.send(`${role.name} has been successfully given to ${member}!`);
         } catch (error) {
             message.channel.send(stripIndents `Couldn't rive the role here's why:
             \`${error.message}\``);
         }
     }
-}
+};

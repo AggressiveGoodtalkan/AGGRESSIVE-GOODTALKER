@@ -14,12 +14,12 @@ module.exports = {
         }
 
         if (!message.mentions.members.first()) {
-            message.reply('Please provide a member to give the role to.');
+            message.reply('Please provide a member to take the role from.');
             return;
         }
 
         if (!args[1]) {
-            message.reply('Please provide role to give!');
+            message.reply('Please provide role to take!');
             return;
         }
 
@@ -34,14 +34,14 @@ module.exports = {
 
         try {
             if (!member.roles.cache.has(role.id)) {
-                message.channel.send(`${member} does not the ${role.name} role!`)
+                message.channel.send(`${member} does not the ${role.name} role!`);
                 return;
             }
             await member.roles.remove(role);
-            message.channel.send(`${role.name} has been successfully removed from ${member}!`)
+            message.channel.send(`${role.name} has been successfully removed from ${member}!`);
         } catch (error) {
             message.channel.send(stripIndents `Couldn't rive the role here's why:
             \`${error.message}\``);
         }
     }
-}
+};
