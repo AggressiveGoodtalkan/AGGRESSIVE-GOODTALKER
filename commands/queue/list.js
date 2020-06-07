@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const { config } = require('dotenv');
 
 config({
-    path: `${__dirname}/.env`
+    path: `../../${__dirname}/.env`
 });
 
 mongoose.connect(process.env.LISTURI,{
