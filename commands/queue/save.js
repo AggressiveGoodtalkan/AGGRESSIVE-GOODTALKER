@@ -4,7 +4,7 @@ const savedlist = require('../../models/savedlist.js');
 const { config } = require('dotenv');
 
 config({
-    path: `../../${__dirname}/.env`
+    path: '../../.env',
 });
 
 mongoose.connect(process.env.LISTURI,{
@@ -13,8 +13,6 @@ mongoose.connect(process.env.LISTURI,{
     useCreateIndex: true,
     useFindAndModify: false
 });
-
-
 
 
 module.exports = {

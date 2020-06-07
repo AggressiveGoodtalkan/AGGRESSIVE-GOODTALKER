@@ -1,20 +1,5 @@
 const { MessageEmbed } = require('discord.js');
 const colors = require('../../colors.json');
-const savedlist = require('../../models/savedlist.js');
-const mongoose = require('mongoose');
-
-const { config } = require('dotenv');
-
-config({
-    path: `../../${__dirname}/.env`
-});
-
-mongoose.connect(process.env.LISTURI,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
-});
 
 module.exports = {
     name: "list",
