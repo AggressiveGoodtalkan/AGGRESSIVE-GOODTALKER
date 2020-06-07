@@ -1,7 +1,5 @@
-const { MessageEmbed } = require('discord.js');
-const colors = require('../../colors.json');
-const savedlist = require('../../models/savedlist.js');
 const mongoose = require('mongoose');
+const savedlist = require('../../models/savedlist.js');
 
 const { config } = require('dotenv');
 
@@ -16,17 +14,20 @@ mongoose.connect(process.env.LISTURI,{
     useFindAndModify: false
 });
 
+
+
+
 module.exports = {
-    name: "list",
-    aliases: ["listahan"],
+    name: "save",
+    aliases: ["s"],
     category:"queue",
     usage: ["<prefix>command here"],
     run: async(bot, message, args)=>{
 
         if (bot.queue.length === 0) {
-            message.reply("The queue is paking empty! Go and add more people!")
+            message.reply("The queue is empty! There is nothing to save!")
             .then(m => m.delete({timeout: 5000, reason:"It had to be done"}));
-            message.delete({timeout: 5000, reason:"It had to be done"});
+            message.delete({timeout: 6000, reason:"It had to be done"});
             return;
         }
 
@@ -40,24 +41,30 @@ module.exports = {
             for (let i = 0; i < bot.queue.length; i++) {
 
                 if (i === 0 && performer) {
-                    queueList = queueList + `${i + 1}. ${bot.queue[i]} (Currently Performing)\n\n`;
+                    queueList = queueList + `${i + 1}. ${bot.queue[i].username} (Currently Performing)\n\n`;
                 }
                 else {
-                    queueList = queueList + `${i + 1}. ${bot.queue[i]}\n\n`;
+                    queueList = queueList + `${i + 1}. ${bot.queue[i].username}\n\n`;
                 }
             }
 
-            let lEmbed = new MessageEmbed()
-                .setColor(colors.Green_Sheen)
-                .setTitle("**THE GOOD PAKING LIST**")
-                .setDescription(queueList.slice(9))
-                .setTimestamp()
-                .setFooter("THE GOOD PAKING LIST | By MahoMuri");
-
-            message.channel.send(lEmbed);
-
             message.delete({timeout: 5000, reason:"It had to be done"});
-        }
 
+            const list = new savedlist({
+                author: mongoose.Types.ObjectId(),
+                title: "The GOOD PAKING LIST",
+                body: queueList.slice(9),
+                date: message.createdAt
+            });
+
+            list.save()
+            .then(item => console.log(item))
+            .catch(err => console.log(err));
+
+            const msg = await message.channel.send("Saving...");
+            msg.edit("List has been saved successfully to the database!");
+
+
+        }
     }
 };

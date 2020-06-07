@@ -8,3 +8,5 @@ const savedlistSchema = new Schema({
     body: String,
     date: Date
 });
+
+module.exports = mongoose.model("list", savedlistSchema);

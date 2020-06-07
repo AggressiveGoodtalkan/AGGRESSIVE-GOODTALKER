@@ -14,11 +14,10 @@ module.exports = {
         const member = getMember(message, args.join(" "));
         const feedbacks = guild.channels.cache.get('715114655059542105');
         const ticket = guild.roles.cache.find(r => r.name === `ticket# ${message.author.id}`);
-        const memberRole = guild.roles.cache.find(r => r.name === 'Member');
         const ticketchannel = guild.channels.cache.find(c => c.name === `ticket-${message.author.id}`);
 
-        if (member.roles.cache.has(memberRole.id)) {
-            message.reply("You cannot use this command because you are already verified!")
+        if (!member.roles.cache.has(ticket.id)) {
+            message.reply("You cannot use this command!")
             .then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
             message.delete({timeout:6000, reason :"It had to be done"});
             return;
