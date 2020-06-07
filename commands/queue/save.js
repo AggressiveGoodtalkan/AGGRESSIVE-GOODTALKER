@@ -6,7 +6,7 @@ mongoose.connect('mongodb://localhost/SavedList',{
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false
-});
+}).catch(err => console.log(err));
 
 
 module.exports = {
