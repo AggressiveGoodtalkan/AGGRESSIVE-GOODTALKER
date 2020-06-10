@@ -70,7 +70,7 @@ module.exports = {
 
         return leapYear;
     },
-    paginationEmbed: async function(msg, channel, pages, emojiList, idleTimer = 120000){
+    paginationEmbed: async function(msg, channel, ticket, pages, emojiList, idleTimer = 120000){
         if (!msg && !msg.channel) {
             throw new Error('Channel is inaccessible.');
         }
@@ -127,8 +127,9 @@ module.exports = {
         reactionCollector.on('end', async () => {
             await channel.send(`Closing ticket...`);
             await curPage.reactions.removeAll();
-            await curPage.delete();
-            await channel.send(`Succesfully closed the ticket! Please type\`-closeticket\` to end this session.`);
+            await ticket.delete();
+            await channel.delete();
+
         });
     }
 };

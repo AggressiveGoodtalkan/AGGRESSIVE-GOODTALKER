@@ -128,6 +128,6 @@ module.exports = {
 
 
         member.roles.add(ticket);
-        paginationEmbed(message, createdChannel, pages, [ "⬅","1️⃣","2️⃣","3️⃣","❌"],);
+        paginationEmbed(message, createdChannel, ticket, pages, [ "⬅","1️⃣","2️⃣","3️⃣","❌"],);
     }
 };
