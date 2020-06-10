@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const savedlist = require('../../models/savedlist.js');
+require("dotenv").config();
 
-mongoose.connect('mongodb://localhost/SavedList',{
+mongoose.connect(process.env.LISTURI,{
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
