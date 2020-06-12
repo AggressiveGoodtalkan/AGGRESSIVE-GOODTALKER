@@ -127,6 +127,7 @@ module.exports = {
         reactionCollector.on('end', async () => {
             await channel.send(`Closing ticket...`);
             await curPage.reactions.removeAll();
+            await curPage.delete();
             await ticket.delete();
             await channel.delete();
 

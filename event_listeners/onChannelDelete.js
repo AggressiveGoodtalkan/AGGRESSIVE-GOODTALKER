@@ -10,13 +10,13 @@ module.exports = bot => {
 
         const regex = /(\d+)/g;
         const channelName = channel.name;
-        let numbers = channelName.match(regex);
+        let userID = channelName.match(regex);
 
-        if (channelName === `ticket-${numbers}`) {
+        if (channelName === `ticket-${userID}`) {
 
             const guild = bot.guilds.cache.get('694810450621366282');
             const feedbacks = guild.channels.cache.get('715114655059542105');
-            const member = guild.member(numbers[0]);
+            const member = guild.member(userID[0]);
 
             const promptFeedback = new MessageEmbed()
                 .setColor(colors.Green)
@@ -31,7 +31,7 @@ module.exports = bot => {
                 if (response === "✅") {
 
                     await member.send("Great! Please enter your feedback now.");
-                    const filter = m => m.content !== "Great! Please enter your feedback now." && m.author.is !== bot.user.id;
+                    const filter = m => m.content !== "Great! Please enter your feedback now." && m.author.id !== bot.user.id;
 
                     msg.channel.awaitMessages(filter, { max:1 }).then(collected => {
                         if (collected){
