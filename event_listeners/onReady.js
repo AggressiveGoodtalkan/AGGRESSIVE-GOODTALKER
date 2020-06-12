@@ -1,7 +1,6 @@
 /**
  * @file ready listener
  */
-
 module.exports = bot => {
     bot.on('ready', async () => {
         const logChannel = await bot.channels.cache.get('710795359844171797');
@@ -14,5 +13,7 @@ module.exports = bot => {
             type: "STREAMING",
             url: "https://www.twitch.tv/aggressive_goodtalkan"
         });
+
+
     });
 };

@@ -15,6 +15,8 @@ module.exports = {
 
         const title = [];
         const data = [];
+        const embed = new MessageEmbed();
+
         rp(url)
         .then(function(html){
             //success!
@@ -27,18 +29,16 @@ module.exports = {
                 data[i] = $(this).text();
             });
 
-            const embed = new MessageEmbed()
+                embed
                 .setTitle('**Coronavirus Tracker**')
                 .addFields(
                     { name: `${title[0]}`, value: `${data[0]}`},
                     { name: `${title[1]}`, value: `${data[1]}`},
-                    { name: `${title[2]}`, value: `${data[2]}`}
+                    { name: `${title[2]}`, value: `${data[2]}`},
+                    { name: '\u2800' , value: `✩｡:*•.────────────  ❁ ❁  ────────────.•*:｡✩` }
                 )
                 .setColor(colors.Covid)
                 .setTimestamp();
-
-            message.channel.send(embed);
-
 
             // console.log(title[0]);
             // console.log(data[0]);
@@ -60,17 +60,13 @@ module.exports = {
                     data[i] = $(this).text();
                 });
 
-                const embed = new MessageEmbed()
-                    .setTitle('**Coronavirus Tracker**')
+                    embed
                     .addFields(
-                        { name: `Country`, value: `**${title[0].trim()}**`},
+                        { name: `\u2800`, value: `**${title[0].trim()}**`},
                         { name: `${title[1]}`, value: `${data[0]}`},
                         { name: `${title[2]}`, value: `${data[1]}`},
                         { name: `${title[3]}`, value: `${data[2]}`}
-                    )
-                    .setColor(colors.Covid)
-                    .setTimestamp();
-
+                    );
                 message.channel.send(embed);
 
                 // console.log(title[0]);
@@ -80,17 +76,7 @@ module.exports = {
                 //handle error
                 console.log(err);
             });
+
         });
-
-
-
-        // const options = { url: 'https://www.worldometers.info/coronavirus/worldwide-graphs/#total-cases' };
-
-
-        // ogs(options, (error, reults, response) => {
-        //     console.log('Error:', error);
-        //     console.log('Results:',reults);
-        //     console.log('Response:',response);
-        // });
     }
 };

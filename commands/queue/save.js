@@ -57,7 +57,6 @@ module.exports = {
             const msg = await message.channel.send("Saving...");
             msg.edit("List has been saved successfully to the database!");
 
-
         }
     }
 };
