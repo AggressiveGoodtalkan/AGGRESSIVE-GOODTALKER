@@ -26,13 +26,22 @@ module.exports = bot => {
                     data[i] = $(this).text();
                 });
 
-                    embed
+                let allCases = parseInt(data[0].replace(/,/g, ''));
+                let deaths = parseInt(data[1].replace(/,/g, ''));
+                let recovered = parseInt(data[2].replace(/,/g, ''));
+                let ActiveCases = allCases - deaths - recovered;
+
+                embed
                     .setTitle('**Coronavirus Tracker**')
                     .addFields(
-                        { name: `${title[0]}`, value: `${data[0]}`},
-                        { name: `${title[1]}`, value: `${data[1]}`},
-                        { name: `${title[2]}`, value: `${data[2]}`},
+
+                        { name: '\u2800' , value: '**Worldwide**' },
+                        { name: `${title[0]}`, value: `${data[0]}` },
+                        { name: `Active Cases:`, value: `${ActiveCases}` },
+                        { name: `${title[1]}`, value: `${data[1]}` },
+                        { name: `${title[2]}`, value: `${data[2]}` },
                         { name: '\u2800' , value: `✩｡:*•.────────────  ❁ ❁  ────────────.•*:｡✩` }
+
                     )
                     .setColor(colors.Covid)
                     .setTimestamp();
@@ -53,16 +62,23 @@ module.exports = bot => {
                     $('h1',html).each(function(i , elem){
                         title[i] = $(this).text();
                     });
+
                     $('.maincounter-number',html).each(function(i , elem){
                         data[i] = $(this).text();
                     });
 
+                    let allCases = parseInt(data[0].replace(/,/g, ''));
+                    let deaths = parseInt(data[1].replace(/,/g, ''));
+                    let recovered = parseInt(data[2].replace(/,/g, ''));
+                    let ActiveCases = allCases - deaths - recovered;
+
                     embed
                     .addFields(
-                        { name: `\u2800`, value: `**${title[0].trim()}**`},
-                        { name: `${title[1]}`, value: `${data[0]}`},
-                        { name: `${title[2]}`, value: `${data[1]}`},
-                        { name: `${title[3]}`, value: `${data[2]}`}
+                        { name: `\u2800`, value: `**${title[0].trim()}**` },
+                        { name: `${title[1]}`, value: `${data[0]}` },
+                        { name: `Active Cases:`, value: `${ActiveCases}` },
+                        { name: `${title[2]}`, value: `${data[1]}` },
+                        { name: `${title[3]}`, value: `${data[2]}` }
                     );
                     channel.send(embed);
 
@@ -75,7 +91,7 @@ module.exports = bot => {
 
             });
 
-        },ms('1d'));
+        }, ms('10s'));
         //end of setIterval
     });
 };

@@ -116,7 +116,7 @@ module.exports = bot => {
                             message.reply(`Great! Now please type the verification phrase.`);
                             const filter = m => m.content && m.author.id !== bot.user.id;
                             const channel = message.channel;
-                            const collector = channel.createMessageCollector(filter, { time: 60000 });
+                            const collector = channel.createMessageCollector(filter, { time: 300000 });
                             console.log("Collector started");
                             logs.send("Collector started");
 

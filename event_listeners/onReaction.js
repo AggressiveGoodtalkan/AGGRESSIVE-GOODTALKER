@@ -40,7 +40,7 @@ module.exports = bot => {
                 .setColor(colors.Turquoise)
                 .addFields(
                     { name: '__**Step 1:**__', value: stripIndents`Enter \`-start\` to start, the dash is required.
-                    **(Make it quick because you would only have 1 minute to complete this.)**`},
+                    **(Make it quick because you would only have 5 minutes to complete this.)**`},
                     { name: '__**Step 2:**__', value: stripIndents`Enter your birthday to continue.
                     **Please use the format: (DD/MM/YYYY)**` },
                     { name: '__**Step 3:**__', value: stripIndents`Then type:
