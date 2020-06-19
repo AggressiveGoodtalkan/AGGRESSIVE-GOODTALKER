@@ -34,10 +34,20 @@ module.exports = {
         message.react('👌');
         message.delete({timeout: 5000, reason: 'it had to be done'});
         setInterval(function(){
-            let hrs;
+            let hrs = parseInt(HrsMins[0]);
             let mins = parseInt(HrsMins[1]);
+
             if (AmPm[0] === 'p' && AmPm[1] === 'm') {
-                hrs = parseInt(HrsMins[0]) + 12;
+                hrs += 12;
+            }
+
+            if (AmPm[0] === 'a' && AmPm[1] === 'm') {
+                if (hrs === 12) {
+                    hrs = 0;
+                }
+                else{
+                    hrs = hrs;
+                }
             }
 
             let date = new Date();

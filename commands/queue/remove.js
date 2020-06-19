@@ -8,8 +8,6 @@ module.exports = {
     run: async(bot, message, args)=>{
 
         const dj = message.guild.roles.cache.find(role => role.name === "Queue Master");
-        const member = getMember(message, args.join(" "));
-
         if(!args[0]){
             message.reply('Please provide a member to remove.')
             .then(m => m.delete({timeout: 5000, reason:"It had to be done"}));
@@ -25,6 +23,7 @@ module.exports = {
 
         //message.channel.send(args[0]);
 
+        const member = getMember(message, args.join(" "));
         const toRemove = bot.queue.indexOf(member.user);
 
         //message.channel.send(toRemove);
