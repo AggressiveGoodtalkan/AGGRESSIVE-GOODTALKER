@@ -25,7 +25,7 @@ module.exports = {
         }
 
         const regex = /(\d+)/g;
-        const regexTime = /[pm]/g;
+        const regexTime = /[apm]/g;
         let HrsMins = await args[1].match(regex);
         const AmPm = await args[1].match(regexTime);
         const channelName = message.mentions.channels.first();
