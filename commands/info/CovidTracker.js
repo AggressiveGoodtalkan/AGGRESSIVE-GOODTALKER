@@ -4,22 +4,48 @@ const ms = require('ms');
 const url = 'https://www.worldometers.info/coronavirus/?';
 const phurl = 'https://www.worldometers.info/coronavirus/country/philippines/';
 const { MessageEmbed } = require('discord.js');
-const colors = require("../colors.json");
-const { addCommas } = require("../functions.js");
+const colors = require("../../colors.json");
+const { addCommas } = require("../../functions.js");
 
-module.exports = bot => {
+module.exports = {
+    name: "covid",
+    aliases: ["ctracker"],
+    category:"info",
+    usage: ["<prefix>command here"],
+    run: async(bot, message, args)=> {
 
-    bot.on('ready', async () => {
+        if (!message.mentions.channels.first()) {
+            message.reply('Please provide a channel tag!');
+            return;
+        }
 
+        if (message.mentions.channels.first() && !args[1]) {
+            message.reply('Please provide a specific time!');
+            return;
+        }
+
+        const regex = /(\d+)/g;
+        const regexTime = /[pm]/g;
+        let HrsMins = await args[1].match(regex);
+        const AmPm = await args[1].match(regexTime);
+        const channelName = message.mentions.channels.first();
+        const channel = bot.channels.cache.find(c => c.id === channelName.id);
+
+        message.react('👌');
+        message.delete({timeout: 5000, reason: 'it had to be done'});
         setInterval(function(){
+            let hrs;
+            let mins = parseInt(HrsMins[1]);
+            if (AmPm[0] === 'p' && AmPm[1] === 'm') {
+                hrs = parseInt(HrsMins[0]) + 12;
+            }
 
             let date = new Date();
-            if (date.getHours() === 10 && date.getMinutes() === 0 && date.getSeconds() <= 59) {
+            if (date.getHours() === hrs && date.getMinutes() === mins && date.getSeconds() < 6) {
 
                 let title = [];
                 let data = [];
                 const embed = new MessageEmbed();
-                const channel = bot.channels.cache.get('720592478612226100');
 
                 rp(url)
                 .then(function(html){
@@ -85,7 +111,7 @@ module.exports = bot => {
                             { name: `${title[2]}`, value: `${data[1]}` },
                             { name: `${title[3]}`, value: `${data[2]}` }
                         );
-                        channel.send(embed);
+                       channel.send(embed);
 
                     })
                     .catch(function(err){
@@ -95,11 +121,15 @@ module.exports = bot => {
 
 
                 });
+
+                return;
             }else {
                 return;
             }
 
-        }, ms('10s'));
+        }, ms('5s'));
         //end of setIterval
-    });
+    }
+
 };
+
