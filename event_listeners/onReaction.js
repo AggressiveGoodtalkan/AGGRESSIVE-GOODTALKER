@@ -39,7 +39,7 @@ module.exports = bot => {
                 .setTitle("How to enter the server:")
                 .setColor(colors.Turquoise)
                 .addFields(
-                    { name: '__**Step 1:**__', value: stripIndents`Enter \`-start\` to start, the dash is required.
+                    { name: '__**Step 1:**__', value: stripIndents`Enter \`-verify\` to start, the dash is required.
                     **(Make it quick because you would only have 5 minutes to complete this.)**`},
                     { name: '__**Step 2:**__', value: stripIndents`Enter your birthday to continue.
                     **Please use the format: (DD/MM/YYYY)**` },

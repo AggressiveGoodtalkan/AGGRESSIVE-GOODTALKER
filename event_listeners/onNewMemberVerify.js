@@ -10,7 +10,7 @@ const colors = require(`${__dirname}/../colors.json`);
 module.exports = bot => {
     bot.on('message', message => {
 
-        if (message.content === `-start`) {
+        if (message.content === `-verify`) {
 
             if (message.channel instanceof TextChannel) {
                 message.reply("This command is not supported here, it only works on DM channels.").then(m => m.delete({ timeout: 5000, reason: "It had to be done." }));
