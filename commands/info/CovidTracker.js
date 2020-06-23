@@ -6,6 +6,7 @@ const phurl = 'https://www.worldometers.info/coronavirus/country/philippines/';
 const { MessageEmbed } = require('discord.js');
 const colors = require("../../colors.json");
 const { addCommas } = require("../../functions.js");
+const { stripIndents } = require("common-tags");
 
 module.exports = {
     name: "covid",
@@ -33,24 +34,31 @@ module.exports = {
 
         message.react('👌');
         message.delete({timeout: 5000, reason: 'it had to be done'});
-        setInterval(function(){
-            let hrs = parseInt(HrsMins[0]);
-            let mins = parseInt(HrsMins[1]);
+        let hrs = parseInt(HrsMins[0]);
+        let mins = parseInt(HrsMins[1]);
 
-            if (AmPm[0] === 'p' && AmPm[1] === 'm') {
+        if (AmPm[0] === 'p' && AmPm[1] === 'm') {
+            if (hrs === 12) {
+                hrs = 12;
+            }
+            else{
                 hrs += 12;
             }
+        }
 
-            if (AmPm[0] === 'a' && AmPm[1] === 'm') {
-                if (hrs === 12) {
-                    hrs = 0;
-                }
-                else{
-                    hrs = parseInt(hrs);
-                }
+        if (AmPm[0] === 'a' && AmPm[1] === 'm') {
+            if (hrs === 12) {
+                hrs = 0;
             }
+            else{
+                hrs = parseInt(hrs);
+            }
+        }
+
+        setInterval(function(){
 
             let date = new Date();
+            // message.channel.send(`${hrs}:${mins}`);
             if (date.getHours() === hrs && date.getMinutes() === mins) {
 
                 let title = [];
@@ -73,15 +81,18 @@ module.exports = {
                     let ActiveCases = allCases - deaths - recovered;
 
                     embed
-                        .setTitle('**Coronavirus Tracker**')
+                        .setTitle( `
+                        ┌─────────── ∘°❉°∘ ────────────┐
+                                  **Corona Tracker**
+└─────────── °∘❉∘° ────────────┘`)
+                        .setDescription('🌎 **Worldwide**\n')
                         .addFields(
 
-                            { name: '\u2800' , value: '**Worldwide**' },
-                            { name: `${title[0]}`, value: `${data[0]}` },
-                            { name: `Active Cases:`, value: `${addCommas(ActiveCases)}` },
-                            { name: `${title[1]}`, value: `${data[1]}` },
-                            { name: `${title[2]}`, value: `${data[2]}` },
-                            { name: '\u2800' , value: `✩｡:*•.────────────  ❁ ❁  ────────────.•*:｡✩` }
+                            { name: `🦠 Confirmed Cases:`, value: `**${data[0].trim()}**`, inline: true },
+                            { name: `🤒 Active Cases:`, value: `**${addCommas(ActiveCases)}**`, inline: true },
+                            { name: `☠️ Deaths:`, value: `**${data[1].trim()}**`, inline: true },
+                            { name: `💕Recovered:`, value: `**${data[2].trim()}**`, inline: true },
+                            { name: '\u2800' , value: `✩｡:*•.────────────  ❁ ❁  ─────────────.•*:｡✩` }
 
                         )
                         .setColor(colors.Covid)
@@ -115,11 +126,11 @@ module.exports = {
 
                         embed
                         .addFields(
-                            { name: `\u2800`, value: `**${title[0].trim()}**` },
-                            { name: `${title[1]}`, value: `${data[0]}` },
-                            { name: `Active Cases:`, value: `${addCommas(ActiveCases)}` },
-                            { name: `${title[2]}`, value: `${data[1]}` },
-                            { name: `${title[3]}`, value: `${data[2]}` }
+                            { name: `\u2800`, value: `:flag_ph: **${title[0].trim()}**` },
+                            { name: `🦠 Confirmed Cases:`, value: `**${data[0].trim()}**`, inline: true },
+                            { name: `🤒 Active Cases:`, value: `**${addCommas(ActiveCases)}**`, inline: true },
+                            { name: `☠️ Deaths:`, value: `**${data[1].trim()}**`, inline: true },
+                            { name: `💕Recovered:`, value: `**${data[2].trim()}**`, inline: true }
                         );
                        channel.send(embed);
 
