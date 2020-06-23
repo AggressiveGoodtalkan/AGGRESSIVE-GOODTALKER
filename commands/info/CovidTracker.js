@@ -46,12 +46,12 @@ module.exports = {
                     hrs = 0;
                 }
                 else{
-                    hrs = hrs;
+                    hrs = parseInt(hrs);
                 }
             }
 
             let date = new Date();
-            if (date.getHours() === hrs && date.getMinutes() === mins && date.getSeconds() < 6) {
+            if (date.getHours() === hrs && date.getMinutes() === mins) {
 
                 let title = [];
                 let data = [];
@@ -137,7 +137,7 @@ module.exports = {
                 return;
             }
 
-        }, ms('5s'));
+        }, ms('1m'));
         //end of setIterval
     }
 
