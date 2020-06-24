@@ -15,7 +15,7 @@ module.exports = {
     usage: ["<prefix>command here"],
     run: async(bot, message, args)=> {
 
-        if (!message.mentions.channels.first()) {
+        if (!message.mentions.channels.first() && args[0] !== 'checkTime') {
             message.reply('Please provide a channel tag!');
             return;
         }
@@ -24,6 +24,7 @@ module.exports = {
             message.reply('Please provide a specific time!');
             return;
         }
+
 
         const regex = /(\d+)/g;
         const regexTime = /[apm]/g;
@@ -83,7 +84,7 @@ module.exports = {
                     embed
                         .setTitle( `
                         ┌─────────── ∘°❉°∘ ────────────┐
-                                  **Corona Tracker**
+                                **Corona Tracker**
 └─────────── °∘❉∘° ────────────┘`)
                         .setDescription('🌎 **Worldwide**\n')
                         .addFields(
@@ -98,6 +99,7 @@ module.exports = {
                         .setColor(colors.Covid)
                         .setTimestamp();
 
+                        channel.startTyping();
                     // console.log(title[0]);
                     // console.log(data[0]);
                 })
@@ -126,14 +128,16 @@ module.exports = {
 
                         embed
                         .addFields(
+
                             { name: `\u2800`, value: `:flag_ph: **${title[0].trim()}**` },
                             { name: `🦠 Confirmed Cases:`, value: `**${data[0].trim()}**`, inline: true },
                             { name: `🤒 Active Cases:`, value: `**${addCommas(ActiveCases)}**`, inline: true },
                             { name: `☠️ Deaths:`, value: `**${data[1].trim()}**`, inline: true },
                             { name: `💕Recovered:`, value: `**${data[2].trim()}**`, inline: true }
-                        );
-                       channel.send(embed);
 
+                        );
+                        channel.send(embed);
+                        channel.stopTyping();
                     })
                     .catch(function(err){
                         //handle error
