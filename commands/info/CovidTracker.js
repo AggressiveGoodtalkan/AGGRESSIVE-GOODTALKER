@@ -15,7 +15,7 @@ module.exports = {
     usage: ["<prefix>command here"],
     run: async(bot, message, args)=> {
 
-        if (!message.mentions.channels.first() && args[0] !== 'checkTime') {
+        if (!message.mentions.channels.first()) {
             message.reply('Please provide a channel tag!');
             return;
         }
@@ -52,7 +52,7 @@ module.exports = {
                 hrs = 0;
             }
             else{
-                hrs = parseInt(hrs);
+                hrs = parseInt(HrsMins[0]);
             }
         }
 
