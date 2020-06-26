@@ -52,7 +52,7 @@ module.exports = {
                 hrs = 0;
             }
             else{
-                hrs = parseInt(HrsMins[0]);
+                hrs = parseInt(hrs);
             }
         }
 
