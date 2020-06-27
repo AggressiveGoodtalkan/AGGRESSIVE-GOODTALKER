@@ -18,13 +18,15 @@ module.exports = {
             return;
         }
 
+        announcement.startTyping();
         const embed = new MessageEmbed()
             .setTitle("Baro Ki'Teer has arrived!")
-            .setDescription(`Head to ${barochat} now before time runs out!`)
+            .setDescription(`Head to ${barochat} by 12mn!`)
             .setColor(colors.Beige)
             .setTimestamp()
             .setFooter(`AGGRESSIVE GOODTALKER | By MahoMuri`, bot.user.displayAvatarURL());
         announcement.send(embed);
+        announcement.stopTyping();
 
     }
 };

@@ -5,7 +5,7 @@ module.exports = {
     description: "Clears the chat",
     run: async (bot, message, args) => {
 
-        message.delete();
+        await message.delete();
 
         // Member doesn't have permissions
         if (!message.member.hasPermission("MANAGE_MESSAGES")) {
