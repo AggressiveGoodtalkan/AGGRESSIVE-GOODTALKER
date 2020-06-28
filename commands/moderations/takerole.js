@@ -29,18 +29,18 @@ module.exports = {
         }
 
         const member = getMember(message, args.join(" "));
-        const toGive = args[1].toString();
+        const toGive = args.slice(1).join(" ");
         const role = message.guild.roles.cache.find(role => role.name === toGive);
 
         try {
             if (!member.roles.cache.has(role.id)) {
-                message.channel.send(`${member} does not the ${role.name} role!`);
+                message.channel.send(`\`${member.user.tag}!\` does not have the ${role.name} role!`);
                 return;
             }
             await member.roles.remove(role);
-            message.channel.send(`${role.name} has been successfully removed from ${member}!`);
+            message.channel.send(`${role.name} has been successfully removed from \`${member.user.tag}!\`!`);
         } catch (error) {
-            message.channel.send(stripIndents `Couldn't rive the role here's why:
+            message.channel.send(stripIndents `Couldn't take the role here's why:
             \`${error.message}\``);
         }
     }

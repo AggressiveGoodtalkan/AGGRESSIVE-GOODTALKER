@@ -16,7 +16,7 @@ module.exports = {
             message.reply('Please provide a member to give the role to.');
             return;
         }
-        if (!args[1]) {
+        if (!args) {
             message.reply('Please provide role to give!');
             return;
         }
@@ -27,19 +27,21 @@ module.exports = {
         }
 
         const member = getMember(message, args.join(" "));
-        const toGive = args[1].toString();
+        const toGive = args.slice(1).join(" ");
         const role = message.guild.roles.cache.find(role => role.name === toGive);
+
+        //message.channel.send(`${toGive}`);
 
         try {
 
             if (member.roles.cache.has(role.id)) {
-                message.channel.send(`${member} already has the ${role.name} role!`);
+                message.channel.send(`\`${member.user.tag}!\` already has the ${role.name} role!`);
                 return;
             }
             await member.roles.add(role);
-            message.channel.send(`${role.name} has been successfully given to ${member}!`);
+            message.channel.send(`${role.name} has been successfully given to \`${member.user.tag}!\``);
         } catch (error) {
-            message.channel.send(stripIndents `Couldn't rive the role here's why:
+            message.channel.send(stripIndents `Couldn't give the role here's why:
             \`${error.message}\``);
         }
     }
