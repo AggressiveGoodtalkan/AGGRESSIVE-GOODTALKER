@@ -22,6 +22,7 @@ module.exports = {
         const guild = bot.guilds.cache.get('694810450621366282');
         const member = guild.member(message.author);
         const Modmin = guild.roles.cache.find(role => role.name === "Modmin");
+        const logs = bot.channels.cache.get('710795359844171797');
 
         if(member.roles.cache.has(Modmin.id) && args[0] !== 'update'){
 
@@ -73,6 +74,12 @@ module.exports = {
 
                 rp(url)
                 .then(function(html){
+
+                    let allCases = 0;
+                    let deaths = 0;
+                    let recovered = 0;
+                    let ActiveCases = 0;
+
                     //success!
                     $('h1',html).each(function(i , elem){
                         title[i] = $(this).text();
@@ -81,10 +88,10 @@ module.exports = {
                         data[i] = $(this).text();
                     });
 
-                    let allCases = parseInt(data[0].replace(/,/g, ''));
-                    let deaths = parseInt(data[1].replace(/,/g, ''));
-                    let recovered = parseInt(data[2].replace(/,/g, ''));
-                    let ActiveCases = allCases - deaths - recovered;
+                    allCases = parseInt(data[0].replace(/,/g, ''));
+                    deaths = parseInt(data[1].replace(/,/g, ''));
+                    recovered = parseInt(data[2].replace(/,/g, ''));
+                    ActiveCases = allCases - deaths - recovered;
 
 
                     embed
@@ -116,8 +123,13 @@ module.exports = {
 
                     rp(phurl)
                     .then(function(html){
-                        //success!
 
+                        let allCases = 0;
+                        let deaths = 0;
+                        let recovered = 0;
+                        let ActiveCases = 0;
+
+                        //success!
                         $('h1',html).each(function(i , elem){
                             title[i] = $(this).text();
                         });
@@ -126,12 +138,11 @@ module.exports = {
                             data[i] = $(this).text();
                         });
 
-                        let allCases = parseInt(data[0].replace(/,/g, ''));
-                        let deaths = parseInt(data[1].replace(/,/g, ''));
-                        let recovered = parseInt(data[2].replace(/,/g, ''));
-                        let ActiveCases = allCases - deaths - recovered;
-                        let today = new Date();
-                        let tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, hrs, mins);
+                        allCases = parseInt(data[0].replace(/,/g, ''));
+                        deaths = parseInt(data[1].replace(/,/g, ''));
+                        recovered = parseInt(data[2].replace(/,/g, ''));
+                        ActiveCases = allCases - deaths - recovered;
+
 
                         embed
                         .addFields(
@@ -145,9 +156,6 @@ module.exports = {
                         );
                         channel.send(embed);
                         channel.stopTyping();
-                        channel.setTopic(`The next update would be posted on ${channel} at ${tomorrow.toLocaleTimeString().replace(/:00/g, '')}, ${tomorrow.toDateString()}.`, 'It had to be done.')
-                        .then(c => console.log(`Channel's new topic is ${c.topic}`))
-                        .catch(console.error);
                     })
                     .catch(function(err){
                         //handle error
@@ -160,6 +168,14 @@ module.exports = {
             });
             job.start();
             nextDates = 1;
+            let today = new Date();
+            let tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, hrs, mins);
+            channel.setTopic(`The next update would be posted on ${channel} at ${tomorrow.toLocaleTimeString().replace(/:00/g, '')}, ${tomorrow.toDateString()}.`, 'It had to be done.')
+            .then(c => {
+                console.log(`Channel's new topic is: "${c.topic}"`);
+                logs.send(`Channel's new topic is: "${c.topic}"`);
+            })
+            .catch(console.error);
 
         }
         else if(!member.roles.cache.has(Modmin.id) || args[0] === 'update'){
@@ -176,6 +192,7 @@ module.exports = {
                 message.reply('The Modmins has not yet setup the covid tracker!').then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
 
             }
+
         }
 
 
