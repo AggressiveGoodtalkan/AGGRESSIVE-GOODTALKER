@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 const $ = require('cheerio');
-const CronJob = require('cron').CronJob;
+const schedule = require('node-schedule');
 const url = 'https://www.worldometers.info/coronavirus/?';
 const phurl = 'https://www.worldometers.info/coronavirus/country/philippines/';
 const { MessageEmbed } = require('discord.js');
@@ -66,7 +66,7 @@ module.exports = {
                     }
                 }
 
-                let job = new CronJob(`0 ${mins} ${hrs} * * *`, async () => {
+            let job = schedule.scheduleJob(`${mins} ${hrs} * * *`, async () => {
 
                 let title = [];
                 let data = [];
@@ -166,7 +166,6 @@ module.exports = {
                 });
             //end of job
             });
-            job.start();
             nextDates = 1;
             let today = new Date();
             let tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, hrs, mins);
