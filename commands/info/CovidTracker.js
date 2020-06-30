@@ -66,7 +66,14 @@ module.exports = {
                     }
                 }
 
-            let job = schedule.scheduleJob(`${mins} ${hrs} * * *`, async () => {
+
+            let rule = new schedule.RecurrenceRule();
+            rule.dayOfWeek = [new schedule.Range(0, 6)];
+            rule.hour = hrs;
+            rule.minute = mins;
+
+
+            let job = schedule.scheduleJob(rule, async () => {
 
                 let title = [];
                 let data = [];
