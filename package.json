@@ -4,7 +4,7 @@
   "description": "a queue bot",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "pm2-runtime start ecosystem.config.js --env production"
   },
   "author": "mahomuri",
   "license": "ISC",
