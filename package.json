@@ -23,6 +23,7 @@
     "node-schedule": "^1.3.2",
     "nodemon": "^2.0.2",
     "open-graph-scraper": "^4.1.1",
+    "pm2": "^4.4.0",
     "puppeteer": "^3.3.0",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
