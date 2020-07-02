@@ -1,1 +1,1 @@
-worker: pm2 run index.js --name  "AGT-bot"
+worker: pm2 start index.js --name  "AGT-bot"
