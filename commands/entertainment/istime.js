@@ -1,5 +1,6 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageManager } = require("discord.js");
 const colors = require("../../colors.json");
+const { stripIndents } = require("common-tags");
 
 module.exports = {
     name: 'itstime',
@@ -13,20 +14,29 @@ module.exports = {
         const announcement = guild.channels.cache.find(c => c.name === 'announcements');
         const barochat = guild.channels.cache.find(c => c.name === 'baro-ki-shiet');
         const programmer = guild.roles.cache.find(r => r.name === 'Programmer');
+        const everyone = guild.roles.cache.find(r => r.id === '694810450621366282');
 
-        if (!message.member.roles.cache.has(baro.id)) {
-            return;
-        }
 
-        announcement.startTyping();
-        const embed = new MessageEmbed()
+        if(message.member.roles.cache.has(baro.id) || message.guild.owner){
+            const embed = new MessageEmbed()
             .setTitle("Baro Ki'Teer has arrived!")
-            .setDescription(`Head to ${barochat} by 12mn!`)
+            .setDescription(stripIndents`The wait is over tenno. I, Baro Ki'teer, have returned with more treasures from the Void.
+
+            All Tenno of means are invited to pursue my latest treasures in the ${barochat} Text Channel on Earth.
+
+            I Implore you not to hesitate, for, as always my visit will be brief and my items exquisite.
+
+            Graciously,
+            Baro Ki'Teer `)
             .setColor(colors.Beige)
             .setTimestamp()
             .setFooter(`AGGRESSIVE GOODTALKER | By MahoMuri`, bot.user.displayAvatarURL());
-        announcement.send(embed);
-        announcement.stopTyping();
+            await announcement.send(`**[ATTENTION]** ${everyone}`);
+            announcement.send(embed);
+        }
+        else {
+
+        }
 
     }
 };

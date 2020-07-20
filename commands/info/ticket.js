@@ -126,6 +126,19 @@ module.exports = {
             q3Embed
         ];
 
+        let date = new Date();
+        const meetingChat = guild.channels.cache.find(c => c.name === 'tickets');
+        const modmin = guild.roles.cache.find(r => r.name === 'Modmin');
+        const mod = guild.roles.cache.find(r => r.name === 'Mods');
+
+        const adminEmbed = new MessageEmbed()
+            .setTitle('New Ticket!')
+            .setDescription(`${member} has opened a ticket at ${createdChannel}!`)
+            .setColor(colors.Turquoise)
+            .setFooter(date.toLocaleString('en-ph'));
+
+        await meetingChat.send(`**Attention ${modmin} & ${mod}!**`);
+        meetingChat.send(adminEmbed);
 
         member.roles.add(ticket);
         paginationEmbed(message, createdChannel, ticket, pages, [ "⬅","1️⃣","2️⃣","3️⃣","❌"],);
