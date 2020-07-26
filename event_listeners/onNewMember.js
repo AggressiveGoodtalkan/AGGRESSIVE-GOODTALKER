@@ -24,11 +24,14 @@ module.exports = async bot => {
             **2.** Then, react "✅" to the ${rules} message then I will tell you how to enter the server!`, true);
         member.user.send(embed);
 
-        member.roles.add(staff);
-        member.roles.add(userInfo);
-        member.roles.add(LFGroles);
-        member.roles.add(specialRole);
-        member.roles.add(unregisteredRole);
+        if (!member.user.bot) {
+            member.roles.add(staff);
+            member.roles.add(userInfo);
+            member.roles.add(LFGroles);
+            member.roles.add(specialRole);
+            member.roles.add(unregisteredRole);
+
+        }
 
     });
 };
