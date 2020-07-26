@@ -37,7 +37,7 @@ module.exports = {
                 }
 
                 const regex = /(\d+)/g;
-                const regexTime = /[apm]/g;
+                const regexTime = /[a-z]/g;
                 let HrsMins = await args[1].match(regex);
                 const AmPm = await args[1].match(regexTime);
                 const channelName = message.mentions.channels.first();
@@ -48,16 +48,7 @@ module.exports = {
                 hrs = parseInt(HrsMins[0]);
                 mins = parseInt(HrsMins[1]);
 
-                if (AmPm[0] === 'p' && AmPm[1] === 'm') {
-                    if (hrs === 12) {
-                        hrs = 12;
-                    }
-                    else{
-                        hrs += 12;
-                    }
-                }
-
-                if (AmPm[0] === 'a' && AmPm[1] === 'm') {
+                if (AmPm.join("") === 'am') {
                     if (hrs === 12) {
                         hrs = 0;
                     }
@@ -65,13 +56,24 @@ module.exports = {
                         hrs = parseInt(hrs);
                     }
                 }
-
+                else if (AmPm.join("") === 'pm') {
+                    if (hrs === 12) {
+                        hrs = 12;
+                    }
+                    else{
+                        hrs += 12;
+                    }
+                }
+                else{
+                    message.reply(`Error: \`${args[1]}\` is not a valid time format.`)
+                    .then(m => m.delete({timeout: 10000}));
+                    return;
+                }
 
             let rule = new schedule.RecurrenceRule();
             rule.dayOfWeek = [new schedule.Range(0, 6)];
             rule.hour = hrs;
             rule.minute = mins;
-
 
             let job = schedule.scheduleJob(rule, async () => {
 
