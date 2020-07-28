@@ -3,8 +3,8 @@ const ms = require("ms");
 module.exports = {
     name: "mute",
     category: "moderations",
-    description: "mutes the member",
-    usage: "<id | mention>",
+    description: "Mutes the member",
+    usage: `\`-<command | alias> <time>\``,
     run: async (bot, message, args) => {
 
         if (message.deletable) {

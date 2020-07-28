@@ -8,7 +8,7 @@ module.exports = {
     name: "rps",
     category: "entertainment",
     description: "Rock Paper Scissors game. React to one of the emojis to play the game.",
-    usage: "rps",
+    usage: `\`-<command | alias>\``,
     run: async (bot, message, args) => {
         const embed = new MessageEmbed()
             .setColor(colors.Green_Sheen)

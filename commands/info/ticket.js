@@ -7,7 +7,8 @@ module.exports = {
     name: 'ticket',
     aliases: [""],
     category:"info",
-    usage: [`prefix <desired prefix here>`],
+    description: "Makes a ticket channel for the new members",
+    usage: [`\`-<command | alias>\``],
     run: async(bot, message, args)=>{
 
         const guild = bot.guilds.cache.get('694810450621366282');

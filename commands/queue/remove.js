@@ -4,7 +4,8 @@ module.exports = {
     name: "remove",
     aliases: ["umalis"],
     category:"queue",
-    usage: ["<prefix>command here"],
+    description:"Removes the memebr from the queue",
+    usage: [`\`-<command | alias>\``],
     run: async(bot, message, args)=>{
 
         const dj = message.guild.roles.cache.find(role => role.name === "Queue Master");

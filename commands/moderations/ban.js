@@ -5,8 +5,8 @@ const { promptMessage } = require("../../functions.js");
 module.exports = {
     name: "ban",
     category: "moderations",
-    description: "bans the member",
-    usage: "<id | mention>",
+    description: "Bans the member",
+    usage: `\`-<command | alias> <@user> <reason>\``,
     run: async (bot, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "kicks-and-bans") || message.channel;
 

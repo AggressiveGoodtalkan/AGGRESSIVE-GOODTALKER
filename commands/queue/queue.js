@@ -2,7 +2,8 @@ module.exports = {
     name: "queue",
     aliases: ["qwekqwek", "q"],
     category:"queue",
-    usage: ["<prefix>command here"],
+    description: "Puts you in the queue",
+    usage: [`\`-<command | alias>\``],
     run: async(bot, message, args)=>{
 
         let index = 0;

@@ -16,7 +16,8 @@ module.exports = {
     name: "covid",
     aliases: ["ctracker"],
     category:"info",
-    usage: ["<prefix>command here"],
+    description: "Sets a scheduled message for the Covid Tracker",
+    usage: ["-<command | alias> <channel tag> <time>"],
     run: async(bot, message, args)=> {
 
         const guild = bot.guilds.cache.get('694810450621366282');

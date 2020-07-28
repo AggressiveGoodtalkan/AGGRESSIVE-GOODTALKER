@@ -3,8 +3,9 @@ const {getMember} = require('../../functions.js');
 module.exports = {
     name: "next",
     aliases: ["susunod"],
-    category:"queue",
-    usage: ["<prefix>command here"],
+    category: "queue",
+    description: "Moves the queue to the next performer",
+    usage: [`\`-<command | alias>\``],
     run: async(bot, message, args)=>{
 
         const role = message.guild.roles.cache.find(role => role.name === "Performer");

@@ -5,11 +5,12 @@ module.exports = {
     name: "help",
     aliases: ["h"],
     category: "info",
-    description: "Returns all commands, or one specific command info",
-    usage: "<prefix>[command | alias]",
+    description: "Displays all commands, or one specific command info",
+    usage: "-<command | alias> [command name]",
     run: async (bot, message, args) => {
         function getAll(bot, message) {
             const embed = new MessageEmbed()
+                .setTitle("**Command List:**")
                 .setColor("RANDOM");
 
             // Map all the commands
@@ -17,19 +18,24 @@ module.exports = {
             const commands = (category) => {
                 return bot.commands
                     .filter(cmd => cmd.category === category)
-                    .map(cmd => `- \`${cmd.name}\``)
-                    .join("\n");
+                    .map(cmd => `\`${cmd.name}\``)
+                    .join(", ");
             };
+
+            const allCommands = bot.commands.
+            filter(cmd => cmd);
 
             // Map all the categories
             const info = bot.categories
-                .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n${commands(cat)}`)
-                .reduce((string, category) => string + "\n" + category);
+                .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)} Commands:** \n${commands(cat)}`)
+                .reduce((string, category) => string + "\n\n" + category);
 
-            return message.channel.send(embed.setDescription(info));
+            return message.channel.send(
+                embed
+                .setDescription(info)
+                .setFooter(`To check command usage, type \`-help <command>\` | Commands: ${allCommands.size}`)
+            );
         }
-
-
 
         function getCMD(bot, message, input) {
             const embed = new MessageEmbed();

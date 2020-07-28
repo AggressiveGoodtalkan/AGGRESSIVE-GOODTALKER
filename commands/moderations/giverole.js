@@ -4,8 +4,9 @@ const { stripIndents } = require("common-tags");
 module.exports = {
     name: 'giverole',
     aliases: ['grole'],
-    category:"moderation",
-    usage:['<prefix>giverole <Usertag|Mention> <RoleID: Plain text>'],
+    category:"moderations",
+    description: "Gives a role to a certain user",
+    usage:[`\`-<command | alias> <Usertag|Mention> <RoleID: Plain text>\``],
     run: async (bot, message, args) => {
 
         if (!message.member.hasPermission("MANAGE_ROLES")) {

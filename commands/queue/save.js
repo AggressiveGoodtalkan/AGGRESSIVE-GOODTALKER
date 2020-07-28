@@ -14,7 +14,8 @@ module.exports = {
     name: "save",
     aliases: ["s"],
     category:"queue",
-    usage: ["<prefix>command here"],
+    description: "Saves the current list to the database",
+    usage: [`\`-<command | alias>\``],
     run: async(bot, message, args)=>{
 
         if (bot.queue.length === 0) {

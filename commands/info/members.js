@@ -7,7 +7,8 @@ module.exports = {
   name: "members",
   aliases: ["mmbrs", "count"],
   category:"info",
-  usage: "<prefix>[command | alias]",
+  description: "Displays the total number of members in the server. (Including bots)",
+  usage: `\`-<command | alias>\``,
   run: async (bot, message, args) => {
 
     let sEmbed = new Discord.MessageEmbed()
@@ -17,7 +18,7 @@ module.exports = {
     .setAuthor(`${message.guild.name}`, bot.user.displayAvatarURL())
     .addField('Server information:', stripIndents    `**Member Count:** ${message.guild.memberCount}`, true)
     .setTimestamp()
-    .setFooter(`AGGRESSIVE GOODTALKER | Footer`, bot.user.displayAvatarURL());
+    .setFooter(`AGGRESSIVE GOODTALKER | by MahoMuri`, bot.user.displayAvatarURL());
     message.channel.send(sEmbed);
     //.setImage('https://i.imgur.com/8jpHYlr.jpg')
 

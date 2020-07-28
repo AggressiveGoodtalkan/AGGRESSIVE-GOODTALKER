@@ -4,7 +4,8 @@ module.exports = {
     name: "goodnight",
     aliases: ["night"],
     category:"entertainment",
-    usage: ["<prefix>command here"],
+    description : "Replies a Good Night message",
+    usage: [`\`-<command | alias> [@user]\``],
     run: async(bot, message, args)=>{
 
         const member = getMember(message, args.join(" "));

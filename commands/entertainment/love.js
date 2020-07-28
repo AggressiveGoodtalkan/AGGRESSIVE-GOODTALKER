@@ -5,9 +5,9 @@ const colors = require("../../colors.json");
 module.exports = {
     name: "love",
     aliases: ["affinity"],
-    category: "fun",
+    category: "entertainment",
     description: "Calculates the love affinity you have for another person.",
-    usage: "[mention | id | username]",
+    usage: "`\`-<command | alias> [@user]\``",
     run: async (client, message, args) => {
         // Get a member from mention, id, or username
         let person = getMember(message, args[0]);

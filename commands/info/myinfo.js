@@ -7,7 +7,8 @@ module.exports = {
     name: "whois",
     aliases: ["me", "about"],
     category:"info",
-    usage: "<prefix>[command | alias]",
+    description: "Displays the information about you or a member",
+    usage: "-<command | alias> [@user]",
     run: async (bot, message, args) => {
         const guild = bot.guilds.cache.get('694810450621366282');
         const staff = guild.roles.cache.find(role => role.id === "714389560502648953");

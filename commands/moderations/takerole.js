@@ -4,7 +4,7 @@ const { stripIndents } = require("common-tags");
 module.exports = {
     name: 'takerole',
     aliases: ['trole'],
-    category:"moderation",
+    category:"moderations",
     usage:['<prefix>giverole <Usertag|Mention> <RoleID: Plain text>'],
     run: async (bot, message, args) => {
 

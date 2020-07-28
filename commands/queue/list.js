@@ -5,7 +5,8 @@ module.exports = {
     name: "list",
     aliases: ["listahan"],
     category:"queue",
-    usage: ["<prefix>command here"],
+    description: "Displays the list of the queue",
+    usage: [`\`-<command | alias>\``],
     run: async(bot, message, args)=>{
 
         if (bot.queue.length === 0) {

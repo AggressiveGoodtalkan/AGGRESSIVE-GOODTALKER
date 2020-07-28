@@ -2,7 +2,7 @@ module.exports = {
     name: "warn",
     category: "moderations",
     description: "Warns a member",
-    usage: "<mention, id>",
+    usage: "`\`-<command | alias> <@user> <warns>\``",
     run: async (bot, message, args) => {
 
         // If the bot can delete the message, do so

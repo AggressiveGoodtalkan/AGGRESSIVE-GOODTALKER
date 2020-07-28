@@ -6,7 +6,8 @@ module.exports = {
     name: "date",
     aliases: ["today"],
     category:"info",
-    usage: ["<prefix>command here"],
+    description: "Tells the day today or checks is the year is a leap year or not.",
+    usage: [`\`-<command | alias> [year]\``],
     run: async(bot, message, args)=>{
 
         let year = args[0];

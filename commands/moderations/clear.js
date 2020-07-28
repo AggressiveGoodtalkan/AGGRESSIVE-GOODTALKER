@@ -3,6 +3,7 @@ module.exports = {
     aliases: ["purge", "nuke"],
     category: "moderations",
     description: "Clears the chat",
+    usage: `\`-<command | alias> <number>\``,
     run: async (bot, message, args) => {
 
         await message.delete();

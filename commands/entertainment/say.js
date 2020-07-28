@@ -6,7 +6,7 @@ module.exports = {
     aliases: ["bc", "broadcast"],
     description: "Says your input via the bot",
     category:"entertainment",
-    usage: "<input>",
+    usage: `\`-<command | alias> [embed]\``,
     run: (bot, message, args) => {
         message.delete();
 

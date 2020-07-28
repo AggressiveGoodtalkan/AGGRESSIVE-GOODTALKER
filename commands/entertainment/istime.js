@@ -6,6 +6,7 @@ module.exports = {
     name: 'itstime',
     aliases: [''],
     description: "For baro ki'teer",
+    category: "entertainment",
     usage: '<prefix>itstime',
     run: async (bot, message, args) => {
 

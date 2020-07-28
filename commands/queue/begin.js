@@ -4,7 +4,8 @@ module.exports = {
     name: "begin",
     aliases: ["magsimula"],
     category:"queue",
-    usage: ["<prefix>command here"],
+    description: "Begins the queue",
+    usage: [`\`-<command | alias>\``],
     run: async(bot, message, args)=>{
 
         const role = message.guild.roles.cache.find(role => role.name === "Performer");

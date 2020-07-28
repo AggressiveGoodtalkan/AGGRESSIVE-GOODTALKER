@@ -9,7 +9,8 @@ module.exports = {
     name: "prefix",
     aliases: [""],
     category:"info",
-    usage: [`prefix <desired prefix here>`],
+    description: "Displays the prefix of this server or changes the prefix of this server",
+    usage: [`\`-<command | alias> <desired prefix>\``],
     run: async(bot, message, args, prefix)=>{
 
         if (!message.member.hasPermission("MANAGE_SERVER")) {

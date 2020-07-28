@@ -6,7 +6,7 @@ module.exports = {
     name: "report",
     category: "moderations",
     description: "Reports a member",
-    usage: "<mention, id>",
+    usage: `\`-<command | alias> <@user> <reason>\``,
     run: async (bot, message, args) => {
         // If the bot can delete the message, do so
         if (message.deletable) {
