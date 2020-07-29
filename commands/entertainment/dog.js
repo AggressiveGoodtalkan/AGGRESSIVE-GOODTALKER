@@ -4,6 +4,7 @@ const $ = require('cheerio');
 const queryString = require("query-string");
 const colors = require("../../colors.json");
 const { MessageEmbed } = require("discord.js");
+const { filterBreed } = require("../../functions.js");
 
 const DOG_API_URL = "https://api.thedogapi.com/";
 const DOG_API_KEY = process.env.DOG_API_KEY;
@@ -48,15 +49,20 @@ module.exports = {
         return response;
     }
 
+    let breedName;
     try {
         // pass the name of the user who sent the message for stats later, expect an array of images to be returned.
         let images = await loadImage(message.author.username);
+
+        //list words to be filtered out for dogtime.com
+        let filter = 'minature';
 
 
         // get the Image, and first Breed from the returned object.
         let image = images[0];
         let breed = image.breeds[0];
-        let breedName = breed.name.toLowerCase().replace(' ', '-');
+        let toFilter = breed.name.toLowerCase();
+        breedName = filterBreed(toFilter, filter);
         let url = BREED_URL + `/dog-breeds/` + breedName + `#/slide/1`;
 
         //console.log(url);
@@ -70,7 +76,7 @@ module.exports = {
         });
 
         //console.log(`${description[0]}`);
-        // console.log("message processed", "showing", breed);
+        console.log("message processed", "showing", breed);
 
         let cEmbed = new MessageEmbed()
             .setTitle("Here's a random dog!")
@@ -100,7 +106,12 @@ module.exports = {
             .setImage(image.url);
         message.channel.send(cEmbed);
     } catch (error) {
-        console.log(error);
+        const embed = new MessageEmbed()
+            .setColor(colors.Red)
+            .setTitle("Error")
+            .setDescription('Oops, it seems that I took too long to respond. Please try again.');
+        message.channel.send(embed);
+        //console.log(breedName);
     }
     nsg.delete();
   }

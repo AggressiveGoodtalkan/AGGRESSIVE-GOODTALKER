@@ -14,6 +14,8 @@ module.exports = {
     usage: [`\`-<command | alias>\``],
     run: async (bot, message, args) => {
 
+        let nsg = await message.channel.send("Generating...");
+
         async function loadImage(sub_id) {
             // you need an API key to get access to all the iamges, or see the requests you've made in the stats for your account
             let headers = {
@@ -42,13 +44,15 @@ module.exports = {
             return response;
         }
 
+        let breed;
+
         try {
             // pass the name of the user who sent the message for stats later, expect an array of images to be returned.
             let images = await loadImage(message.author.username);
 
             // get the Image, and first Breed from the returned object.
             let image = images[0];
-            let breed = image.breeds[0];
+            breed = image.breeds[0];
 
             //console.log("message processed", "showing", breed);
             let cEmbed = new MessageEmbed()
@@ -80,7 +84,13 @@ module.exports = {
                 .setImage(image.url);
             message.channel.send(cEmbed);
         } catch (error) {
-            console.log(error);
+            const embed = new MessageEmbed()
+                .setColor(colors.Red)
+                .setTitle("Error")
+                .setDescription('Oops, it seems that I took too long to respond. Please try again.');
+            message.channel.send(embed);
+            console.log(breed.name);
         }
+        nsg.delete();
     },
 };

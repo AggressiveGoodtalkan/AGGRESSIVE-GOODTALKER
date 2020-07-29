@@ -143,6 +143,26 @@ module.exports = {
          x1 = x1.replace(rgx, '$1' + ',' + '$2');
         }
         return x1 + x2;
+    },
+    filterBreed: function (sentence, common) {
+        let wordArr = sentence.match(/\w+/g),
+            commonObj = {},
+            uncommonArr = [],
+            word, i;
+
+        common = common.split(',');
+        for ( i = 0; i < common.length; i++ ) {
+            commonObj[ common[i].trim() ] = true;
+        }
+
+        for ( i = 0; i < wordArr.length; i++ ) {
+            word = wordArr[i].trim().toLowerCase();
+            if ( !commonObj[word] ) {
+                uncommonArr.push(word);
+            }
+        }
+
+        return uncommonArr.join('-');
     }
 };
 
