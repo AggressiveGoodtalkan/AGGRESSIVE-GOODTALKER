@@ -1,9 +1,9 @@
-const rp = require('request-promise');
-const $ = require('cheerio');
-const schedule = require('node-schedule');
-const url = 'https://www.worldometers.info/coronavirus/?';
-const phurl = 'https://www.worldometers.info/coronavirus/country/philippines/';
-const { MessageEmbed } = require('discord.js');
+const rp = require("request-promise");
+const $ = require("cheerio");
+const schedule = require("node-schedule");
+const url = "https://www.worldometers.info/coronavirus/?";
+const phurl = "https://www.worldometers.info/coronavirus/country/philippines/";
+const { MessageEmbed } = require("discord.js");
 const colors = require("../../colors.json");
 const { addCommas } = require("../../functions.js");
 let nextDates = 0;
@@ -11,201 +11,144 @@ let hrs = 0;
 let mins = 0;
 let channel;
 
-
 module.exports = {
     name: "covid",
     aliases: ["ctracker"],
-    category:"info",
-    description: "Sets a scheduled message for the Covid Tracker",
-    usage: ["-<command | alias> <channel tag> <time>"],
-    run: async(bot, message, args)=> {
+    category: "info",
+    description: "Sends a message about the current status of COVID-19",
+    usage: ["-<command | alias>"],
+    run: async (bot, message, args) => {
+        const guild = bot.guilds.cache.get("694810450621366282");
+        const channel = guild.channels.cache.find(c => c.name === 'corona-updates');
 
-        const guild = bot.guilds.cache.get('694810450621366282');
-        const member = guild.member(message.author);
-        const Modmin = guild.roles.cache.find(role => role.name === "Modmin");
-        const logs = bot.channels.cache.get('710795359844171797');
+        let title = [];
+        let data = [];
+        const embed = new MessageEmbed();
 
-        if(member.roles.cache.has(Modmin.id) && args[0] !== 'update'){
+        message.react('👌');
+        rp(url)
+            .then(function (html) {
+                let allCases = 0;
+                let deaths = 0;
+                let recovered = 0;
+                let ActiveCases = 0;
 
-                if (!message.mentions.channels.first()) {
-                    message.reply('Please provide a channel tag!');
-                    return;
-                }
+                //success!
+                $("h1", html).each(function (i, elem) {
+                    title[i] = $(this).text();
+                });
+                $(".maincounter-number", html).each(function (i, elem) {
+                    data[i] = $(this).text();
+                });
 
-                if (message.mentions.channels.first() && !args[1]) {
-                    message.reply('Please provide a specific time!');
-                    return;
-                }
+                allCases = parseInt(data[0].replace(/,/g, ""));
+                deaths = parseInt(data[1].replace(/,/g, ""));
+                recovered = parseInt(data[2].replace(/,/g, ""));
+                ActiveCases = allCases - deaths - recovered;
 
-                const regex = /(\d+)/g;
-                const regexTime = /[a-z]/g;
-                let HrsMins = await args[1].match(regex);
-                const AmPm = await args[1].match(regexTime);
-                const channelName = message.mentions.channels.first();
-                channel = bot.channels.cache.find(c => c.id === channelName.id);
-
-                message.react('👌');
-                message.delete({timeout: 5000, reason: 'it had to be done'});
-                hrs = parseInt(HrsMins[0]);
-                mins = parseInt(HrsMins[1]);
-
-                if (AmPm.join("") === 'am') {
-                    if (hrs === 12) {
-                        hrs = 0;
-                    }
-                    else{
-                        hrs = parseInt(hrs);
-                    }
-                }
-                else if (AmPm.join("") === 'pm') {
-                    if (hrs === 12) {
-                        hrs = 12;
-                    }
-                    else{
-                        hrs += 12;
-                    }
-                }
-                else{
-                    message.reply(`Error: \`${args[1]}\` is not a valid time format.`)
-                    .then(m => m.delete({timeout: 10000}));
-                    return;
-                }
-
-            let rule = new schedule.RecurrenceRule();
-            rule.dayOfWeek = [new schedule.Range(0, 6)];
-            rule.hour = hrs;
-            rule.minute = mins;
-
-            let job = schedule.scheduleJob(rule, async () => {
-
-                let title = [];
-                let data = [];
-                const embed = new MessageEmbed();
-
-                rp(url)
-                .then(function(html){
-
-                    let allCases = 0;
-                    let deaths = 0;
-                    let recovered = 0;
-                    let ActiveCases = 0;
-
-                    //success!
-                    $('h1',html).each(function(i , elem){
-                        title[i] = $(this).text();
-                    });
-                    $('.maincounter-number',html).each(function(i , elem){
-                        data[i] = $(this).text();
-                    });
-
-                    allCases = parseInt(data[0].replace(/,/g, ''));
-                    deaths = parseInt(data[1].replace(/,/g, ''));
-                    recovered = parseInt(data[2].replace(/,/g, ''));
-                    ActiveCases = allCases - deaths - recovered;
-
-
-                    embed
-                        .setTitle( `
+                embed
+                    .setTitle(
+                        `
                         ┌─────────── ∘°❉°∘ ────────────┐
                                 **Corona Tracker**
-└─────────── °∘❉∘° ────────────┘`)
-                        .setDescription('🌎 **Worldwide**\n')
-                        .addFields(
+└─────────── °∘❉∘° ────────────┘`
+                    )
+                    .setDescription("🌎 **Worldwide**\n")
+                    .addFields(
+                        {
+                            name: `🦠 Confirmed Cases:`,
+                            value: `**${data[0].trim()}**`,
+                            inline: true,
+                        },
+                        {
+                            name: `🤒 Active Cases:`,
+                            value: `**${addCommas(ActiveCases)}**`,
+                            inline: true,
+                        },
+                        {
+                            name: `☠️ Deaths:`,
+                            value: `**${data[1].trim()}**`,
+                            inline: true,
+                        },
+                        {
+                            name: `💕Recovered:`,
+                            value: `**${data[2].trim()}**`,
+                            inline: true,
+                        },
+                        {
+                            name: "\u2800",
+                            value: `✩｡:*•.────────────  ❁ ❁  ─────────────.•*:｡✩`,
+                        }
+                    )
+                    .setColor(colors.Covid)
+                    .setTimestamp()
+                    .setFooter(
+                        `AGGRESSIVE GOODTALKER | By MahoMuri`,
+                        bot.user.displayAvatarURL()
+                    );
 
-                            { name: `🦠 Confirmed Cases:`, value: `**${data[0].trim()}**`, inline: true },
-                            { name: `🤒 Active Cases:`, value: `**${addCommas(ActiveCases)}**`, inline: true },
-                            { name: `☠️ Deaths:`, value: `**${data[1].trim()}**`, inline: true },
-                            { name: `💕Recovered:`, value: `**${data[2].trim()}**`, inline: true },
-                            { name: '\u2800' , value: `✩｡:*•.────────────  ❁ ❁  ─────────────.•*:｡✩` }
-
-                        )
-                        .setColor(colors.Covid)
-                        .setTimestamp()
-                        .setFooter(`AGGRESSIVE GOODTALKER | By MahoMuri`, bot.user.displayAvatarURL());
-
-                        channel.startTyping();
-                })
-                .catch(function(err){
-                    //handle error
-                    console.log(err);
-                })
-                .finally(function(){
-
-                    rp(phurl)
-                    .then(function(html){
-
+                channel.startTyping();
+            })
+            .catch(function (err) {
+                //handle error
+                console.log(err);
+            })
+            .finally(function () {
+                rp(phurl)
+                    .then(async function (html) {
                         let allCases = 0;
                         let deaths = 0;
                         let recovered = 0;
                         let ActiveCases = 0;
 
                         //success!
-                        $('h1',html).each(function(i , elem){
+                        $("h1", html).each(function (i, elem) {
                             title[i] = $(this).text();
                         });
 
-                        $('.maincounter-number',html).each(function(i , elem){
+                        $(".maincounter-number", html).each(function (i, elem) {
                             data[i] = $(this).text();
                         });
 
-                        allCases = parseInt(data[0].replace(/,/g, ''));
-                        deaths = parseInt(data[1].replace(/,/g, ''));
-                        recovered = parseInt(data[2].replace(/,/g, ''));
+                        allCases = parseInt(data[0].replace(/,/g, ""));
+                        deaths = parseInt(data[1].replace(/,/g, ""));
+                        recovered = parseInt(data[2].replace(/,/g, ""));
                         ActiveCases = allCases - deaths - recovered;
 
-
-                        embed
-                        .addFields(
-
-                            { name: `\u2800`, value: `:flag_ph: **${title[0].trim()}**` },
-                            { name: `🦠 Confirmed Cases:`, value: `**${data[0].trim()}**`, inline: true },
-                            { name: `🤒 Active Cases:`, value: `**${addCommas(ActiveCases)}**`, inline: true },
-                            { name: `☠️ Deaths:`, value: `**${data[1].trim()}**`, inline: true },
-                            { name: `💕Recovered:`, value: `**${data[2].trim()}**`, inline: true },
-
+                        embed.addFields(
+                            {
+                                name: `\u2800`,
+                                value: `:flag_ph: **${title[0].trim()}**`,
+                            },
+                            {
+                                name: `🦠 Confirmed Cases:`,
+                                value: `**${data[0].trim()}**`,
+                                inline: true,
+                            },
+                            {
+                                name: `🤒 Active Cases:`,
+                                value: `**${addCommas(ActiveCases)}**`,
+                                inline: true,
+                            },
+                            {
+                                name: `☠️ Deaths:`,
+                                value: `**${data[1].trim()}**`,
+                                inline: true,
+                            },
+                            {
+                                name: `💕Recovered:`,
+                                value: `**${data[2].trim()}**`,
+                                inline: true,
+                            }
                         );
-                        channel.send(embed);
+                        await channel.send(embed);
                         channel.stopTyping();
+                        message.delete();
                     })
-                    .catch(function(err){
+                    .catch(function (err) {
                         //handle error
                         console.log(err);
                     });
-
-
-                });
-            //end of job
             });
-            nextDates = 1;
-            let today = new Date();
-            let tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, hrs, mins);
-            channel.setTopic(`The next update would be posted on ${channel} at ${tomorrow.toLocaleTimeString().replace(/:00/g, '')}, ${tomorrow.toDateString()}.`, 'It had to be done.')
-            .then(c => {
-                console.log(`Channel's new topic is: "${c.topic}"`);
-                logs.send(`Channel's new topic is: "${c.topic}"`);
-            })
-            .catch(console.error);
-
-        }
-        else if(!member.roles.cache.has(Modmin.id) || args[0] === 'update'){
-
-            if (nextDates === 1) {
-                let today = new Date();
-                let tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, hrs, mins);
-
-                message.channel.send(`The next update would be posted on ${channel} at ${tomorrow.toLocaleTimeString().replace(/:00/g, '')}, ${tomorrow.toDateString()}.`)
-                .then(m => m.delete({timeout: 10000, reason :"It had to be done."}));
-            }
-            else{
-
-                message.reply('The Modmins has not yet setup the covid tracker!').then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
-
-            }
-
-        }
-
-
-    }
-
+    },
 };
-
