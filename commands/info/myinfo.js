@@ -10,7 +10,7 @@ module.exports = {
     description: "Displays the information about you or a member",
     usage: "-<command | alias> [@user]",
     run: async (bot, message, args) => {
-        const guild = bot.guilds.cache.get('694810450621366282');
+        const guild = bot.guilds.cache.get(message.guild.id);
         const staff = guild.roles.cache.find(role => role.id === "714389560502648953");
         const userInfo = guild.roles.cache.find(role => role.id === "714394698298556487");
         const LFGroles = guild.roles.cache.find(role => role.id === "714394774034972676");

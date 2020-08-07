@@ -9,7 +9,7 @@ const colors = require(`${__dirname}/../colors.json`);
 
 module.exports = async bot => {
     bot.on('guildMemberAdd', async member => {
-        const guild = bot.guilds.cache.get('694810450621366282');
+        const guild = bot.guilds.cache.get(member.guild.id);
         const staff = guild.roles.cache.find(role => role.id === "714389560502648953");
         const userInfo = guild.roles.cache.find(role => role.id === "714394698298556487");
         const LFGroles = guild.roles.cache.find(role => role.id === "714394774034972676");
