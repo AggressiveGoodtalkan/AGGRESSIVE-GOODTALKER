@@ -57,7 +57,7 @@ module.exports = {
             P.getBerryByName(berry)
             .then(function(response) {
 
-                console.log(response.flavors[0].flavor);
+                console.log(response);
 
             })
             .catch(function(error) {
