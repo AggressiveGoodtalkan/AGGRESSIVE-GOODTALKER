@@ -11,7 +11,7 @@ module.exports = {
         const member = getMember(message, args.join(" "));
 
         let nsg = await message.channel.send(`GOOD PACKING EVENING ${member}!`);
-        message.delete({timeout: 5000, reason :"It had to be done."});
+        message.delete({timeout: 5000, reason : "It had to be done."});
 
     }
 };

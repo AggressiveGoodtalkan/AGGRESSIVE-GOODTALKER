@@ -15,6 +15,7 @@ module.exports = {
         const member = getMember(message, args.join(" "));
         const memberRole = guild.roles.cache .find(role => role.name === 'Member');
         const rules = guild.channels.cache.find(c => c.name === 'rules');
+        const mods = message.guild.roles.cache.find(role => role.name === 'Mods');
         const assistance = guild.channels.cache.find(c => c.name === 'assistance');
         const mahomuri = guild.members.cache.find(m => m.id === '259313335076519936');
 
@@ -63,6 +64,10 @@ module.exports = {
                         {
                             id: '694810450621366282',
                             deny: ['VIEW_CHANNEL'],
+                        },
+                        {
+                            id: mods.id,
+                            allow: ['VIEW_CHANNEL'],
                         }
                     ],
                 });

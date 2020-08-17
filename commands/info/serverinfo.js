@@ -76,7 +76,7 @@ module.exports = {
                 },
                 {
                     name: ` **Created At:**`,
-                    value: `${createdAt.toLocaleTimeString("en-US")}\n${createdAt.toLocaleDateString("en-US", options)}`,
+                    value: `${createdAt.toLocaleDateString("en-US", options)}`,
                     inline: true,
                 },
                 {

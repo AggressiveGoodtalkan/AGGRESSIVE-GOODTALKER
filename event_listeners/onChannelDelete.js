@@ -14,7 +14,7 @@ module.exports = bot => {
 
         if (channelName === `ticket-${userID}`) {
 
-            const guild = bot.guilds.cache.get(channel.guile.id);
+            const guild = bot.guilds.cache.get(channel.guild.id);
             const feedbacks = guild.channels.cache.get('715114655059542105');
             const member = guild.member(userID[0]);
 

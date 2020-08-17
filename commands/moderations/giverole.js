@@ -29,7 +29,17 @@ module.exports = {
 
         const member = getMember(message, args.join(" "));
         const toGive = args.slice(1).join(" ");
+        const modmin = message.guild.roles.cache.find(role => role.name === "Modmin");
+        const mods = message.guild.roles.cache.find(role => role.name === "Mods");
         const role = message.guild.roles.cache.find(role => role.name === toGive);
+
+        if (role === "Modmin" && !message.member.roles.cache.has(modmin.id)) {
+            return message.reply('You do not have access to this role.');
+        }
+        if (role === "Mods" && !message.member.roles.cache.has(modmin.id)) {
+            return message.reply('You do not have access to this role.');
+        }
+
 
         //message.channel.send(`${toGive}`);
 

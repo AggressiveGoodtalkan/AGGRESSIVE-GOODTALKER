@@ -106,7 +106,7 @@ module.exports = bot => {
                                 ${member.displayName}'s age: ${age} years old.
                                 **Please keep an eye out for him**`, true)
                                 .setTimestamp()
-                                .setFooter(`AGGRESSIVE GOODTALKER | By MahoMuri`, bot.user.displayAvatarURL());
+                                .setFooter(`${bot.user.username} | By MahoMuri`, bot.user.displayAvatarURL());
 
                             watchlist.send(embed);
                             return;
@@ -172,7 +172,8 @@ module.exports = bot => {
                                         **Tag:** ${member.user.tag}
                                         **Created:** ${created}
                                         **${member.displayName}'s birthday:** ${birthday}
-                                        **${member.displayName}'s age:** ${age} years old`, true);
+                                        **${member.displayName}'s age:** ${age} years old`, true)
+                                        .setFooter(`${bot.user.username} | By MahoMuri`, bot.user.displayAvatarURL());
                                     logging.send(embed);
                                     general.send(`Welcome to da good paking server ${member}! Thanks and have fun!`).then(m => m.delete({ timeout: 120000, reason: "It had to be done." }));
                                     console.log("Collector stopped");
