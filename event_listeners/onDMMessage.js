@@ -1,5 +1,5 @@
 /**
- * @file DM listener for Q-Den complaints
+ * @file DM listener for AGT reports
  */
 const { TextChannel, MessageEmbed } = require('discord.js');
 const colors = require('../colors.json');

@@ -12,21 +12,23 @@ module.exports = {
 
     let nsg = await message.channel.send("Generating...");
 
-    const { data } = await axios.get('https://some-random-api.ml/meme');
+    const { data } = await axios.get('https://meme-api.herokuapp.com/gimme/dankmeme');
     //console.log(data.data.title, data.data.body, data.data.image);
     if(!{data}) {
         return message.channel.send ("My processors didn't cooperate wiht me, Please Try again.");
     }
 
         let mEmbed = new Discord.MessageEmbed()
-        .setColor(colors.Beige)
-        .setAuthor(`${data.caption}`, bot.user.displayAvatarURL())
-        .setImage(data.image)
-        .setTimestamp()
-        .setFooter(`AGGRESSIVE GOODTALKER | By MahoMuri`, bot.user.displayAvatarURL());
+            .setColor(colors.Beige)
+            .setAuthor(`${data.title}`, bot.user.displayAvatarURL())
+            .setImage(data.url)
+            .setTimestamp()
+            .setFooter(`AGGRESSIVE GOODTALKER | By MahoMuri`, bot.user.displayAvatarURL());
 
-    message.channel.send(mEmbed);
-    nsg.delete();
+        message.channel.send(mEmbed);
+        nsg.delete();
+        message.delete();
+
     }
 };
 
