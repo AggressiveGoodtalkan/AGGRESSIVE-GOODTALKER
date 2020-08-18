@@ -31,8 +31,3 @@ module.exports = {
 
     }
 };
-
-// module.exports.config = {
-//     name: "meme",
-//     aliases:["meme", "hitme"]
-// }
