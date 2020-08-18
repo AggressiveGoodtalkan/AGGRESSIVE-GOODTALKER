@@ -6,9 +6,9 @@ const { getMember } = require('../../functions.js');
 
 module.exports = {
     name: "pokedex",
-    aliases: ["wtp", "pokemon"],
+    aliases: ["wtp"],
     category:"entertainment",
-    description: "Qden's Pokédex",
+    description: "AGT's Pokédex",
     usage: [`\`q!<command | alias>\``],
     run: async (bot, message, args) => {
 
