@@ -71,7 +71,7 @@ module.exports = {
                             inline: true,
                         },
                         {
-                            name: `💕Recovered:`,
+                            name: `💕 Recovered:`,
                             value: `**${data[2].trim()}**`,
                             inline: true,
                         },
@@ -136,7 +136,7 @@ module.exports = {
                                 inline: true,
                             },
                             {
-                                name: `💕Recovered:`,
+                                name: `💕 Recovered:`,
                                 value: `**${data[2].trim()}**`,
                                 inline: true,
                             }
