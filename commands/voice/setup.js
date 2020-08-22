@@ -10,6 +10,9 @@ module.exports = {
     usage: [`\`-<command | alias> setup\``],
     run: async (bot, message, args) => {
 
+        const guild = bot.guilds.cache.get(message.guild.id);
+        const memberRole = guild.roles.cache .find(role => role.name === 'Member');
+
         const promptSetup = new MessageEmbed()
                 .setColor(colors.Turquoise)
                 .setTitle(`Welcome to ${bot.user.username}'s custom voice!`)
@@ -27,7 +30,17 @@ module.exports = {
                 await msg.channel.awaitMessages(filter, { max: 1 }).then(async collected => {
                     if (collected){
                         msg.guild.channels.create(collected.first().content, {
-                            type: "category"
+                            type: "category",
+                            permissionOverwrites:  [
+                                {
+                                    id: '694810450621366282',
+                                    deny: ['VIEW_CHANNEL'],
+                                },
+                                {
+                                    id: memberRole.id,
+                                    allow: ['VIEW_CHANNEL']
+                                }
+                            ],
                         }).then(async category => {
 
                             await msg.channel.send("**Enter the name of the voice channel: (e.g. Voice Channel)**");
@@ -36,9 +49,50 @@ module.exports = {
                                 if (collected){
                                     msg.guild.channels.create(collected.first().content, {
                                         type: "voice",
-                                        parent: category
-                                    }).then(async () => {
+                                        parent: category,
+                                        permissionOverwrites: [
+                                            {
+                                                id: '694810450621366282',
+                                                deny: ['VIEW_CHANNEL'],
+                                            },
+                                            {
+                                                id: memberRole.id,
+                                                allow: ['VIEW_CHANNEL']
+                                            }
+                                        ],
+                                    }).then(async (voiceChannel) => {
                                         await msg.channel.send("✅ **Done! You're all set and ready to go!**");
+
+                                        //Join listener
+                                        bot.on('voiceStateUpdate', async (oldState, newState) => {
+
+                                            if (oldState.channelID !== voiceChannel.id && newState.channelID === voiceChannel.id) {
+                                                msg.guild.channels.create(`${newState.member.user.username}'s Channel`, {
+                                                    type: "voice",
+                                                    parent: category,
+                                                    permissionOverwrites: [
+                                                        {
+                                                            id: '694810450621366282',
+                                                            deny: ['VIEW_CHANNEL'],
+                                                        },
+                                                        {
+                                                            id: newState.member.id,
+                                                            allow: ['VIEW_CHANNEL']
+                                                        }
+                                                    ],
+                                                }).then(async (channel) => {
+                                                    newState.setChannel(channel)
+                                                    .then((member) => {
+
+
+                                                    });
+
+                                                });
+                                            }
+                                        });
+
+                                        //Leave listener
+
                                     });
                                 }
                             });

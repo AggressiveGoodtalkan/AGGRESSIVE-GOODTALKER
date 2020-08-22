@@ -11,7 +11,7 @@ module.exports = {
     usage: [`\`-<command | alias>\``],
     run: async(bot, message, args)=>{
 
-        const guild = bot.guilds.cache.get('694810450621366282');
+        const guild = bot.guilds.cache.get(message.guild.id);
         const member = getMember(message, args.join(" "));
         const memberRole = guild.roles.cache .find(role => role.name === 'Member');
         const rules = guild.channels.cache.find(c => c.name === 'rules');
