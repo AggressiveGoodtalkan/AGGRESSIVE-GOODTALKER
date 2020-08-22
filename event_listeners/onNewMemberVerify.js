@@ -19,6 +19,7 @@ module.exports = bot => {
             }
 
             const guild = bot.guilds.cache.get('694810450621366282');
+            const general = bot.channels.cache.get('694810451065962505');
             const member = guild.member(message.author);
             const logs = bot.channels.cache.get('710795359844171797');
             const silenced = guild.roles.cache.find(role => role.name === "Global Silencer");
@@ -126,7 +127,7 @@ module.exports = bot => {
                                 const verify = m.content === 'I have read the rules of this server and have agreed to follow them accordingly';
 
                                 if (verify) {
-                                    message.reply(`Thank you for your cooperation, welcome ${member}!`);
+                                    message.reply(`**Thank you for your cooperation, Welcome ${member}! Please proceed to ${general} and start chatting!**`);
                                     member.roles.remove(unregisteredRole);
                                     member.roles.add(role);
                                     collector.stop();
@@ -159,7 +160,7 @@ module.exports = bot => {
                                 else {
                                     //another long embed...
                                     const verify = collected.find(m => m.content === 'I have read the rules of this server and have agreed to follow them accordingly');
-                                    const general = bot.channels.cache.get('694810451065962505');
+
 
                                     const embed = new MessageEmbed()
                                         .setTitle(`${member.displayName} has successfully verified!`)
