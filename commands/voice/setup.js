@@ -1,5 +1,14 @@
-let isSetup = false;
+const mongoose = require('mongoose');
+const channelsCache = require('../../models/channelsCache.js');
 
+mongoose.connect(process.env.CACHEURI,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+}).catch(err => console.log(err));
+
+let isSetup = false;
 module.exports = {
     name: 'setup',
     aliases: [""],
@@ -70,8 +79,17 @@ module.exports = {
                                                 ],
                                             }).then(async (channel) => {
                                                 newState.setChannel(channel).then((memberState) => {
-                                                    bot.channelsCache.push(memberState.voice.channelID);
-                                                    console.log(`Successfully added ${memberState.voice.channel.name}'s ID to the cache!`, bot.channelsCache[0]);
+                                                    const cachedChannel = new channelsCache({
+                                                        channelID: memberState.voice.channelID,
+                                                        name: memberState.voice.channel.name,
+                                                        ownerID: memberState.id
+                                                    });
+
+                                                    cachedChannel.save()
+                                                    .then(item => {
+                                                        console.log(`Successfully added ${memberState.voice.channel.name}'s ID to the database!\n`, item);
+                                                    }).catch(err => console.log(err));
+
                                                 });
 
                                             });
@@ -85,7 +103,7 @@ module.exports = {
                                         if (oldState.channelID !== voiceChannel.id && newState.channelID === voiceChannel.id) {
                                             return;
                                         }
-                                        if (bot.channelsCache.includes(oldState.channelID) && newState.channelID !== oldState.channelID) {
+                                        if (bot.channelsCache.channelID === oldState.channelID && newState.channelID !== oldState.channelID) {
                                             let activeMembers = oldState.channel.members.map(member => member.user.username);
                                             //console.log(activeMembers.length);
                                             if (activeMembers.length === 0) {
