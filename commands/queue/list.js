@@ -17,16 +17,16 @@ module.exports = {
         }
 
         const role = message.guild.roles.cache.find(role => role.name === "Performer");
-        const member = bot.guilds.cache.get('694810450621366282').member(bot.queue[0]);
-        const performer = member.roles.cache.has(role.id);
+        // const member = bot.guilds.cache.get(message.guild.id).member(bot.queue[0]);
+        const performer = bot.queue[0].roles.cache.has(role.id);
 
         if (bot.queue.length > 0) {
 
-            let queueList;
+            let queueList = [];
             for (let i = 0; i < bot.queue.length; i++) {
 
-                if (i === 0 && performer) {
-                    queueList = queueList + `${i + 1}. ${bot.queue[i]} (Currently Performing)\n\n`;
+                if (queueList.length === 0 && performer) {
+                    queueList = `${i + 1}. ${bot.queue[i]} (Currently Performing)\n\n`;
                 }
                 else {
                     queueList = queueList + `${i + 1}. ${bot.queue[i]}\n\n`;
@@ -36,7 +36,7 @@ module.exports = {
             let lEmbed = new MessageEmbed()
                 .setColor(colors.Green_Sheen)
                 .setTitle("**THE GOOD PAKING LIST**")
-                .setDescription(queueList.slice(9))
+                .setDescription(queueList)
                 .setTimestamp()
                 .setFooter("THE GOOD PAKING LIST | By MahoMuri");
 

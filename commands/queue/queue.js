@@ -9,13 +9,13 @@ module.exports = {
         let index = 0;
 
 
-        while (bot.queue[index] !== message.author && index !== bot.queue.length) {
+        while (bot.queue[index] !== message.member && index !== bot.queue.length) {
             ++index;
         }
 
         if (index === bot.queue.length) {
-            message.channel.send(`Successfuly added <@${message.author.id}> to the queue!`)
-            .then(bot.queue.push(message.author)).then(m => m.delete({timeout: 5000, reason:"It had to be done"}));
+            message.channel.send(`Successfuly added ${message.member} to the queue!`)
+            .then(bot.queue.push(message.member)).then(m => m.delete({timeout: 5000, reason:"It had to be done"}));
             message.delete({timeout: 6000, reason:"It had to be done"});
         }
         else {
