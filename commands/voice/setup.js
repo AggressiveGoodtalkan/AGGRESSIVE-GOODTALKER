@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const channelsCache = require('../../models/channelsCache.js');
+const categoriesCache = require('../../models/category.js');
 
 mongoose.connect(process.env.CACHEURI,{
     useNewUrlParser: true,
@@ -60,6 +61,18 @@ module.exports = {
                                 }).then(async (voiceChannel) => {
                                     await message.channel.send("✅ **Done! You're all set and ready to go!**");
                                     isSetup = true;
+                                    //Save the Setup in the Datebase
+                                    const cachedCategory = new categoriesCache({
+                                        channelID: voiceChannel.id,
+                                        parentID : voiceChannel.parentID,
+                                        name: voiceChannel.name,
+                                        isSetup: isSetup
+                                    });
+
+                                    cachedCategory.save().then((item) => {
+                                        console.log(item);
+                                    }).catch((err) => console.log(err));
+
                                     //Join listener
                                     bot.on('voiceStateUpdate', async (oldState, newState) => {
 
