@@ -46,9 +46,9 @@ module.exports = {
             }
         }
 
-        // Sanity check: can user give this role?
+        // Sanity check: can user take this role?
         if (member.roles.highest.comparePositionTo(role) >= 0) {
-            message.reply('Cannot give role that is same or higher than your own.');
+            message.reply('Cannot take role that is same or higher than your own.');
             return;
         }
         try {

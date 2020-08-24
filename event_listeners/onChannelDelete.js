@@ -43,7 +43,7 @@ module.exports = bot => {
                                 .setTimestamp()
                                 .setFooter(member.displayName, member.user.displayAvatarURL())
                                 .setDescription(stripIndents `**${member.user.username} gave us feedback!:**
-                                ${collected.first().content}`);
+                                ${collected.first()}`);
 
                             feedbacks.send(embed);
                         }

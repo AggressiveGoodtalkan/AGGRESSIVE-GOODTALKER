@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const savedlist = require('../../models/savedlist.js');
-const { MessageEmbed } = require('discord.js');
-const colors = require('../../colors.json');
 
 mongoose.connect(process.env.LISTURI,{
     useNewUrlParser: true,
@@ -17,13 +15,6 @@ module.exports = {
     description: "Loads the saved list.",
     usage: [`\`-<command | alias> \``],
     run: async (bot, message, args) => {
-
-        const options = {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        };
 
         await message.channel.send("Loading list...").then(async (msg) => {
             const cursor = await savedlist.find({}).cursor();
@@ -41,9 +32,6 @@ module.exports = {
             msg.edit('Successfully loaded the list!');
 
         });
-
-
-
 
     }
 
