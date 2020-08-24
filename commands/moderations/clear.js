@@ -1,6 +1,6 @@
 module.exports = {
     name: "clear",
-    aliases: ["purge", "nuke"],
+    aliases: ["purge", "nuke", "clean"],
     category: "moderations",
     description: "Clears the chat",
     usage: `\`-<command | alias> <number>\``,

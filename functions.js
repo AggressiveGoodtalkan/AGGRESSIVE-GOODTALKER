@@ -1,5 +1,3 @@
-const { MessageEmbed } = require('discord.js');
-
 module.exports = {
     getMember: function(message, toFind = '') {
         toFind = toFind.toLowerCase();
