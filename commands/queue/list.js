@@ -10,7 +10,7 @@ module.exports = {
     run: async(bot, message, args)=>{
 
         if (bot.queue.length === 0) {
-            message.reply("The queue is paking empty! Go and add more people!")
+            message.reply("🙁 **The queue is paking empty! Go and add more people!**")
             .then(m => m.delete({timeout: 5000, reason:"It had to be done"}));
             message.delete({timeout: 5000, reason:"It had to be done"});
             return;
@@ -26,7 +26,7 @@ module.exports = {
             for (let i = 0; i < bot.queue.length; i++) {
 
                 if (queueList.length === 0 && performer) {
-                    queueList = `${i + 1}. ${bot.queue[i]} (Currently Performing)\n\n`;
+                    queueList = `${i + 1}. ${bot.queue[i]}  ➡  (Currently Performing)\n\n`;
                 }
                 else {
                     queueList = queueList + `${i + 1}. ${bot.queue[i]}\n\n`;
@@ -38,7 +38,7 @@ module.exports = {
                 .setTitle("**THE GOOD PAKING LIST**")
                 .setDescription(queueList)
                 .setTimestamp()
-                .setFooter("THE GOOD PAKING LIST | By MahoMuri");
+                .setFooter(`${bot.user.username} | By MahoMuri`, bot.user.displayAvatarURL());
 
             message.channel.send(lEmbed);
 

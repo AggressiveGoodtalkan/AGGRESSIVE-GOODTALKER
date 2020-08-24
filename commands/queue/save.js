@@ -24,11 +24,12 @@ module.exports = {
             return;
         }
 
-        const role = message.guild.roles.cache.find(role => role.name === "Performer");
-        const member = bot.guilds.cache.get('694810450621366282').member(bot.queue[0]);
-        const performer = member.roles.cache.has(role.id);
-
         if (bot.queue.length > 0) {
+            // ============================ "Debugging" ============================
+            const date = new Date(), y = date.getFullYear(), m = date.getMonth(), d = date.getDate(), h = date.getHours(),
+            min = date.getMinutes(), seconds = date.getSeconds(), ms = date.getMilliseconds();
+            const thisMonth = new Date(y, m, d, h, min, seconds, ms);
+            const lastMonth = new Date(y, m-4, d, h, min, seconds, ms);
 
             message.delete({timeout: 5000, reason:"It had to be done"});
             const members = bot.queue.map(m => m.id);
@@ -36,17 +37,21 @@ module.exports = {
                 author: mongoose.Types.ObjectId(),
                 title: "The GOOD PAKING LIST",
                 body: members.toString(),
-                date: message.createdAt
+                date: lastMonth
             });
 
             await message.channel.send("Saving...").then((msg) =>{
                 list.save()
                 .then(item => {
-                    msg.edit("List has been saved successfully to the database!");
-                    console.log(item);
-                }).catch(err => console.log(err));
+                    msg.edit("✅ **List has been saved successfully to the database!**");
+                    console.log("✅ **List has been saved successfully to the database!**\n",item);
+                }).catch(err => {
+                    msg.edit("🛑 **Failed to save list the database! Contact a Programmer for assistance!**");
+                    console.log(err);
+                });
 
             });
+
 
 
         }
