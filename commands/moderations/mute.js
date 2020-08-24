@@ -49,6 +49,7 @@ module.exports = {
             .then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
         }
 
+        const position = message.guild.roles.cache.find(role => role.name === 'Member').position;
         let muted = message.guild.roles.cache.find(role => role.name === "tuporsiksOwan");
         if (!muted) {
             try {
@@ -56,16 +57,23 @@ module.exports = {
                     data: {
                         name: 'tuporsiksOwan',
                         color: 'BLACK',
+                        position: position + 1,
                         permissions: []
                     }
                 });
-                message.guild.channels.cache.forEach(async (channel, id) => {
-                    await channel.createOverwrite(muted, {
-                        'SEND_MESSAGES': false,
-                        'ADD_REACTIONS': false,
-                        'CONNECT': false,
-                        'SPEAK': false
-                    });
+                message.guild.channels.cache.forEach(async (channel) => {
+                    if (channel.type === 'category') {
+                        if (channel.name !== "Server Stats" && channel.name !== "Welcome" && channel.name !== "Admin area") {
+                            await channel.updateOverwrite(muted, {
+                                'VIEW_CHANNEL': true,
+                                'SEND_MESSAGES': false,
+                                'ADD_REACTIONS': false,
+                                'CONNECT': false,
+                                'SPEAK': false
+                            });
+                        }
+                    }
+
                     //message.reply(channel);
                 });
             } catch (e) {
@@ -74,11 +82,14 @@ module.exports = {
         }
 
         let timer = args[1];
-
-        await toMute.roles.add(muted);
-        message.channel.send(`Successfuly Muted ${args[0]} for ${ms(ms(timer))}!`).then(m => m.delete({timeout: 15000, reason :"It had to be done."}));
+        const memberRole = message.guild.roles.cache.find(role => role.name === 'Member');
+        await toMute.roles.add(muted).then(m => {
+            m.roles.remove(memberRole);
+        });
+        message.channel.send(`Successfuly Muted ${toMute} for ${ms(ms(timer))}!`).then(m => m.delete({timeout: 15000, reason :"It had to be done."}));
 
         setTimeout(function(){
+            toMute.roles.add(memberRole);
             toMute.roles.remove(muted);
             message.channel.send(`${toMute} has been successfully unmuted!`).then(m => m.delete({timeout: 5000, reason :"It had to be done."}));
         }, ms(timer));

@@ -38,7 +38,7 @@ module.exports = {
             return;
         }
 
-        const member = getMember(message, args.join(" "));
+        const targetMember = getMember(message, args.join(" "));
         // Try setting via role-mention
         let role = message.mentions.roles.first();
         // If no role-mention, proceed
@@ -66,12 +66,12 @@ module.exports = {
         }
 
         try {
-            if (member.roles.cache.has(role.id)) {
-                message.channel.send(`\`${member.user.tag}\` already has the ${role.name} role!`);
+            if (targetMember.roles.cache.has(role.id)) {
+                message.channel.send(`\`${targetMember.user.tag}\` already has the ${role.name} role!`);
                 return;
             }
-            await member.roles.add(role);
-            message.channel.send(`${role.name} has been successfully given to \`${member.user.tag}!\``);
+            await targetMember.roles.add(role);
+            message.channel.send(`${role.name} has been successfully given to \`${targetMember.user.tag}!\``);
         } catch (error) {
             message.channel.send(stripIndents `Couldn't give the role here's why:
             \`${error.message}\``);

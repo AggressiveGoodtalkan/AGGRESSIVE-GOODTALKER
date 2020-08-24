@@ -1,11 +1,21 @@
 const { getMember } = require("../../functions.js");
 const { stripIndents } = require("common-tags");
 
+// Imported for documentation purposes
+const Discord = require("discord.js");
+
 module.exports = {
     name: 'takerole',
     aliases: ['trole'],
     category:"moderations",
     usage:['<prefix>giverole <Usertag|Mention> <RoleID: Plain text>'],
+    /**
+     * Executes the command
+     *
+     * @param bot {Discord.Client} The bot instance
+     * @param message {Discord.Message} The referenced message containing the command
+     * @param args {String} Command arguments
+     */
     run: async (bot, message, args) => {
 
         // Can user manage roles?
@@ -26,7 +36,7 @@ module.exports = {
             return;
         }
 
-        const member = getMember(message, args.join(" "));
+        const targetMember = getMember(message, args.join(" "));
         // Try setting via role-mention
         let role = message.mentions.roles.first();
         // If no role-mention, proceed
@@ -54,12 +64,12 @@ module.exports = {
         }
 
         try {
-            if (!member.roles.cache.has(role.id)) {
-                message.channel.send(`\`${member.user.tag}\` does not have the ${role.name} role!`);
+            if (!targetMember.roles.cache.has(role.id)) {
+                message.channel.send(`\`${targetMember.user.tag}\` does not have the ${role.name} role!`);
                 return;
             }
-            await member.roles.remove(role);
-            message.channel.send(`${role.name} has been successfully removed from \`${member.user.tag}!\`!`);
+            await targetMember.roles.remove(role);
+            message.channel.send(`${role.name} has been successfully removed from \`${targetMember.user.tag}!\`!`);
         } catch (error) {
             message.channel.send(stripIndents `Couldn't take the role here's why:
             \`${error.message}\``);
