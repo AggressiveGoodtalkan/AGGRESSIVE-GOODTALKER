@@ -46,11 +46,13 @@ module.exports = {
             }
         }
 
-        // Sanity check: can user take this role?
-        if (member.roles.highest.comparePositionTo(role) >= 0) {
+        // Sanity check: can user give this role?
+        // This short-circuits to TRUE when sender is the owner of the guild.
+        if (message.guild.ownerID !== message.member.id && message.member.roles.highest.comparePositionTo(role) <= 0) {
             message.reply('Cannot take role that is same or higher than your own.');
             return;
         }
+
         try {
             if (!member.roles.cache.has(role.id)) {
                 message.channel.send(`\`${member.user.tag}\` does not have the ${role.name} role!`);

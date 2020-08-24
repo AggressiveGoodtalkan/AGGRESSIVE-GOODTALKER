@@ -1,12 +1,23 @@
 const { getMember } = require("../../functions.js");
 const { stripIndents } = require("common-tags");
 
+// Imported for documentation purposes
+const Discord = require("discord.js");
+
 module.exports = {
     name: 'giverole',
     aliases: ['grole'],
     category:"moderations",
     description: "Gives a role to a certain user",
     usage:[`\`-<command | alias> <Usertag|Mention> <RoleID: Plain text>\``],
+
+    /**
+     * Executes the command
+     *
+     * @param bot {Discord.Client} The bot instance
+     * @param message {Discord.Message} The referenced message containing the command
+     * @param args {String} Command arguments
+     */
     run: async (bot, message, args) => {
 
         // Can user manage roles?
@@ -48,7 +59,8 @@ module.exports = {
         }
 
         // Sanity check: can user give this role?
-        if (member.roles.highest.comparePositionTo(role) >= 0) {
+        // This short-circuits to TRUE when sender is the owner of the guild.
+        if (message.guild.ownerID !== message.member.id && message.member.roles.highest.comparePositionTo(role) <= 0) {
             message.reply('Cannot give role that is same or higher than your own.');
             return;
         }
