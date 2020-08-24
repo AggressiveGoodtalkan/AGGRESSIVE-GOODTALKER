@@ -14,12 +14,12 @@ module.exports = {
         }
 
         if (index === bot.queue.length) {
-            message.channel.send(`Successfuly added ${message.member} to the queue!`)
+            message.channel.send(`✅ **Successfuly added ${message.member} to the queue!**`)
             .then(bot.queue.push(message.member)).then(m => m.delete({timeout: 5000, reason:"It had to be done"}));
             message.delete({timeout: 6000, reason:"It had to be done"});
         }
         else {
-            message.reply(`You are already in the queue!`)
+            message.reply(`🛑 **You are already in the queue!**`)
             .then(m => m.delete({timeout: 5000, reason:"It had to be done"}));
             message.delete({timeout: 6000, reason:"It had to be done"});
         }
