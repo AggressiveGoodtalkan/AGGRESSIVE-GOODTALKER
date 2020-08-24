@@ -13,10 +13,8 @@ module.exports = {
 
         // Member variables
         const embed = new MessageEmbed()
-
-            .setAuthor(`${member.user.tag}`)
-            .setTitle('Avatar URL')
-            .setURL(member.user.displayAvatarURL({ format: 'png', dynamic: true, size: 256 }))
+            .setTitle(`${member.user.tag}`)
+            .setDescription(`**[Avatar URL](${member.user.displayAvatarURL({ format: 'png', dynamic: true, size: 256 })})**`)
             .setImage(member.user.displayAvatarURL({ format: 'png', dynamic: true, size: 256 }))
             .setColor(colors.Black);
 

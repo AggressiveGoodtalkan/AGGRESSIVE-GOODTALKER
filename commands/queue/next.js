@@ -1,5 +1,5 @@
-const {getMember} = require('../../functions.js');
-
+const { getMember } = require('../../functions.js');
+const { stripIndents } = require('common-tags');
 module.exports = {
     name: "next",
     aliases: ["susunod"],
@@ -20,16 +20,17 @@ module.exports = {
         }
         else if (member.roles.cache.has(role.id) || member.roles.cache.has(dj.id)){
 
-            const performer = bot.guilds.cache.get('694810450621366282').member(bot.queue[1]);
+            const performer = bot.queue[1];
 
             if (bot.queue.length === 1) {
-                message.channel.send(`Thank you for your BEAUTIFUL PAKING PERFORMANCE ${bot.queue[0]}! There are no more people in the queue!`)
+                message.channel.send(`👏 **Thank you for your BEAUTIFUL PAKING PERFORMANCE ${bot.queue[0]}! There are no more people in the queue!**`)
                 .then(member.roles.remove(role));
                 bot.queue.shift();
 
             }
             else if (bot.queue.length > 1) {
-                message.channel.send(`Thank you for your BEAUTIFUL PAKING PERFORMANCE ${bot.queue[0]}! Next up is ${bot.queue[1]}`)
+                message.channel.send(stripIndents `👏 **Thank you for your BEAUTIFUL PAKING PERFORMANCE ${bot.queue[0]}!
+                Next up is none other than ${performer}! 👏👏👏**`)
                 .then(member.roles.remove(role)).then(performer.roles.add(role));
                 bot.queue.shift();
 
@@ -37,7 +38,7 @@ module.exports = {
 
         }
         else{
-            message.reply(`You are currently not performing, please wait for the performer to finish or contact someone with the ${dj.name} role to fix the queue.`)
+            message.reply(`🛑 **You are currently not performing, please wait for the performer to finish or contact someone with the ${dj.name} role to fix the queue.**`)
             .then(m => m.delete({timeout: 5000, reason:"It had to be done"}));
             message.delete({timeout: 5000, reason:"It had to be done"});
         }
