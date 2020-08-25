@@ -45,7 +45,7 @@ for a list of commands and
 ```
 for a detailed info about our [Discord Server](https://discord.gg/YRdff5T)
 ### Deployment:
-I was deloyed using [Heroku](https://www.heroku.com/#) that is connected to this repository.
+I was deployed using [Heroku](https://www.heroku.com/#) which is connected to this repository.
 ### Contributors:
 * **MahoMuri** - *Head Developer* - [Profile](https://github.com/MahoMuri)
 * **LyonLancer5** - *Head Developer* - [Profile](https://github.com/Lyonlancer5)
