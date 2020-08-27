@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require("axios").default;
 const colors = require("../../colors.json");
 const { MessageEmbed } = require('discord.js');
 const { getMember } = require('../../functions.js');
@@ -10,7 +10,7 @@ module.exports = {
     description: "Provides a random gif based on the search query",
     usage: [`\`q!<command | alias>\``],
     run: async (bot, message, args) => {
-        
+
         if (!message.mentions.members.first()) {
             return message.channel.send(`❌ ERROR: Please tag someone!`);
         }

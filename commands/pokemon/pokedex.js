@@ -1,5 +1,5 @@
 
-const axios = require("axios");
+const axios = require("axios").default;
 const colors = require("../../colors.json");
 const { MessageEmbed } = require('discord.js');
 const { getMember } = require('../../functions.js');

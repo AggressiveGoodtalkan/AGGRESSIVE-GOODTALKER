@@ -1,4 +1,4 @@
-const { paginationEmbed,promptMessage, getMember } = require("../../functions.js");
+const { paginationEmbed, getMember } = require("../../functions.js");
 const { MessageEmbed } = require('discord.js');
 const { stripIndents } = require('common-tags');
 const colors = require("../../colors.json");
