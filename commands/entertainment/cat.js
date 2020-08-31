@@ -6,6 +6,7 @@ const { MessageEmbed } = require("discord.js");
 // Create a reuseable axios instance
 const axiosInstance = axios.create({
     baseURL: "https://api.thecatapi.com/v1/images",
+    timeout: 5000,
     headers: {
         // you need an API key to get access to all the iamges, or see the requests you've made in the stats for your account
         "X-API-KEY": process.env.CAT_API_KEY

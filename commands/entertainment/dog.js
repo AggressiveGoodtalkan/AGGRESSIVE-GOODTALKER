@@ -1,14 +1,28 @@
-const r2 = require("r2");
-const rp = require('request-promise');
-const $ = require('cheerio');
+const axios = require("axios").default;
+const cheerio = require("cheerio");
+
 const queryString = require("query-string");
 const colors = require("../../colors.json");
 const { MessageEmbed } = require("discord.js");
 const { filterBreed } = require("../../functions.js");
 
-const DOG_API_URL = "https://api.thedogapi.com/";
-const DOG_API_KEY = process.env.DOG_API_KEY;
-const BREED_URL = "https://dogtime.com";
+const dogApiInstance = axios.create({
+    baseURL: "https://api.thedogapi.com/v1/images",
+    timeout: 5000,
+    headers: {
+        "X-API-KEY": process.env.DOG_API_KEY
+    }
+});
+
+const dogBreedInstance = axios.create({
+    baseURL: "https://dogtime.com/dog-breeds",
+    timeout: 5000,
+    responseType: "document",
+    transformResponse: [function(data) {
+        return cheerio.load(data);
+    }]
+});
+
 
 module.exports = {
   name: "dog",
@@ -21,10 +35,6 @@ module.exports = {
     let nsg = await message.channel.send("Generating...");
 
     async function loadImage(sub_id) {
-        // you need an API key to get access to all the iamges, or see the requests you've made in the stats for your account
-        let headers = {
-            "X-API-KEY": DOG_API_KEY,
-        };
         let query_params = {
             has_breeds: true, // we only want images with at least one breed data object - name, temperament etc
             mime_types: "jpg,png", // we only want static images as Discord doesn't like gifs
@@ -38,11 +48,8 @@ module.exports = {
         let response;
 
         try {
-            // construct the API Get request url
-            let _url = DOG_API_URL + `v1/images/search?${querystring}`;
-            //console.log(_url);
-            // make the request passing the url, and headers object which contains the API_KEY
-            response = await r2.get(_url, { headers }).json;
+            // Send the request
+            response = (await dogApiInstance.get(`/search?${querystring}`)).data;
         } catch (e) {
             console.log(e);
         }
@@ -63,15 +70,13 @@ module.exports = {
         let breed = image.breeds[0];
         let toFilter = breed.name.toLowerCase();
         breedName = filterBreed(toFilter, filter);
-        let url = BREED_URL + `/dog-breeds/` + breedName + `#/slide/1`;
 
         //console.log(url);
         let description = [];
 
-        await rp(url)
-        .then(function(html){
-            $('.breeds-single-intro > p', html).each(function(i , elem){
-                description[i] = $(this).text();
+        await dogBreedInstance.get(`/${breedName}#/slide/1`).then((response) => {
+            response.data(".breeds-single-intro > p").each(function(i, elem) {
+                description[i] = cheerio(this).text();
             });
         });
 
