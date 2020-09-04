@@ -1,10 +1,17 @@
-const r2 = require("r2");
 const queryString = require("query-string");
 const colors = require("../../colors.json");
+const axios = require("axios").default;
 const { MessageEmbed } = require("discord.js");
 
-const CAT_API_URL = "https://api.thecatapi.com/";
-const CAT_API_KEY = process.env.CAT_API_KEY;
+// Create a reuseable axios instance
+const axiosInstance = axios.create({
+    baseURL: "https://api.thecatapi.com/v1/images",
+    timeout: 5000,
+    headers: {
+        // you need an API key to get access to all the iamges, or see the requests you've made in the stats for your account
+        "X-API-KEY": process.env.CAT_API_KEY
+    }
+});
 
 module.exports = {
     name: "cat",
@@ -13,14 +20,9 @@ module.exports = {
     description: "Displays a random cat",
     usage: [`\`-<command | alias>\``],
     run: async (bot, message, args) => {
-
         let nsg = await message.channel.send("Generating...");
 
         async function loadImage(sub_id) {
-            // you need an API key to get access to all the iamges, or see the requests you've made in the stats for your account
-            let headers = {
-                "X-API-KEY": CAT_API_KEY,
-            };
             let query_params = {
                 has_breeds: true, // we only want images with at least one breed data object - name, temperament etc
                 mime_types: "jpg,png", // we only want static images as Discord doesn't like gifs
@@ -33,11 +35,8 @@ module.exports = {
             let response;
 
             try {
-                // construct the API Get request url
-                let _url = CAT_API_URL + `v1/images/search?${querystring}`;
-                //console.log(_url);
-                // make the request passing the url, and headers object which contains the API_KEY
-                response = await r2.get(_url, { headers }).json;
+                // Send the request
+                response = (await axiosInstance.get(`/search?${querystring}`)).data;
             } catch (e) {
                 console.log(e);
             }

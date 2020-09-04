@@ -164,6 +164,13 @@ module.exports = {
     },
     toSentenceCase: function(sentence) {
         return sentence[0].toUpperCase() + sentence.slice(1);
+    },
+    /**
+     * Converts pretty-printed number strings to native numbers
+     * @param {String} numString Pretty-printed number string
+     * @returns {Number} A normal number
+     */
+    intify: function(numString) {
+        return parseInt(numString.replace(/,/g, ""));
     }
 };
-

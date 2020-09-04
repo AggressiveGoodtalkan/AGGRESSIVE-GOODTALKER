@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require("axios").default;
 const colors = require("../../colors.json");
 const Discord = require('discord.js');
 

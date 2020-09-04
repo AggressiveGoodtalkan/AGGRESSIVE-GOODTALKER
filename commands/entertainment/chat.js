@@ -1,7 +1,5 @@
-const axios = require("axios");
+const axios = require("axios").default;
 const colors = require("../../colors.json");
-const { MessageEmbed } = require('discord.js');
-const { getMember } = require('../../functions.js');
 
 module.exports = {
     name: "chat",
@@ -15,7 +13,6 @@ module.exports = {
             return message.channel.send(`❌ ERROR: please put a message!`);
         }
         const toSend = args.join(" ");
-        
         const { data } = await axios.get(`https://some-random-api.ml/chatbot?message=${toSend}`).catch(err => {
             console.log(err);
             return message.channel.send('My servers got overloaded! Please try again in 5 seconds.');
