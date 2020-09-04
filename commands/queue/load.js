@@ -6,7 +6,7 @@ mongoose.connect(process.env.LISTURI,{
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false
-}).catch(err => console.log(err));
+}).catch(err => console.log("Error on load.js\n",err));
 
 module.exports = {
     name: 'load',
@@ -24,6 +24,7 @@ module.exports = {
                 temporaryArray.push(doc);
             }
             temporaryArray.sort((a, b) => b.date - a.date); // Valid by ISO-8601 standard
+            //console.log(temporaryArray);
             let membersIDs = temporaryArray[0].body.split(',');
             bot.queue.length = 0;
             for (let i = 0; i < membersIDs.length; i++){

@@ -28,7 +28,7 @@ module.exports = {
         await message.channel.send("**Pruning list...**").then(async (msg) => {
             await savedlist.deleteMany({ date: {$lte: lastMonth } })
             .then((query) => {
-                console.log(query);
+                //console.log(query);
                 if (query.ok === 1) {
                     if (query.deletedCount === 0) {
                         msg.edit('👌 **The list is clean! Nothing to delete!**');

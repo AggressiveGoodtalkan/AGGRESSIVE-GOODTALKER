@@ -24,14 +24,14 @@ module.exports = {
 
             if (bot.queue.length === 1) {
                 message.channel.send(`👏 **Thank you for your BEAUTIFUL PAKING PERFORMANCE ${bot.queue[0]}! There are no more people in the queue!**`)
-                .then(member.roles.remove(role));
+                .then(bot.queue[0].roles.remove(role));
                 bot.queue.shift();
 
             }
             else if (bot.queue.length > 1) {
                 message.channel.send(stripIndents `👏 **Thank you for your BEAUTIFUL PAKING PERFORMANCE ${bot.queue[0]}!
                 Next up is none other than ${performer}! 👏👏👏**`)
-                .then(member.roles.remove(role)).then(performer.roles.add(role));
+                .then(bot.queue[0].roles.remove(role)).then(performer.roles.add(role));
                 bot.queue.shift();
 
             }

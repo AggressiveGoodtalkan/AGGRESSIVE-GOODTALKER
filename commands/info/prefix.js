@@ -12,11 +12,10 @@ module.exports = {
     usage: [`\`-<command | alias> <desired prefix>\``],
     run: async(bot, message, args)=>{
 
-        const mode = args[0];
+        const mode = args.join(" ").toLowerCase();
         //checks if mode is true
         if (mode){
 
-            mode.toLowerCase();
             //checks if mode is equal to set
             if (mode === "set") {
                 if (!message.member.hasPermission("MANAGE_GUILD")) {
@@ -32,7 +31,7 @@ module.exports = {
                     prefixes: args[1]
                 };
 
-                fs.writeFileSync("./prefixes.json", JSON.stringify(prefixes), (err) => {
+                fs.writeFileSync("./prefixes.json", JSON.stringify(prefixes, null, '\t' ), (err) => {
                     if (err) {
                         console.error(err);
                     }

@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const savedlist = require('../../models/savedlist.js');
+const ms = require('ms');
 
 mongoose.connect(process.env.LISTURI,{
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false
-}).catch(err => console.log(err));
+}).catch(err => console.log("Error on save.js\n",err));
 
 
 module.exports = {
@@ -26,33 +27,76 @@ module.exports = {
 
         if (bot.queue.length > 0) {
             // ============================ "Debugging" ============================
-            const date = new Date(), y = date.getFullYear(), m = date.getMonth(), d = date.getDate(), h = date.getHours(),
-            min = date.getMinutes(), seconds = date.getSeconds(), ms = date.getMilliseconds();
-            const thisMonth = new Date(y, m, d, h, min, seconds, ms);
-            const lastMonth = new Date(y, m-4, d, h, min, seconds, ms);
+            // const date = new Date(), y = date.getFullYear(), m = date.getMonth(), d = date.getDate(), h = date.getHours(),
+            // min = date.getMinutes(), seconds = date.getSeconds(), ms = date.getMilliseconds();
+            // const thisMonth = new Date(y, m, d, h, min, seconds, ms);
+            // const lastMonth = new Date(y, m-4, d, h, min, seconds, ms);
 
-            message.delete({timeout: 5000, reason:"It had to be done"});
-            const members = bot.queue.map(m => m.id);
-            const list = new savedlist({
-                author: mongoose.Types.ObjectId(),
-                title: "The GOOD PAKING LIST",
-                body: members.toString(),
-                date: lastMonth
-            });
+            const mode = args[0].toString().toLowerCase();
+            if (mode === 'auto') {
+                let interval;
+                    if (args[1]) {
+                        if (args[1].toString() === '') {
 
-            await message.channel.send("Saving...").then((msg) =>{
-                list.save()
-                .then(item => {
-                    msg.edit("✅ **List has been saved successfully to the database!**");
-                    console.log("✅ **List has been saved successfully to the database!**\n",item);
-                }).catch(err => {
-                    msg.edit("🛑 **Failed to save list the database! Contact a Programmer for assistance!**");
-                    console.log(err);
+                        }
+                        interval = args[1];
+                    }
+                    else {
+                        interval = '15m';
+                    }
+                    console.log(interval);
+                    setInterval(async () => {
+
+                        const members = bot.queue.map(m => m.id);
+                        const list = new savedlist({
+                            author: mongoose.Types.ObjectId(),
+                            title: "The GOOD PAKING LIST",
+                            body: members.toString(),
+                            date: Date()
+                        });
+
+                        await message.channel.send("Saving...").then((msg) =>{
+
+                            list.save()
+                            .then(item => {
+                                msg.edit("✅ **List has been saved successfully to the database!**");
+                                console.log("✅ **List has been saved successfully to the database!**\n",item);
+                            }).catch(err => {
+                                msg.edit("🛑 **Failed to save list the database! Contact a Programmer for assistance!**");
+                                console.log(err);
+                            });
+
+                        });
+                    }, ms(interval));
+
+            }else if( mode === 'stop'){
+
+                await message.react('👌').then(async (msg) => {
+                    msg.channel.send("**Stopping...**").then(() => {
+                        clearInterval();
+                    });
+                });
+            }else if(!mode) {
+                const members = bot.queue.map(m => m.id);
+                const list = new savedlist({
+                    author: mongoose.Types.ObjectId(),
+                    title: "The GOOD PAKING LIST",
+                    body: members.toString(),
+                    date: Date()
                 });
 
-            });
+                await message.channel.send("Saving...").then((msg) =>{
+                    list.save()
+                    .then(item => {
+                        msg.edit("✅ **List has been saved successfully to the database!**");
+                        console.log("✅ **List has been saved successfully to the database!**\n",item);
+                    }).catch(err => {
+                        msg.edit("🛑 **Failed to save list the database! Contact a Programmer for assistance!**");
+                        console.log(err);
+                    });
 
-
+                });
+            }
 
         }
     }

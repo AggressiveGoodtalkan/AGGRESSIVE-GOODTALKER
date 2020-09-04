@@ -28,6 +28,9 @@ module.exports = {
                 if (queueList.length === 0 && performer) {
                     queueList = `${i + 1}. ${bot.queue[i]}  ➡  (Currently Performing)\n\n`;
                 }
+                else if(bot.queue[i] === message.member){
+                    queueList = queueList + `${i + 1}. ${bot.queue[i]}  ⬅  You are here!\n\n`;
+                }
                 else {
                     queueList = queueList + `${i + 1}. ${bot.queue[i]}\n\n`;
                 }
