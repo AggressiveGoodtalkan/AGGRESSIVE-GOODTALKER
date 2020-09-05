@@ -86,7 +86,7 @@ module.exports = {
         // Get local stats
         .finally(() => {
             coronaStats.get("/country/philippines").then(
-                (response) => {
+                async (response) => {
                     response.data(".maincounter-number").each(function(i) {
                         data[i] = cheerio(this).text().trim();
                     });
