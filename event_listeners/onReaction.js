@@ -42,13 +42,13 @@ module.exports = bot => {
                     { name: '__**Step 1:**__', value: stripIndents`Enter \`-verify\` to start, the dash is required.
                     **(Make it quick because you would only have 5 minutes to complete this.)**`},
                     { name: '__**Step 2:**__', value: stripIndents`Enter your birthday to continue.
-                    **Please use the format: (DD/MM/YYYY)**` },
+                    **Please use the format: MM/DD/YYYY (Words are accepted to e.g. January 1, 1970)**` },
                     { name: '__**Step 3:**__', value: stripIndents`Then type:
                     \`I have read the rules of this server and have agreed to follow them accordingly\`
                     **(Please write it as plain text.)**`},
                     { name: '__**Step 4:**__', value: stripIndents`If I stop listening to you or an error occurs, just repeat **Steps 1 - 3**.` }
-                    );
-                    user.send(embed);
+                );
+                user.send(embed);
 
                 try {
                     logs.send("Message has been sent!");

@@ -1,0 +1,16 @@
+{
+	"mutedMembers": [
+		{
+			"userID": "318623486069309452",
+			"isMuted": true,
+			"timeMuted": "Friday, August 28, 2020, 6:12:40 AM",
+			"timer": "Friday, August 28, 2020, 6:13:40 AM"
+		},
+		{
+			"userID": "318623486069309452",
+			"isMuted": false,
+			"timeMuted": "Friday, August 28, 2020, 6:13:40 AM",
+			"timer": null
+		}
+	]
+}

@@ -32,14 +32,12 @@ module.exports = {
             // const thisMonth = new Date(y, m, d, h, min, seconds, ms);
             // const lastMonth = new Date(y, m-4, d, h, min, seconds, ms);
 
-            const mode = args[0].toString().toLowerCase();
+            const mode = args.join(" ").toLowerCase();
             if (mode === 'auto') {
                 let interval;
-                    if (args[1]) {
-                        if (args[1].toString() === '') {
+                    if (args.splice(1)) {
 
-                        }
-                        interval = args[1];
+                        interval = args.splice(1);
                     }
                     else {
                         interval = '15m';

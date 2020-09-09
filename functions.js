@@ -1,3 +1,14 @@
+const { stripIndents } = require('common-tags');
+const mongoose = require('mongoose');
+const muteTimers = require('../AGGRESSIVE-GOODTALKER/models/timers.js');
+
+mongoose.connect(process.env.TIMERSURI,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+}).catch(err => console.log("Error on mute.js\n",err));
+
 module.exports = {
     getMember: function(message, toFind = '') {
         toFind = toFind.toLowerCase();
@@ -172,5 +183,24 @@ module.exports = {
      */
     intify: function(numString) {
         return parseInt(numString.replace(/,/g, ""));
+    },
+    unmute: function( member, channel, muted, timer ){
+        console.log("In function unmute!");
+        setTimeout(async function(){
+            member.roles.remove(muted).then(member => {
+                member.send(stripIndents `**${member}**, 🔊 You have been unmuted!`);
+            });
+            channel.send(`🔊 Unmuted \`${member.user.tag}\``);
+
+            let query = { userID: member.id };
+            let mongoOptions = { new: true };
+            const document = await muteTimers.findOneAndUpdate(query, {
+                isMuted: false,
+                timeUnmuted: Date(),
+                timer: null
+            }, mongoOptions);
+
+            console.log(document);
+        }, timer);
     }
 };
