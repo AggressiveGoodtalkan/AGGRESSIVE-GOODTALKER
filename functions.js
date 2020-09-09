@@ -1,6 +1,6 @@
 const { stripIndents } = require('common-tags');
 const mongoose = require('mongoose');
-const muteTimers = require('../AGGRESSIVE-GOODTALKER/models/timers.js');
+const muteTimers = require('./models/timers');
 
 mongoose.connect(process.env.TIMERSURI,{
     useNewUrlParser: true,
