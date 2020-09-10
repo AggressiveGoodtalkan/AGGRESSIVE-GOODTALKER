@@ -1,13 +1,6 @@
 const mongoose = require('mongoose');
 const savedlist = require('../../models/savedlist.js');
 
-mongoose.connect(process.env.LISTURI,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
-}).catch(err => console.log("Error on load.js\n",err));
-
 module.exports = {
     name: 'load',
     aliases: [""],
@@ -15,6 +8,13 @@ module.exports = {
     description: "Loads the saved list.",
     usage: [`\`-<command | alias> \``],
     run: async (bot, message, args) => {
+
+        await mongoose.connect(process.env.LISTURI,{
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true,
+            useFindAndModify: false
+        }).catch(err => console.log("Error on load.js\n",err));
 
         await message.channel.send("**Loading list...**").then(async (msg) => {
             const cursor = await savedlist.find({}).cursor();
@@ -25,7 +25,7 @@ module.exports = {
             }
             temporaryArray.sort((a, b) => b.date - a.date); // Valid by ISO-8601 standard
             //console.log(temporaryArray);
-            let membersIDs = temporaryArray[0].body.split(',');
+            let membersIDs = temporaryArray[0].body;
             bot.queue.length = 0;
             for (let i = 0; i < membersIDs.length; i++){
                 bot.queue.push(bot.guilds.cache.get(message.guild.id).member(membersIDs[i]));

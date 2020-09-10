@@ -12,10 +12,10 @@ module.exports = {
     usage: [`\`-<command | alias> <desired prefix>\``],
     run: async(bot, message, args)=>{
 
-        const mode = args.join(" ").toLowerCase();
         //checks if mode is true
-        if (mode){
+        if (args.length !== 0){
 
+            const mode = args[0].toString().toLowerCase();
             //checks if mode is equal to set
             if (mode === "set") {
                 if (!message.member.hasPermission("MANAGE_GUILD")) {

@@ -12,7 +12,7 @@ module.exports = {
         //const member = getMember(message, args.join(" "));
 
         const admins = message.guild.roles.cache
-            .get("694810450637881345")
+            .find(role => role.name === "Modmin")
             .members.map((m) => m)
             .sort();
 
@@ -27,7 +27,7 @@ module.exports = {
         }
 
         const mods = message.guild.roles.cache
-            .get("694810450621366291")
+            .find(role => role.name === "Mods")
             .members.map((m) => m)
             .sort();
 
@@ -55,7 +55,7 @@ module.exports = {
             (c) => c.type === "voice"
         ).size;
 
-        const createdAt = new Date(message.createdAt);
+        const createdAt = new Date(message.guild.createdAt);
         const options = {
             weekday: "long",
             year: "numeric",

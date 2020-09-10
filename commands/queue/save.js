@@ -2,13 +2,6 @@ const mongoose = require('mongoose');
 const savedlist = require('../../models/savedlist.js');
 const ms = require('ms');
 
-mongoose.connect(process.env.LISTURI,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
-}).catch(err => console.log("Error on save.js\n",err));
-
 
 module.exports = {
     name: "save",
@@ -17,6 +10,13 @@ module.exports = {
     description: "Saves the current list to the database",
     usage: [`\`-<command | alias>\``],
     run: async(bot, message, args)=>{
+
+        await mongoose.connect(process.env.LISTURI,{
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true,
+            useFindAndModify: false
+        }).catch(err => console.log("Error on save.js\n",err));
 
         if (bot.queue.length === 0) {
             message.reply("The queue is empty! There is nothing to save!")
@@ -49,7 +49,7 @@ module.exports = {
                         const list = new savedlist({
                             author: mongoose.Types.ObjectId(),
                             title: "The GOOD PAKING LIST",
-                            body: members.toString(),
+                            body: members.toString().split(","),
                             date: Date()
                         });
 
@@ -79,7 +79,7 @@ module.exports = {
                 const list = new savedlist({
                     author: mongoose.Types.ObjectId(),
                     title: "The GOOD PAKING LIST",
-                    body: members.toString(),
+                    body: members.toString().split(","),
                     date: Date()
                 });
 

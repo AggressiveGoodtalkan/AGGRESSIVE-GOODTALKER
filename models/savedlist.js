@@ -5,7 +5,7 @@ const ObjectId = Schema.ObjectId;
 const savedlistSchema = new Schema({
     author: ObjectId,
     title: String,
-    body: String,
+    body: [String],
     date: Date
 });
 
