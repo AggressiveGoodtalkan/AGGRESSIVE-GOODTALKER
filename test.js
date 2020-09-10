@@ -55,6 +55,6 @@ bot.categories.forEach(dir => {
 });
 console.log(cmdTable.toString());
 console.log("✅ Build Complete! Bot is online!");
-process.exit(1);
+process.exit();
 
 
