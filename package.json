@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "test": "node ./index.js && exit 1"
+    "test": "node ./test.js"
   },
   "author": "MahoMuri",
   "license": "MIT",
