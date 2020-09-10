@@ -4,7 +4,8 @@
   "description": "AGGRESSIVE GOODTALKAN's Official Discord Bot",
   "main": "index.js",
   "scripts": {
-    "start": "node ./index.js"
+    "start": "node ./index.js",
+    "test": "node , ./index.js && exit 1"
   },
   "author": "MahoMuri",
   "license": "MIT",
