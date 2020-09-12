@@ -1,12 +1,6 @@
 const mongoose = require('mongoose');
 const savedlist = require('../../models/savedlist.js');
 
-mongoose.connect(process.env.LISTURI,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
-}).catch(err => console.log(err));
 
 module.exports = {
     name: 'prune',
@@ -16,17 +10,23 @@ module.exports = {
     usage: [`\`-<command | alias> \``],
     run: async (bot, message, args) => {
 
+        await mongoose.connect(process.env.LISTURI,{
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true,
+            useFindAndModify: false
+        }).catch(err => console.log(err));
+
         if (!message.member.roles.cache.some(role => role.name === 'Programmer')) {
             return message.channel.send('**You do not have access to prune the database! Contact a __Programmer__ for more support.**');
         }
 
-        const date = new Date(), y = date.getFullYear(), m = date.getMonth(), d = date.getDate(), h = date.getHours(),
-        min = date.getMinutes(), seconds = date.getSeconds(), ms = date.getMilliseconds();
+        const date = new Date(), y = date.getFullYear(), m = date.getMonth();
 
-        const lastMonth = new Date(y, m-1, d, h, min, seconds, ms);
+        const lastMonth = new Date(y, m);
 
         await message.channel.send("**Pruning list...**").then(async (msg) => {
-            await savedlist.deleteMany({ date: {$lte: lastMonth } })
+            await savedlist.deleteMany({ date: { $lt: lastMonth } })
             .then((query) => {
                 //console.log(query);
                 if (query.ok === 1) {

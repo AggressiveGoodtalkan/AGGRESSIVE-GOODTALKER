@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const savedlist = require('../../models/savedlist.js');
 const ms = require('ms');
-
+let saveTimer;
 
 module.exports = {
     name: "save",
@@ -32,49 +32,62 @@ module.exports = {
             // const thisMonth = new Date(y, m, d, h, min, seconds, ms);
             // const lastMonth = new Date(y, m-4, d, h, min, seconds, ms);
 
-            const mode = args.join(" ").toLowerCase();
-            if (mode === 'auto') {
-                let interval;
-                    if (args.splice(1)) {
+            if (args.length !== 0) {
 
-                        interval = args.splice(1);
-                    }
-                    else {
-                        interval = '15m';
-                    }
-                    console.log(interval);
-                    setInterval(async () => {
+                const mode = args[0].toString().toLowerCase();
+                if (mode === 'auto') {
+                    let interval;
+                        if (args[1]) {
+                            let check = ms(args.splice(1).join(' '));
+                            if (isNaN(check)) {
+                                return message.channel.send("**❌ Error, invalid interval!**");
+                            }else if (check < ms("5 minutes")){
+                                return message.channel.send("**❌ Error, interval cannot be less than 5 minutes!**");
+                            }else{
+                                interval = args[1];
+                                message.channel.send(`**✅ Automatic save has been enabled and set to ${ms(ms(interval), { long: true })}!**`);
+                            }
+                            // interval = args[1];
+                        }
+                        else {
+                            interval = '15m';
+                            message.channel.send(`**✅ Automatic save has been enabled and set to default value of ${ms(ms(interval), { long: true })}!**`);
+                        }
+                        // console.log(interval);
+                        saveTimer = setInterval(async () => {
 
-                        const members = bot.queue.map(m => m.id);
-                        const list = new savedlist({
-                            author: mongoose.Types.ObjectId(),
-                            title: "The GOOD PAKING LIST",
-                            body: members.toString().split(","),
-                            date: Date()
-                        });
-
-                        await message.channel.send("Saving...").then((msg) =>{
-
-                            list.save()
-                            .then(item => {
-                                msg.edit("✅ **List has been saved successfully to the database!**");
-                                console.log("✅ **List has been saved successfully to the database!**\n",item);
-                            }).catch(err => {
-                                msg.edit("🛑 **Failed to save list the database! Contact a Programmer for assistance!**");
-                                console.log(err);
+                            const members = bot.queue.map(m => m.id);
+                            const list = new savedlist({
+                                author: mongoose.Types.ObjectId(),
+                                title: "The GOOD PAKING LIST",
+                                body: members.toString().split(","),
+                                date: Date()
                             });
 
+                            await message.channel.send("Saving...").then((msg) =>{
+
+                                list.save()
+                                .then(item => {
+                                    msg.edit("✅ **List has been saved successfully to the database!**");
+                                    console.log("✅ **List has been saved successfully to the database!**\n",item);
+                                }).catch(err => {
+                                    msg.edit("❌ **Failed to save list the database! Contact a Programmer for assistance!**");
+                                    console.log(err);
+                                });
+
+                            });
+                        }, ms(interval));
+
+                }else if( mode === 'stop'){
+
+                    await message.react('👌').then(async (reaction) => {
+                        reaction.message.channel.send("**Stopping...**").then(async (msg) => {
+                            clearInterval(saveTimer);
+                            msg.edit("✅ **Successfully stopped the interval!**");
                         });
-                    }, ms(interval));
-
-            }else if( mode === 'stop'){
-
-                await message.react('👌').then(async (msg) => {
-                    msg.channel.send("**Stopping...**").then(() => {
-                        clearInterval();
                     });
-                });
-            }else if(!mode) {
+                }
+            }else {
                 const members = bot.queue.map(m => m.id);
                 const list = new savedlist({
                     author: mongoose.Types.ObjectId(),
