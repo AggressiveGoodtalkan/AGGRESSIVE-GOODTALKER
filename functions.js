@@ -1,6 +1,7 @@
 const { stripIndents } = require('common-tags');
 const mongoose = require('mongoose');
 const muteTimers = require('./models/timers');
+const ms = require('ms');
 
 mongoose.connect(process.env.TIMERSURI,{
     useNewUrlParser: true,
@@ -185,7 +186,8 @@ module.exports = {
         return parseInt(numString.replace(/,/g, ""));
     },
     unmute: function( member, channel, muted, timer ){
-        console.log("In function unmute!");
+        let options = {'hour12': true };
+        console.log(`${member.user.username}'s time left:` , ms(timer, { long: true }));
         setTimeout(async function(){
             member.roles.remove(muted).then(member => {
                 member.send(stripIndents `**${member}**, 🔊 You have been unmuted!`);

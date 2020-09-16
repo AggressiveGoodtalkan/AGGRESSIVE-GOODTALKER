@@ -55,11 +55,6 @@ module.exports = bot => {
 
         //setTimeout checker
         const date = new Date();
-        Date.prototype.subMillisecs= function(s) {
-            this.setMilliseconds(s-this.getMilliseconds());
-            return this;
-        };
-
         const cursor = await muteTimers.find({ isMuted: true }).cursor();
         // let temporaryArray = [];
         for (let doc = await cursor.next(); doc !== null; doc = await cursor.next()) {
@@ -85,9 +80,7 @@ module.exports = bot => {
                 console.log('false');
                 console.log(doc);
                 const timer = doc.time.getTime() - date.getTime();
-                // console.log(timer);
-                unmute(member, channel, muted,timer);
-                console.log("function called!");
+                unmute(member, channel, muted, timer);
             }
         }
 
