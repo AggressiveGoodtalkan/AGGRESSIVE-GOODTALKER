@@ -20,6 +20,7 @@ bot.categories = readdirSync(`./commands/`);
 bot.commands = new Collection();
 bot.queue = [];
 bot.channelsCache = [];
+bot.servers = {};
 
 // Setup configuration
 config({

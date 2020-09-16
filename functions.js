@@ -202,7 +202,7 @@ module.exports = {
                 timer: null
             }, mongoOptions);
 
-            console.log(document);
+            console.log("Successfully Unmuted " + document);
         }, timer);
     }
 };
