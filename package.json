@@ -1,39 +1,39 @@
 {
-  "name": "aggresive-goodtalker",
-  "version": "1.0.0",
-  "description": "AGGRESSIVE GOODTALKAN's Official Discord Bot",
-  "main": "index.js",
-  "scripts": {
-    "start": "node ./index.js",
-    "test": "node ./test.js"
-  },
-  "author": "MahoMuri",
-  "license": "MIT",
-  "dependencies": {
-    "@discordjs/opus": "^0.3.2",
-    "ascii-table": "0.0.9",
-    "axios": "^0.19.2",
-    "cheerio": "^1.0.0-rc.3",
-    "common-tags": "^1.8.0",
-    "discord.js": "^12.3.1",
-    "dotenv": "^8.2.0",
-    "libsodium-wrappers": "^0.7.8",
-    "mongodb": "^3.5.8",
-    "mongoose": "^5.9.16",
-    "ms": "^2.1.2",
-    "nodemon": "^2.0.4",
-    "pokedex-promise-v2": "^3.2.0",
-    "query-string": "^6.13.1",
-    "ytdl-core": "^3.2.2"
-  },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AggressiveGoodtalkan/AGGRESSIVE-GOODTALKER.git"
-  },
-  "keywords": [],
-  "bugs": {
-    "url": "https://github.com/AggressiveGoodtalkan/AGGRESSIVE-GOODTALKER/issues"
-  },
-  "homepage": "https://github.com/AggressiveGoodtalkan/AGGRESSIVE-GOODTALKER#readme"
+    "name": "aggresive-goodtalker",
+    "version": "1.0.0",
+    "description": "AGGRESSIVE GOODTALKAN's Official Discord Bot",
+    "main": "index.js",
+    "scripts": {
+        "start": "node src/index.js",
+        "test": "node src/test.js"
+    },
+    "author": "MahoMuri",
+    "license": "MIT",
+    "dependencies": {
+        "@discordjs/opus": "^0.3.2",
+        "ascii-table": "0.0.9",
+        "axios": "^0.19.2",
+        "cheerio": "^1.0.0-rc.3",
+        "common-tags": "^1.8.0",
+        "discord.js": "^12.3.1",
+        "dotenv": "^8.2.0",
+        "libsodium-wrappers": "^0.7.8",
+        "mongodb": "^3.5.8",
+        "mongoose": "^5.9.16",
+        "ms": "^2.1.2",
+        "nodemon": "^2.0.4",
+        "pokedex-promise-v2": "^3.2.0",
+        "query-string": "^6.13.1",
+        "ytdl-core": "^3.2.2"
+    },
+    "devDependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/AggressiveGoodtalkan/AGGRESSIVE-GOODTALKER.git"
+    },
+    "keywords": [],
+    "bugs": {
+        "url": "https://github.com/AggressiveGoodtalkan/AGGRESSIVE-GOODTALKER/issues"
+    },
+    "homepage": "https://github.com/AggressiveGoodtalkan/AGGRESSIVE-GOODTALKER#readme"
 }
