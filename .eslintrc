@@ -1,0 +1,8 @@
+{
+    "extends": ["clarity"],
+    // Overrides for this specific project
+    "rules": {
+        // Module reloading relies on dynamic require()
+        "import/no-dynamic-require": 0
+    }
+}
